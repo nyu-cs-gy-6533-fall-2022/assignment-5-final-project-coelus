@@ -1,2 +1,2 @@
 
-The overview dpf is at the top of the folder: called xxx.pdf
+The overview pdf is at the top of the folder: called proposal.pdf
