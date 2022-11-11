@@ -23,12 +23,12 @@
 using namespace std;
 using namespace glm;
 
-class Window
+class App
 {
 public:
-    Window(int width, int height);
+    App(int width, int height);
 
-    ~Window();
+    ~App();
 
     void Input();
 

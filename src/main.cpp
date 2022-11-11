@@ -1,10 +1,10 @@
-#include "Window.h"
+#include "app.h"
 
 
 int main()
 {
-    Window *window = new Window(800, 600);
-    window->Update();
-    delete window;
+    App *app = new App(800, 600);
+    app->Update();
+    delete app;
     return 0;
 }

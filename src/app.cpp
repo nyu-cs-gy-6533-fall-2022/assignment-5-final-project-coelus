@@ -1,6 +1,6 @@
-#include "window.h"
+#include "app.h"
 
-Window::Window(int width, int height)
+App::App(int width, int height)
     : mWidth(width),
       mHeight(height)
 {
@@ -14,12 +14,12 @@ Window::Window(int width, int height)
     glfwMakeContextCurrent(pWindow);
 }
 
-Window::~Window()
+App::~App()
 {
     glfwTerminate();
 }
 
-void Window::Input()
+void App::Input()
 {
     if (glfwGetKey(pWindow, GLFW_KEY_ESCAPE))
     {
@@ -27,7 +27,7 @@ void Window::Input()
     }
 }
 
-void Window::Resize()
+void App::Resize()
 {
     int width, height;
     glfwGetWindowSize(pWindow, &width, &height);
@@ -39,7 +39,7 @@ void Window::Resize()
     }
 }
 
-void Window::Update()
+void App::Update()
 {
     while (!glfwWindowShouldClose(pWindow))
     {
