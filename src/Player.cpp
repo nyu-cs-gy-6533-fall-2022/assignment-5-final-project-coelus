@@ -3,9 +3,9 @@
 Player::Player() : walkSpeed(5)
 {
 
-	sprite = new Sprite("main/idle(256-line).png");
-	sprite->Transform.Position = vec2(-75, -75);
-	sprite->Transform.Scale = vec2(150, 150);
+	sprite = new Sprite();
+	sprite->Transform.Position = vec2(0, 0);
+	sprite->Transform.Scale = vec2(200, 200);
 
 	loader = new Loader(sprite, "player.json");
 

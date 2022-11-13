@@ -11,7 +11,7 @@ out vec4 vertColor;
 out vec2 vertUV;
 void main()
 {
-    gl_Position = projMatrix * modelMatrix * vec4(point.x, point.y, 0.0, 1.0);
+    gl_Position = projMatrix * modelMatrix * vec4(point, 0.0, 1.0);
     vertColor = color;
     vertUV = uv;
 }

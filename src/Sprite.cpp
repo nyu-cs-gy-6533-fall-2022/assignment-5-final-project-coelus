@@ -1,15 +1,12 @@
 #include "Sprite.h"
 
-Sprite::Sprite(const char *filename)
+Sprite::Sprite()
 {
-
-	texture = new Texture(filename);
 	buffer = new BufferObject();
 }
 
 Sprite::~Sprite()
 {
-	delete texture;
 	delete buffer;
 }
 
@@ -18,10 +15,9 @@ void Sprite::Draw(double deltaTime, AnimationState state)
 
 	if (anim[state])
 	{
-		anim[state]->Play(*texture, *buffer, deltaTime);
+		anim[state]->Play(*buffer, deltaTime);
+		anim[state]->texture->Bind();
 	}
-
-	texture->Bind();
 	buffer->Draw();
 }
 

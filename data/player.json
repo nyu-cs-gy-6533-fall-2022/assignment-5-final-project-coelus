@@ -2,24 +2,33 @@
     "animation": [
         {
             "state": 0,
+            "centerX": 0,
+            "centerY": 0,
             "width": 256,
             "height": 256,
             "frameCount": 4,
-            "secPerFrame":0.2
+            "secPerFrame": 0.2,
+            "filename": "main/idle(256-line).png"
         },
         {
             "state": 1,
+            "centerX": 0,
+            "centerY": 0,
             "width": 256,
             "height": 256,
-            "frameCount": 4,
-            "secPerFrame":0.2
+            "frameCount": 10,
+            "secPerFrame": 0.07,
+            "filename": "main/run(256-line).png"
         },
         {
             "state": 2,
+            "centerX": 0,
+            "centerY": 0,
             "width": 256,
             "height": 256,
             "frameCount": 4,
-            "secPerFrame":0.2
+            "secPerFrame": 0.2,
+            "filename": "main/idle(256-line).png"
         }
     ]
 }

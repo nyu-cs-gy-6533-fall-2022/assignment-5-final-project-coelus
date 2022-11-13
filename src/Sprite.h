@@ -11,7 +11,7 @@
 class Sprite
 {
 public:
-	Sprite(const char *filename);
+	Sprite();
 
 	~Sprite();
 
@@ -22,7 +22,7 @@ public:
 	Transform Transform;
 
 private:
-	Texture *texture;
+	
 	BufferObject *buffer;
 
 	unordered_map<AnimationState, Animation *> anim;

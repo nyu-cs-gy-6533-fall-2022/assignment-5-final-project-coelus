@@ -9,10 +9,13 @@ Loader::Loader(Sprite *sprite, string dataName)
     {
         AnimationData animData = {
             anim["state"],
+            anim["centerX"],
+            anim["centerY"],
             anim["width"],
             anim["height"],
             anim["frameCount"],
-            anim["secPerFrame"]};
+            anim["secPerFrame"],
+            anim["filename"]};
 
         sprite->Add(animData);
     }

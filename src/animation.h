@@ -24,20 +24,25 @@ enum AnimationState
 struct AnimationData
 {
 	AnimationState state;
-	int width, height, frameCount;
+	int centerX, centerY, width, height, frameCount;
 	double secPerFrame;
+	string filename;
 };
 class Animation
 {
 public:
 	Animation(AnimationData data);
+	~Animation();
 
-	void Play(Texture &texture, BufferObject &buffer, double deltatime);
+	void Play(BufferObject &buffer, double deltatime);
 
-	void setSecPerFrame(float sec);
+	void SetSecPerFrame(float sec);
+
+	Texture *texture;
 
 private:
 	double frameTime, secPerFrame;
 	int frameIndex, frameCount;
+
 	vector<vec4> frames;
 };

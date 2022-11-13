@@ -8,14 +8,17 @@ Animation::Animation(AnimationData data)
 	  secPerFrame(data.secPerFrame),
 	  frameCount(data.frameCount)
 {
+	texture = new Texture(data.filename);
 	for (int i = 0; i < data.frameCount; i++)
 	{
 		vec4 frame = vec4(1, data.height * i, data.width, data.height);
 		frames.push_back(frame);
 	}
 }
-
-void Animation::Play(Texture &texture, BufferObject &buffer, double deltaTime)
+Animation::~Animation(){
+	delete texture;
+}
+void Animation::Play(BufferObject &buffer, double deltaTime)
 {
 	frameTime += deltaTime;
 
@@ -27,10 +30,10 @@ void Animation::Play(Texture &texture, BufferObject &buffer, double deltaTime)
 
 	vec4 frame = frames[frameIndex];
 	// normalize
-	frame.x /= texture.GetWidth();
-	frame.y /= texture.GetHeight();
-	frame.z /= texture.GetWidth();
-	frame.w /= texture.GetHeight();
+	frame.x /= texture->GetWidth();
+	frame.y /= texture->GetHeight();
+	frame.z /= texture->GetWidth();
+	frame.w /= texture->GetHeight();
 
 	vector<vec2> uv = {
 		vec2(frame.x, frame.y),
@@ -42,7 +45,7 @@ void Animation::Play(Texture &texture, BufferObject &buffer, double deltaTime)
 	buffer.UpdateUVBO(uv);
 }
 
-void Animation::setSecPerFrame(float sec)
+void Animation::SetSecPerFrame(float sec)
 {
 	secPerFrame = sec;
 }

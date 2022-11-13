@@ -29,6 +29,7 @@ Texture::Texture(string filepath)
 
 Texture::~Texture()
 {
+	glDeleteTextures(1, &texID);
 	stbi_image_free(data);
 }
 
