@@ -1,0 +1,25 @@
+{
+    "animation": [
+        {
+            "state": 0,
+            "width": 256,
+            "height": 256,
+            "frameCount": 4,
+            "secPerFrame":0.2
+        },
+        {
+            "state": 1,
+            "width": 256,
+            "height": 256,
+            "frameCount": 4,
+            "secPerFrame":0.2
+        },
+        {
+            "state": 2,
+            "width": 256,
+            "height": 256,
+            "frameCount": 4,
+            "secPerFrame":0.2
+        }
+    ]
+}

@@ -1,25 +1,18 @@
-#ifdef __APPLE__
-#define GL_SILENCE_DEPRECATION
-// GLFW is necessary to handle the OpenGL context
-#include <GLFW/glfw3.h>
-#else
-// GLFW is necessary to handle the OpenGL context
-#include <GLFW/glfw3.h>
-#endif
 
-// OpenGL Mathematics Library
-#include <glm/glm.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
-#include <glm/mat4x4.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <math.h>
+
+#include "Player.h"
+#include "Camera.h"
+#include "Shader.h"
+
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+
 using namespace std;
 using namespace glm;
 
@@ -27,16 +20,20 @@ class App
 {
 public:
     App(int width, int height);
-
     ~App();
-
-    void Input();
-
-    void Resize();
-
     void Update();
 
 private:
     int mWidth, mHeight;
     GLFWwindow *pWindow;
+    Player *player;
+    Shader *shader;
+    Camera *camera;
+    double prevTime, deltaTime;
+
+    void init();
+    void resize();
+    void input();
+    void getDeltaTime();
+    void loadIcon();
 };

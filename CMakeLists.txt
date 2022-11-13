@@ -26,27 +26,35 @@ endif()
 ### Add src to the include directories
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+##json library
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/nlohmann")
+
+##stb
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/stb")
+
 ### Add OpenGL
 set(INCLUDE_DIRS ${OPENGL_INCLUDE_DIR})
 set(LIBRARIES ${OPENGL_LIBRARIES})
 
+
+
 ### Include Eigen for linear algebra
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/glm")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/glm")
 
 ### Compile GLFW3 statically
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_INSTALL OFF CACHE BOOL " " FORCE)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/glfw" "glfw")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/glfw/include")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw" "glfw")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/include")
 set(LIBRARIES "glfw" ${GLFW_LIBRARIES})
 
 ### On windows, you also need glew
 if((UNIX AND NOT APPLE) OR WIN32)
   set(GLEW_INSTALL OFF CACHE BOOL " " FORCE)
-  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/glew" "glew")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/glew/include")
+  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew" "glew")
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew/include")
   list(APPEND LIBRARIES "glew")
 endif()
 
