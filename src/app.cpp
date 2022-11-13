@@ -5,7 +5,7 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //full screen
+    // full screen
     glfwWindowHint(GLFW_MAXIMIZED, true);
 
     pWindow = glfwCreateWindow(width, height, "Towncount", NULL, NULL);
@@ -31,6 +31,9 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
 App::~App()
 {
     delete player;
+    delete shader;
+    delete stage;
+
     glfwTerminate();
 }
 
@@ -40,7 +43,8 @@ void App::init()
     loadIcon();
     camera = new Camera(mWidth, mHeight);
     shader = new Shader("sprite.vert", "sprite.frag");
-    player = new Player();
+    player = new Player(shader);
+    stage = new Stage(shader);
     prevTime = glfwGetTime();
 }
 void App::loadIcon()
@@ -95,12 +99,12 @@ void App::Update()
         input();
         resize();
 
-        glClearColor(0.5f, 1.0f, 0.5f, 1.0f);
+        glClearColor(0, 0, 0, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader->Use();
         shader->SetMat("projMatrix", camera->Projection());
-        shader->SetMat("modelMatrix", player->Transform());
+        stage->Draw();
         player->Draw(deltaTime);
 
         glfwSwapBuffers(pWindow);

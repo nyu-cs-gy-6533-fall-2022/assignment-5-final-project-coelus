@@ -9,6 +9,9 @@
 
 using namespace std;
 using namespace glm;
+
+#ifndef _SHADER_
+#define _SHADER_
 class Shader
 {
 public:
@@ -24,3 +27,4 @@ public:
 private:
 	unsigned int id;
 };
+#endif

@@ -15,6 +15,7 @@ void Sprite::Draw(double deltaTime, AnimationState state)
 
 	if (anim[state])
 	{
+		Transform.Scale = anim[state]->GetScale();
 		anim[state]->Play(*buffer, deltaTime);
 		anim[state]->texture->Bind();
 	}

@@ -6,6 +6,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+
 //from ../sprite/
 Texture::Texture(string filepath)
 {
@@ -37,6 +38,7 @@ void Texture::Bind()
 {
 	glBindTexture(GL_TEXTURE_2D, texID);
 }
+
 
 int Texture::GetWidth()
 {

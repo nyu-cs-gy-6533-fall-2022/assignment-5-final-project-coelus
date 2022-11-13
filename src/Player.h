@@ -1,27 +1,28 @@
 
+
+
 #include "Sprite.h"
 #include "Loader.h"
+#include "Shader.h"
+#include "Transform.h"
+
 using namespace glm;
 
 class Player
 {
 public:
-	Player();
+	Player(Shader *s);
 
 	~Player();
-
 	void Move(int dir);
-
 	void Stop();
-
-	mat4 Transform();
-
 	void Draw(double deltatime);
 
-
 private:
+	Transform *transform;
 	float walkSpeed;
-	Loader* loader;
-	Sprite* sprite;
+	Shader *shader;
+	Loader *loader;
+	Sprite *sprite;
 	AnimationState state;
 };

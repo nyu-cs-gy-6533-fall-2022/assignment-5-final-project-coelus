@@ -37,12 +37,14 @@ public:
 	void Play(BufferObject &buffer, double deltatime);
 
 	void SetSecPerFrame(float sec);
+	glm::vec2 GetScale();
 
 	Texture *texture;
 
 private:
 	double frameTime, secPerFrame;
 	int frameIndex, frameCount;
+	int width,height;
 
 	vector<vec4> frames;
 };

@@ -6,9 +6,11 @@
 #include <algorithm>
 #include <math.h>
 
+
 #include "Player.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Stage.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -26,6 +28,7 @@ public:
 private:
     int mWidth, mHeight;
     GLFWwindow *pWindow;
+    Stage *stage;
     Player *player;
     Shader *shader;
     Camera *camera;

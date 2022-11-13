@@ -1,11 +1,10 @@
 #include "Player.h"
 
-Player::Player() : walkSpeed(5)
+Player::Player(Shader *s) : shader(s), walkSpeed(5)
 {
 
 	sprite = new Sprite();
-	sprite->Transform.Position = vec2(0, 0);
-	sprite->Transform.Scale = vec2(200, 200);
+	transform = &sprite->Transform;
 
 	loader = new Loader(sprite, "player.json");
 
@@ -19,12 +18,12 @@ Player::~Player()
 
 void Player::Move(int dir)
 {
-	if ((dir == 1 & sprite->Transform.Scale.x < 0) ||
-		(dir == -1 & sprite->Transform.Scale.x > 0))
-		sprite->Transform.Scale.x *= -1;
+	if ((dir == 1 & transform->dirX < 0) ||
+		(dir == -1 & transform->dirX > 0))
+		transform->dirX *= -1;
 
 	state = Run;
-	sprite->Transform.Position.x += walkSpeed * dir;
+	transform->Position.x += walkSpeed * dir;
 }
 
 void Player::Stop()
@@ -32,12 +31,9 @@ void Player::Stop()
 	state = Idle;
 }
 
-glm::mat4 Player::Transform()
-{
-	return sprite->Transform.Get();
-}
-
 void Player::Draw(double deltatime)
 {
+
+	shader->SetMat("modelMatrix", transform->Get());
 	sprite->Draw(deltatime, state);
 }
