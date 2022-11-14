@@ -19,10 +19,14 @@ public:
 	void DrawBG();
 
 private:
+	vector<Sprite *> colDebug;
+	vector<vec4> collisions;
 	vector<vec2> entries;
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
 	Shader *shader;
+	void loadData();
+	void drawCollision();
 };
 #endif

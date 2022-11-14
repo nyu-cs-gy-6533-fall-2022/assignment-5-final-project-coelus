@@ -34,6 +34,12 @@ void Player::Move(int dir)
 	transform->Position.x += walkSpeed * dir;
 }
 
+void Player::MoveY(int dir)
+{
+	state = Run;
+	transform->Position.y += walkSpeed * dir;
+}
+
 void Player::Stop()
 {
 	state = Idle;

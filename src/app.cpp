@@ -25,6 +25,8 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glDisable(GL_DEPTH_TEST);
+
     init();
 }
 
@@ -60,16 +62,20 @@ void App::loadIcon()
 
 void App::input()
 {
+    bool right=glfwGetKey(pWindow, GLFW_KEY_RIGHT);
+    bool left=glfwGetKey(pWindow, GLFW_KEY_LEFT);
+    bool up=glfwGetKey(pWindow, GLFW_KEY_UP);
+    bool down=glfwGetKey(pWindow, GLFW_KEY_DOWN);
 
-    if (glfwGetKey(pWindow, GLFW_KEY_RIGHT))
+    if (right)
     {
         player->Move(1);
     }
-    else if (glfwGetKey(pWindow, GLFW_KEY_LEFT))
+    else if (left)
     {
         player->Move(-1);
     }
-    else
+    if(!(right||left))
     {
         player->Stop();
     }

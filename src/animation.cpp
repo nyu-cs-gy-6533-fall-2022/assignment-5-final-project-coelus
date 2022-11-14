@@ -27,8 +27,8 @@ void Animation::Play(BufferObject &buffer, double deltaTime)
 
 	if (frameTime > secPerFrame)
 	{
-		frameIndex = (frameIndex + 1) % frameCount;
 		frameTime = 0;
+		frameIndex = (frameIndex + 1) % frameCount;
 	}
 
 	vec4 frame = frames[frameIndex];

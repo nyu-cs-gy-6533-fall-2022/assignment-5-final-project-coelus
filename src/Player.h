@@ -16,6 +16,7 @@ public:
 
 	~Player();
 	void Move(int dir);
+	void MoveY(int dir);
 	void Stop();
 	void Draw(double deltatime);
 	void setPos(vec2 pos);
