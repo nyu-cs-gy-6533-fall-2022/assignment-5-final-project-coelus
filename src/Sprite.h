@@ -21,7 +21,7 @@ public:
 	void Set(string filePath, vec2 scale);
 	virtual void Add(AnimationData animData) {}
 
-	Transform Transform;
+	Transform Tx;
 
 protected:
 	BufferObject *buffer;

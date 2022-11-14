@@ -44,7 +44,7 @@ void App::init()
 {
     loadIcon();
     shader = new Shader("sprite.vert", "sprite.frag");
-    player = new Player(shader);
+    player = new Player(shader, deltaTime);
     camera = new Camera(mWidth, mHeight, player);
     stage = new Stage(player, shader);
     stage->SetPlayerEntry(0);
@@ -62,23 +62,12 @@ void App::loadIcon()
 
 void App::input()
 {
-    bool right=glfwGetKey(pWindow, GLFW_KEY_RIGHT);
-    bool left=glfwGetKey(pWindow, GLFW_KEY_LEFT);
-    bool up=glfwGetKey(pWindow, GLFW_KEY_UP);
-    bool down=glfwGetKey(pWindow, GLFW_KEY_DOWN);
+    bool right = glfwGetKey(pWindow, GLFW_KEY_RIGHT);
+    bool left = glfwGetKey(pWindow, GLFW_KEY_LEFT);
+    bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
+    bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
 
-    if (right)
-    {
-        player->Move(1);
-    }
-    else if (left)
-    {
-        player->Move(-1);
-    }
-    if(!(right||left))
-    {
-        player->Stop();
-    }
+    player->Control(right, left, up, down);
 }
 void App::resize()
 {

@@ -13,7 +13,7 @@ Sprite::~Sprite()
 void Sprite::Set(string filePath,vec2 scale)
 {
 	texture = new Texture(filePath);
-    Transform.Scale = scale;
+    Tx.Scale = scale;
 }
 
 void Sprite::Draw()
@@ -28,7 +28,7 @@ void AnimSprite::Draw(double deltaTime, AnimationState state)
 
 	if (anim[state])
 	{
-		Transform.Scale = anim[state]->GetScale();
+		Tx.Scale = anim[state]->GetScale();
 		anim[state]->Play(*buffer, deltaTime);
 		anim[state]->texture->Bind();
 	}

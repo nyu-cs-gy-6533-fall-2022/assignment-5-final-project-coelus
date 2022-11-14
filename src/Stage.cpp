@@ -10,6 +10,10 @@ Stage::~Stage()
 {
     delete bg;
     delete fg;
+    for (auto col : colDebug)
+    {
+        delete col;
+    }
 }
 void Stage::loadData()
 {
@@ -23,33 +27,33 @@ void Stage::loadData()
     {
         Sprite *s = new Sprite();
         s->Set("red.png", vec2(col["w"], col["h"]));
-        s->Transform.Position = vec2(col["x"], col["y"]);
+        s->Tx.Position = vec2(col["x"], col["y"]);
         colDebug.push_back(s);
         collisions.push_back(vec4(col["x"], col["y"], col["w"], col["h"]));
     }
 }
 void Stage::SetPlayerEntry(int index)
 {
-    player->setPos(entries[index]);
+    player->SetPos(entries[index]);
 }
 void Stage::drawCollision()
 {
     for (auto col : colDebug)
     {
-        shader->SetMat("modelMatrix", col->Transform.Get());
+        shader->SetMat("modelMatrix", col->Tx.Get());
         col->Draw();
     }
 }
 
 void Stage::DrawBG()
 {
-    shader->SetMat("modelMatrix", bg->Transform.Get());
+    shader->SetMat("modelMatrix", bg->Tx.Get());
     bg->Draw();
 }
 
 void Stage::DrawFG()
 {
-    shader->SetMat("modelMatrix", fg->Transform.Get());
+    shader->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
     drawCollision();
 }

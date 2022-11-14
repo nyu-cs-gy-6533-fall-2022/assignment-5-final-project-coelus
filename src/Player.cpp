@@ -1,53 +1,80 @@
 #include "Player.h"
 
-Player::Player(Shader *s)
-	: shader(s), state(Idle), walkSpeed(5)
+Player::Player(Shader *s, double &time)
+	: shader(s), deltaTime(time), state(Idle)
 {
 
 	sprite = new AnimSprite();
-	transform = &sprite->Transform;
-
-	Loader::Load("player.json", vector<Sprite *>{sprite});
-
-
+	pTx = &sprite->Tx;
+	loadData();
 }
-
+void Player::loadData()
+{
+	json js = Loader::Load("player.json", vector<Sprite *>{sprite});
+	runSpeed = js["runSpeed"];
+}
 Player::~Player()
 {
 	delete sprite;
 }
-vec2 Player::getPos()
+vec2 Player::GetPos()
 {
-	return transform->Position;
+	return pTx->Position;
 }
-void Player::setPos(vec2 pos)
+void Player::SetPos(vec2 pos)
 {
-	transform->Position = pos;
+	pTx->Position = pos;
 }
-void Player::Move(int dir)
+
+void Player::Control(bool right, bool left, bool up, bool down)
 {
-	if ((dir == 1 & transform->dirX < 0) ||
-		(dir == -1 & transform->dirX > 0))
-		transform->dirX *= -1;
+	if (right)
+	{
+		running(1);
+	}
+	else if (left)
+	{
+		running(-1);
+	}
+	if (!(right || left))
+	{
+		setIdle();
+	}
+	falling();
+	movement();
+}
+
+void Player::running(int dir)
+{
+	if ((dir == 1 & pTx->dirX < 0) ||
+		(dir == -1 & pTx->dirX > 0))
+		pTx->dirX *= -1;
 
 	state = Run;
-	transform->Position.x += walkSpeed * dir;
+	vectorSpd.x = runSpeed * dir * deltaTime;
 }
 
-void Player::MoveY(int dir)
+void Player::falling()
 {
-	state = Run;
-	transform->Position.y += walkSpeed * dir;
+
+	state = Fall;
+	vectorSpd.y += 9.8f * deltaTime;
 }
 
-void Player::Stop()
+void Player::setIdle()
 {
+	vectorSpd.x = 0;
 	state = Idle;
 }
+void Player::movement()
+{
+	pTx->Position.x += vectorSpd.x;
+	pTx->Position.y += vectorSpd.y;
+}
 
-void Player::Draw(double deltatime)
+void Player::Draw(double deltaTime)
 {
 
-	shader->SetMat("modelMatrix", transform->Get());
-	sprite->Draw(deltatime, state);
+	shader->SetMat("modelMatrix", pTx->Get());
+	sprite->Draw(deltaTime, state);
 }

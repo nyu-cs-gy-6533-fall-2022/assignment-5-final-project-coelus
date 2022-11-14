@@ -6,7 +6,7 @@ Camera::Camera(int w, int h, Player *pl) : width(w), height(h), player(pl)
 }
 void Camera::UpdateProjection()
 {
-	vec2 pos = player->getPos();
+	vec2 pos = player->GetPos();
 	float x = pos.x;
 	float y = pos.y;
 	float left = x - width / 2;

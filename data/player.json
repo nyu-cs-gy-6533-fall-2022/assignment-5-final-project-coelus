@@ -1,5 +1,6 @@
 {
-    "type":0,
+    "type": 0,
+    "runSpeed": 700,
     "animation": [
         {
             "state": 0,
@@ -30,6 +31,16 @@
             "frameCount": 4,
             "secPerFrame": 0.2,
             "filename": "main/idle(256-line).png"
+        },
+        {
+            "state": 3,
+            "centerX": 0,
+            "centerY": 0,
+            "width": 256,
+            "height": 256,
+            "frameCount": 1,
+            "secPerFrame": 1,
+            "filename": "main/fall.png"
         }
     ]
 }

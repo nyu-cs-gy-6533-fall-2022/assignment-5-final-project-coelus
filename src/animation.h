@@ -18,7 +18,8 @@ enum AnimationState
 {
 	Idle,
 	Run,
-	Jump
+	Jump,
+	Fall
 };
 
 struct AnimationData

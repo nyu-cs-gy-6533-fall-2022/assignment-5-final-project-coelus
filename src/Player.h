@@ -1,6 +1,5 @@
 
 
-
 #include "Sprite.h"
 #include "Loader.h"
 #include "Shader.h"
@@ -12,21 +11,29 @@ using namespace glm;
 class Player
 {
 public:
-	Player(Shader *s);
-
+	Player(Shader *s, double &time);
 	~Player();
-	void Move(int dir);
-	void MoveY(int dir);
-	void Stop();
-	void Draw(double deltatime);
-	void setPos(vec2 pos);
-	vec2 getPos();
+	void Control(bool right, bool left, bool up, bool down);
 
+	void Draw(double deltaTime);
+	void SetPos(vec2 pos);
+	vec2 GetPos();
+	
 private:
-	Transform *transform;
-	float walkSpeed;
+	
+	Transform *pTx;
+	vec2 vectorSpd;
+	float runSpeed;
 	Shader *shader;
 	AnimSprite *sprite;
 	AnimationState state;
+	double &deltaTime;
+	bool isColX,isColY;
+
+	void loadData();
+	void running(int dir);
+	void falling();
+	void setIdle();
+	void movement();
 };
 #endif
