@@ -1,5 +1,6 @@
 
 
+#include "Collision.h"
 #include "Sprite.h"
 #include "Loader.h"
 #include "Shader.h"
@@ -18,9 +19,8 @@ public:
 	void Draw(double deltaTime);
 	void SetPos(vec2 pos);
 	vec2 GetPos();
-	
+
 private:
-	
 	Transform *pTx;
 	vec2 vectorSpd;
 	float runSpeed;
@@ -28,7 +28,7 @@ private:
 	AnimSprite *sprite;
 	AnimationState state;
 	double &deltaTime;
-	bool isColX,isColY;
+	bool isGround = true;
 
 	void loadData();
 	void running(int dir);

@@ -56,9 +56,11 @@ void Player::running(int dir)
 
 void Player::falling()
 {
-
-	state = Fall;
-	vectorSpd.y += 9.8f * deltaTime;
+	if (!isGround)
+	{
+		state = Fall;
+		vectorSpd.y += 9.8f * deltaTime;
+	}
 }
 
 void Player::setIdle()
