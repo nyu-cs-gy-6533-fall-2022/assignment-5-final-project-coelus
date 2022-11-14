@@ -41,10 +41,11 @@ App::~App()
 void App::init()
 {
     loadIcon();
-    camera = new Camera(mWidth, mHeight);
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(shader);
-    stage = new Stage(shader);
+    camera = new Camera(mWidth, mHeight, player);
+    stage = new Stage(player, shader);
+    stage->SetPlayerEntry(0);
     prevTime = glfwGetTime();
 }
 void App::loadIcon()

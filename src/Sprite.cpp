@@ -23,17 +23,6 @@ void Sprite::Draw()
 }
 
 //AnimSprite
-AnimSprite::AnimSprite():Sprite()
-{
-	
-}
-
-AnimSprite::~AnimSprite()
-{
-
-}
-
-
 void AnimSprite::Draw(double deltaTime, AnimationState state)
 {
 

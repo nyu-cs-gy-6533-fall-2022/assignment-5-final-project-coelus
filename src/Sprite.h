@@ -31,9 +31,9 @@ protected:
 class AnimSprite : public Sprite
 {
 public:
-	AnimSprite();
+	AnimSprite():Sprite(){};
 
-	~AnimSprite();
+	~AnimSprite(){};
 
 	void Draw(double deltatime, AnimationState type);
 

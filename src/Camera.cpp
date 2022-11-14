@@ -1,18 +1,22 @@
 #include "Camera.h"
 
-Camera::Camera(int width, int height)
+Camera::Camera(int w, int h, Player *pl) : width(w), height(h), player(pl)
 {
-	UpdateProjection(width, height);
+	UpdateProjection();
 }
-void Camera::UpdateProjection(int width, int height)
+void Camera::UpdateProjection()
 {
-	float left = 0.0f - width / 2;
-	float right = width - width / 2;
-	float bottom = height - height / 2;
-	float top = 0.0f - height / 2;
+	vec2 pos = player->getPos();
+	float x = pos.x;
+	float y = pos.y;
+	float left = x - width / 2;
+	float right = x + width / 2;
+	float bottom = y + height / 2;
+	float top = y - height / 2;
 	projection = ortho(left, right, bottom, top, -1.0f, 1.0f);
 }
 mat4 Camera::Projection()
 {
+	UpdateProjection();
 	return projection;
 }

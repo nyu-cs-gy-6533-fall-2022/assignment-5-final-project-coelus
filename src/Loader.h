@@ -18,10 +18,10 @@ enum LoaderType
 class Loader
 {
 public:
-    Loader(string dataName, const vector<Sprite *> sprite);
+    static json Load(string dataName, const vector<Sprite *> sprite);
 
 private:
-    void loadCreature(const vector<Sprite *> sprite, json j);
-    void loadStage(const vector<Sprite *> sprite, json j);
+    static void loadCreature(const vector<Sprite *> sprite, json j);
+    static void loadStage(const vector<Sprite *> sprite, json j);
 };
 #endif

@@ -7,7 +7,8 @@
 #include "Transform.h"
 
 using namespace glm;
-
+#ifndef _PLAYER_
+#define _PLAYER_
 class Player
 {
 public:
@@ -17,6 +18,8 @@ public:
 	void Move(int dir);
 	void Stop();
 	void Draw(double deltatime);
+	void setPos(vec2 pos);
+	vec2 getPos();
 
 private:
 	Transform *transform;
@@ -25,3 +28,4 @@ private:
 	AnimSprite *sprite;
 	AnimationState state;
 };
+#endif
