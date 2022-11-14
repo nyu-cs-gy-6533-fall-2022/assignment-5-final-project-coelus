@@ -22,7 +22,6 @@ private:
 	Transform *transform;
 	float walkSpeed;
 	Shader *shader;
-	Loader *loader;
-	Sprite *sprite;
+	AnimSprite *sprite;
 	AnimationState state;
 };

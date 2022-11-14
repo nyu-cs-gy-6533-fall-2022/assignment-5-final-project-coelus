@@ -7,16 +7,21 @@
 using namespace std;
 using json = nlohmann::json;
 
+#ifndef _LOADER_
+#define _LOADER_
 enum LoaderType
 {
-    Creature
+    CreatureType,
+    SceneType
 };
 
 class Loader
 {
 public:
-    Loader(Sprite *sprite, string dataName);
+    Loader(string dataName, const vector<Sprite *> sprite);
 
 private:
-    void loadCreature(Sprite *sprite, json j);
+    void loadCreature(const vector<Sprite *> sprite, json j);
+    void loadStage(const vector<Sprite *> sprite, json j);
 };
+#endif

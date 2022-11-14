@@ -8,6 +8,8 @@
 
 #include <unordered_map>
 
+#ifndef _Sprite_
+#define _Sprite_
 class Sprite
 {
 public:
@@ -15,15 +17,29 @@ public:
 
 	~Sprite();
 
+	void Draw();
+	void Set(string filePath, vec2 scale);
+	virtual void Add(AnimationData animData) {}
+
+	Transform Transform;
+
+protected:
+	BufferObject *buffer;
+	Texture *texture;
+};
+
+class AnimSprite : public Sprite
+{
+public:
+	AnimSprite();
+
+	~AnimSprite();
+
 	void Draw(double deltatime, AnimationState type);
 
 	void Add(AnimationData animData);
 
-	Transform Transform;
-
 private:
-	
-	BufferObject *buffer;
-
 	unordered_map<AnimationState, Animation *> anim;
 };
+#endif

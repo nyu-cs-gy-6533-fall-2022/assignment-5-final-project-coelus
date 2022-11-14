@@ -3,10 +3,10 @@
 Player::Player(Shader *s) : shader(s), walkSpeed(5)
 {
 
-	sprite = new Sprite();
+	sprite = new AnimSprite();
 	transform = &sprite->Transform;
 
-	loader = new Loader(sprite, "player.json");
+	new Loader("player.json",vector<Sprite*>{sprite});
 
 	state = Idle;
 }

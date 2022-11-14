@@ -8,9 +8,33 @@ Sprite::Sprite()
 Sprite::~Sprite()
 {
 	delete buffer;
+	delete texture;
+}
+void Sprite::Set(string filePath,vec2 scale)
+{
+	texture = new Texture(filePath);
+    Transform.Scale = scale;
 }
 
-void Sprite::Draw(double deltaTime, AnimationState state)
+void Sprite::Draw()
+{
+	texture->Bind();
+	buffer->Draw();
+}
+
+//AnimSprite
+AnimSprite::AnimSprite():Sprite()
+{
+	
+}
+
+AnimSprite::~AnimSprite()
+{
+
+}
+
+
+void AnimSprite::Draw(double deltaTime, AnimationState state)
 {
 
 	if (anim[state])
@@ -22,7 +46,7 @@ void Sprite::Draw(double deltaTime, AnimationState state)
 	buffer->Draw();
 }
 
-void Sprite::Add(AnimationData animData)
+void AnimSprite::Add(AnimationData animData)
 {
 	anim[animData.state] = new Animation(animData);
 }

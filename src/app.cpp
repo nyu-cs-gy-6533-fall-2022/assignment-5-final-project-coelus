@@ -104,8 +104,9 @@ void App::Update()
 
         shader->Use();
         shader->SetMat("projMatrix", camera->Projection());
-        stage->Draw();
+        stage->DrawBG();
         player->Draw(deltaTime);
+        stage->DrawFG();
 
         glfwSwapBuffers(pWindow);
         glfwPollEvents();

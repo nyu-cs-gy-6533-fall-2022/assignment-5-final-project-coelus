@@ -1,0 +1,13 @@
+{
+    "type": 1,
+    "background": {
+        "width": 1920,
+        "height": 7680,
+        "filename": "stage/L8-BackBG.jpg"
+    },
+    "frontground": {
+        "width": 1920,
+        "height": 7680,
+        "filename": "stage/L8-FrontBG.png"
+    }
+}

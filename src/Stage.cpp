@@ -2,19 +2,24 @@
 
 Stage::Stage(Shader *s) : shader(s)
 {
-    transfrom.Position = vec2(0, 0);
-    transfrom.Scale = vec2(1920, 3840);
-    buffer = new BufferObject();
-    texture = new Texture("stage/B1-BackBG.jpg");
+    bg = new Sprite();
+    fg = new Sprite();
+
+    Loader("L8.json", vector<Sprite *>{bg, fg});
 }
 Stage::~Stage()
 {
-    delete texture;
-    delete buffer;
+    delete bg;
+    delete fg;
 }
-void Stage::Draw()
+void Stage::DrawBG()
 {
-    shader->SetMat("modelMatrix", transfrom.Get());
-    texture->Bind();
-    buffer->Draw();
+    shader->SetMat("modelMatrix", bg->Transform.Get());
+    bg->Draw();
+}
+
+void Stage::DrawFG()
+{
+    shader->SetMat("modelMatrix", fg->Transform.Get());
+    fg->Draw();
 }

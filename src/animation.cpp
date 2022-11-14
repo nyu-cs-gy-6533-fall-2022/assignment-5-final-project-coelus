@@ -32,7 +32,6 @@ void Animation::Play(BufferObject &buffer, double deltaTime)
 	}
 
 	vec4 frame = frames[frameIndex];
-	// normalize
 	frame.x /= texture->GetWidth();
 	frame.y /= texture->GetHeight();
 	frame.z /= texture->GetWidth();

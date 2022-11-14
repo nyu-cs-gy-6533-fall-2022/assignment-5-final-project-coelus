@@ -1,8 +1,7 @@
 
-#include "Texture.h"
-#include "Transform.h"
+#include "Loader.h"
+#include "Sprite.h"
 #include "Shader.h"
-#include "BufferObject.h"
 
 #ifndef _STAGE_
 #define _STAGE_
@@ -13,12 +12,12 @@ public:
 
 	~Stage();
 
-	void Draw();
+	void DrawFG();
+	void DrawBG();
 
 private:
-	Transform transfrom;
+	Sprite *bg;
+	Sprite *fg;
 	Shader *shader;
-	Texture *texture;
-	BufferObject *buffer;
 };
 #endif
