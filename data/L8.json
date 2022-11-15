@@ -8,7 +8,7 @@
             "y": 640,
             "w": 400,
             "h": 767,
-            "nextStage": "L8test",
+            "nextStage": "L8",
             "nextEntry": 1
         },
         {
@@ -18,7 +18,7 @@
             "y": 6400,
             "w": 400,
             "h": 767,
-            "nextStage": "L8test",
+            "nextStage": "L9",
             "nextEntry": 0
         }
     ],

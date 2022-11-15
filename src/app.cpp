@@ -47,7 +47,7 @@ void App::init()
     player = new Player(shader, deltaTime);
     camera = new Camera(mWidth, mHeight, player);
     stageSys = new StageSystem(player, shader);
-    stageSys->SetPlayerEntry("L8", 0);
+    stageSys->SetPlayerEntry("L8", 1);
     prevTime = glfwGetTime();
 }
 void App::loadIcon()
