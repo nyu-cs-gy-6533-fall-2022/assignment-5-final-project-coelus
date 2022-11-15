@@ -1,5 +1,5 @@
 
-
+#pragma once
 #include "Collision.h"
 #include "Sprite.h"
 #include "Loader.h"
@@ -7,8 +7,6 @@
 #include "Transform.h"
 
 using namespace glm;
-#ifndef _PLAYER_
-#define _PLAYER_
 class Player
 {
 public:
@@ -19,16 +17,19 @@ public:
 	void Draw(double deltaTime);
 	void SetPos(vec2 pos);
 	vec2 GetPos();
-
+	
 private:
 	Transform *pTx;
-	vec2 vectorSpd;
-	float runSpeed;
 	Shader *shader;
 	AnimSprite *sprite;
 	AnimationState state;
+
+	float runSpeed;
 	double &deltaTime;
 	bool isGround = true;
+	vec2 vectorSpd;
+	vec4 collision;
+	Sprite *colDebug;
 
 	void loadData();
 	void running(int dir);
@@ -36,4 +37,3 @@ private:
 	void setIdle();
 	void movement();
 };
-#endif

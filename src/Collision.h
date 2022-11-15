@@ -12,14 +12,14 @@ enum CollisionType
     ColNone,
     ColRight,
     ColLeft,
+    ColTop,
     ColDown
 };
 
 class Collision
 {
 public:
-    static bool DetectOverlap(vec4 a,vec4 b);
-
-private:
+    static CollisionType GetOverlapType(vec4 a, vec4 b);
+    static bool IsCollided(vec4 a, vec4 b);
 };
 #endif
