@@ -1,7 +1,12 @@
 
+#pragma once
+
+
 
 #include <glm/glm.hpp>
 #include <vector>
+
+
 using namespace std;
 using namespace glm;
 
@@ -31,8 +36,10 @@ class Collision
 public:
     static CollisionType GetOverlapType(vec4 r1, vec4 r2, float &err);
     static void ResolveCollision(vec2 &pos, CollisionType type, float resErr);
-    static CollisionStatus CollisonSystem(vec2 &targetPos, vec4 r0, vector<vec4> rects);
-    static bool IsCollided(vec4 main, vector<vec4> rects);
+    static CollisionStatus CollisonSystem(vec2 &targetPos, vec4 r0, const vector<vec4> &rects);
+
+    //for stage
+    static bool IsCollided(vec4 r0,  const vector<vec4> &rects, int &resIndex);
     static bool IsCollided(vec4 r1, vec4 r2);
 };
 #endif

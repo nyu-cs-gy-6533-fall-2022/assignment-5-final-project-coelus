@@ -1,22 +1,40 @@
 
+#pragma once
 #include "Player.h"
 #include "Loader.h"
 #include "Sprite.h"
 #include "Shader.h"
 #include "Collision.h"
 #include "Debug.h"
+
 #include <json.hpp>
 using json = nlohmann::json;
 
 #ifndef _STAGE_
 #define _STAGE_
+struct Entry
+{
+	int spawnX, spawnY, x, y, w, h;
+	string nextStage;
+	int nextEntry;
+
+	vec2 GetSpawnPos()
+	{
+		return vec2(spawnX, spawnY);
+	};
+	vec4 GetTrigger()
+	{
+		return vec4(x, y, w, h);
+	};
+};
+
 class Stage
 {
 public:
-	Stage(Player *pl, Shader *s);
+	Stage(string filename, Player *pl, Shader *s);
 
 	~Stage();
-	
+
 	void Update();
 	void DrawFG();
 	void DrawBG();
@@ -24,17 +42,17 @@ public:
 	void SetPlayerEntry(int index);
 
 private:
-	vector<vec4> collisions;
-	vector<vec4> entries;
-	vector<vec2> spawn;
-
 	Debug *debug;
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
 	Shader *shader;
-	void loadData();
-	void updateCollision();
 
+	vector<vec4> collisions;
+	vector<Entry> entries;
+
+	void loadData(string filename);
+	void updateTrigger();
+	void updateCollision();
 };
 #endif

@@ -10,6 +10,9 @@
 
 #ifndef _Sprite_
 #define _Sprite_
+
+
+
 class Sprite
 {
 public:

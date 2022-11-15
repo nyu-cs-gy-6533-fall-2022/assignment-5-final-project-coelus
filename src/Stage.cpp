@@ -1,11 +1,12 @@
 #include "Stage.h"
 
-Stage::Stage(Player *pl, Shader *s) : player(pl), shader(s)
+Stage::Stage(string filename, Player *pl, Shader *s)
+    : player(pl), shader(s)
 {
     bg = new Sprite();
     fg = new Sprite();
     debug = new Debug(shader);
-    loadData();
+    loadData(filename);
 }
 Stage::~Stage()
 {
@@ -13,16 +14,23 @@ Stage::~Stage()
     delete fg;
     delete debug;
 }
-void Stage::loadData()
+void Stage::loadData(string filename)
 {
-    json js = Loader::Load("L8.json", vector<Sprite *>{bg, fg});
+    json js = Loader::Load(filename, vector<Sprite *>{bg, fg});
 
     for (auto e : js["entry"])
     {
-        spawn.push_back(vec2(e["spawnX"], e["spawnY"]));
-        vec4 newEntry = vec4(e["x"], e["y"], e["w"], e["h"]);
-        entries.push_back(newEntry);
-        debug->AddDebug(newEntry);
+        Entry entry = Entry{
+            e["spawnX"],
+            e["spawnY"],
+            e["x"],
+            e["y"],
+            e["w"],
+            e["h"],
+            e["nextStage"],
+            e["nextEntry"]};
+        entries.push_back(entry);
+        debug->AddDebug(entry.GetTrigger());
     }
     for (auto col : js["collision"])
     {
@@ -34,11 +42,24 @@ void Stage::loadData()
 }
 void Stage::SetPlayerEntry(int index)
 {
-    player->SetPos(spawn[index]);
+    player->SetPos(entries[index].GetSpawnPos());
 }
 void Stage::Update()
 {
+    updateTrigger();
     updateCollision();
+}
+
+void Stage::updateTrigger()
+{
+    // entry detect
+    /*
+    int resIndex = -1;
+    if (Collision::IsCollided(player->GetCol(), entries, resIndex))
+    {
+        stageSys->SetPlayerEntry(entries[resIndex].nextStage, entries[resIndex].nextEntry);
+    }
+    */
 }
 
 void Stage::updateCollision()
@@ -61,4 +82,3 @@ void Stage::DrawFG()
     fg->Draw();
     debug->DrawDebug();
 }
-

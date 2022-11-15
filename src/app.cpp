@@ -34,7 +34,7 @@ App::~App()
 {
     delete player;
     delete shader;
-    delete stage;
+    delete stageSys;
 
     glfwTerminate();
 }
@@ -46,8 +46,8 @@ void App::init()
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(shader, deltaTime);
     camera = new Camera(mWidth, mHeight, player);
-    stage = new Stage(player, shader);
-    stage->SetPlayerEntry(0);
+    stageSys = new StageSystem(player, shader);
+    stageSys->SetPlayerEntry("L8", 0);
     prevTime = glfwGetTime();
 }
 void App::loadIcon()
@@ -91,7 +91,7 @@ void App::update()
     getDeltaTime();
     input();
     resize();
-    stage->Update();
+    stageSys->Update();
 }
 void App::draw()
 {
@@ -99,9 +99,9 @@ void App::draw()
     glClear(GL_COLOR_BUFFER_BIT);
     shader->Use();
     shader->SetMat("projMatrix", camera->Projection());
-    stage->DrawBG();
+    stageSys->DrawBG();
     player->Draw(deltaTime);
-    stage->DrawFG();
+    stageSys->DrawFG();
 }
 void App::MainLoop()
 {

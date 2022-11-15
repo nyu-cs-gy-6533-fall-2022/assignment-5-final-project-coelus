@@ -10,6 +10,10 @@
 
 #include <algorithm>
 using namespace glm;
+
+
+#ifndef _PLAYER_
+#define _PLAYER_
 class Player
 {
 public:
@@ -47,3 +51,4 @@ private:
 	void animStateUpdate(bool right, bool left, bool up, bool down);
 	
 };
+#endif

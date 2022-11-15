@@ -77,7 +77,7 @@ void Collision::ResolveCollision(vec2 &pos, CollisionType type, float resErr)
     }
 }
 
-CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0, vector<vec4> rects)
+CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0,  const vector<vec4> &rects)
 {
     CollisionStatus status;
     for (auto r1 : rects)
@@ -100,20 +100,23 @@ CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0, vector<vec4>
     return status;
 }
 
-bool Collision::IsCollided(vec4 r0, vector<vec4> rects)
+
+
+bool Collision::IsCollided(vec4 r0,  const vector<vec4> &rects, int &resIndex)
 {
     bool isCol = false;
-    for (auto r1 : rects)
+    for (int i = 0; i < rects.size(); i++)
     {
-        if (Collision::IsCollided(r0, r1))
+        if (Collision::IsCollided(r0, rects[i]))
         {
+            resIndex = i;
             isCol = true;
             break;
         }
     }
     return isCol;
 }
-// return bool
+
 bool Collision::IsCollided(vec4 r0, vec4 r1)
 {
     return (r0.x < r1.x + r1.z &&

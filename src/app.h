@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include "Shader.h"
-#include "Stage.h"
+#include "StageSystem.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -27,12 +27,14 @@ public:
 
 private:
     int mWidth, mHeight;
+    double prevTime, deltaTime;
     GLFWwindow *pWindow;
-    Stage *stage;
+
+    StageSystem *stageSys;
     Player *player;
     Shader *shader;
     Camera *camera;
-    double prevTime, deltaTime;
+    
 
     void init();
     void resize();

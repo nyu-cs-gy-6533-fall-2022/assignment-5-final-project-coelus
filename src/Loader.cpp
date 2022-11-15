@@ -1,10 +1,14 @@
 #include "Loader.h"
 
 // from ../data/
-json Loader::Load(string dataName, const vector<Sprite *> sprite)
+json Loader::Load(string dataName)
 {
     ifstream file("../data/" + dataName);
-    json j = json::parse(file);
+    return json::parse(file);
+}
+json Loader::Load(string dataName, const vector<Sprite *> sprite)
+{
+    json j = Load(dataName);
     LoaderType type = (LoaderType)j["type"];
     switch (type)
     {
@@ -24,7 +28,8 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
 
     for (auto anim : j["animation"])
     {
-        AnimationData animData = {
+
+        sprite[0]->Add(AnimationData{
             anim["state"],
             anim["centerX"],
             anim["centerY"],
@@ -32,9 +37,7 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
             anim["height"],
             anim["frameCount"],
             anim["secPerFrame"],
-            anim["filename"]};
-
-        sprite[0]->Add(animData);
+            anim["filename"]});
     }
 }
 
