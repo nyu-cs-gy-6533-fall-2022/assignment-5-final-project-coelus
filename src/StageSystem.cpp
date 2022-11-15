@@ -18,6 +18,12 @@ void StageSystem::SetPlayerEntry(string name, int index)
 void StageSystem::Update()
 {
     currentStage->Update();
+    NextStage *nt = &currentStage->NextStage;
+    if (nt->isReady)
+    {
+        SetPlayerEntry(nt->nextStage, nt->nextEntry);
+        nt->Init();
+    }
 }
 void StageSystem::DrawFG()
 {

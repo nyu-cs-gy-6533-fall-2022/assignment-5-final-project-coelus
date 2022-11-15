@@ -30,6 +30,7 @@ void Stage::loadData(string filename)
             e["nextStage"],
             e["nextEntry"]};
         entries.push_back(entry);
+        entriesvec4.push_back(entry.GetTrigger());
         debug->AddDebug(entry.GetTrigger());
     }
     for (auto col : js["collision"])
@@ -50,16 +51,19 @@ void Stage::Update()
     updateCollision();
 }
 
+
+
 void Stage::updateTrigger()
 {
     // entry detect
-    /*
+
     int resIndex = -1;
-    if (Collision::IsCollided(player->GetCol(), entries, resIndex))
+    if (Collision::IsCollided(player->GetCol(), entriesvec4, resIndex))
     {
-        stageSys->SetPlayerEntry(entries[resIndex].nextStage, entries[resIndex].nextEntry);
+        NextStage.isReady = true;
+        NextStage.nextStage = entries[resIndex].nextStage;
+        NextStage.nextEntry = entries[resIndex].nextEntry;
     }
-    */
 }
 
 void Stage::updateCollision()

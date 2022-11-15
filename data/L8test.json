@@ -9,7 +9,7 @@
             "w": 400,
             "h": 767,
             "nextStage": "L8",
-            "nextEntry": 2
+            "nextEntry": 1
         },
         {
             "spawnX": 1750,
@@ -19,7 +19,7 @@
             "w": 400,
             "h": 767,
             "nextStage": "L8",
-            "nextEntry": 1
+            "nextEntry": 0
         }
     ],
     "collision": [
