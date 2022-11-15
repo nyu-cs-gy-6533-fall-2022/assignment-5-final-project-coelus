@@ -22,6 +22,7 @@ public:
 	void Control(bool right, bool left, bool up, bool down);
 	void Draw(double deltaTime);
 
+	vec2 GetScale() { return pTx->Scale; };
 	vec2 GetPos() { return pTx->Position; };
 	void SetPos(vec2 pos) { pTx->Position = pos; }
 	vec4 GetCol()
