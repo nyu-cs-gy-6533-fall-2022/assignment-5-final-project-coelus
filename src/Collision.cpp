@@ -1,26 +1,53 @@
 #include "Collision.h"
 
 // return CollisionType
-CollisionType Collision::GetOverlapType(vec4 r1, vec4 r2)
+CollisionType Collision::GetOverlapType(vec4 r0, vec4 r1, float &resErr)
 {
-    float r1l = r1.x - r1.z / 2.f;
-    float r1r = r1.x + r1.z / 2.f;
-    float r1t = r1.y - r1.w / 2.f;
-    float r1b = r1.y + r1.w / 2.f;
-    float r2l = r2.x - r2.z / 2.f;
-    float r2r = r2.x + r2.z / 2.f;
-    float r2t = r2.y - r2.w / 2.f;
-    float r2b = r2.y + r2.w / 2.f;
+    float r0l = r0.x;
+    float r0r = r0.x + r0.z;
+    float r0t = r0.y;
+    float r0b = r0.y + r0.w;
+    float r1l = r1.x;
+    float r1r = r1.x + r1.z;
+    float r1t = r1.y;
+    float r1b = r1.y + r1.w;
 
-    bool notOverlapL = r2l > r1r;
-    bool notOverlapR = r2r < r1l;
-    bool notOverlapT = r2t > r1b;
-    bool notOverlapB = r2b < r1t;
+    bool notOverlapL = r1l > r0r;
+    bool notOverlapR = r1r < r0l;
+    bool notOverlapT = r1t > r0b;
+    bool notOverlapB = r1b < r0t;
     bool isOverlap = !(notOverlapL || notOverlapR || notOverlapT || notOverlapB);
 
     if (isOverlap)
     {
-        float err[] = {abs(r1b - r2t), abs(r1l - r2r) * 2, abs(r1r - r2l) * 2};
+        // top buttom left right
+        float err[] = {abs(r0t - r1b), abs(r0b - r1t), abs(r0l - r1r), abs(r0r - r1l)};
+        int resIndex = 0;
+        resErr = err[0];
+        for (int i = 1; i < 4; i++)
+        {
+            if (err[i] < resErr)
+            {
+                resErr = err[i];
+                resIndex = i;
+            }
+        }
+        if (resIndex == 2 && !(notOverlapT || notOverlapB))
+        {
+            return ColLeft;
+        }
+        else if (resIndex == 3 && !(notOverlapT || notOverlapB))
+        {
+            return ColRight;
+        }
+        else if (resIndex == 0 && !(notOverlapL || notOverlapR))
+        {
+            return ColTop;
+        }
+        else if (resIndex == 1 && !(notOverlapL || notOverlapR))
+        {
+            return ColDown;
+        }
     }
     else
     {
@@ -28,12 +55,57 @@ CollisionType Collision::GetOverlapType(vec4 r1, vec4 r2)
     }
 }
 
-bool Collision::IsCollided(vec4 r1, vector<vec4> rects)
+void Collision::ResolveCollision(vec2 &pos, CollisionType type, float resErr)
+{
+    switch (type)
+    {
+    case ColLeft:
+        pos.x += resErr;
+        break;
+    case ColRight:
+        pos.x -= resErr;
+        break;
+    case ColTop:
+        pos.y += resErr;
+        break;
+    case ColDown:
+        pos.y -= resErr;
+        break;
+
+    default:
+        break;
+    }
+}
+
+CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0, vector<vec4> rects)
+{
+    CollisionStatus status;
+    for (auto r1 : rects)
+    {
+        float err = 0;
+        CollisionType type = GetOverlapType(r0, r1, err);
+        if (type != ColNone)
+        {
+            ResolveCollision(targetPos, type, err);
+            if (type == ColDown)
+                status.isColDown = true;
+            if (type == ColTop)
+                status.isColTop = true;
+            if (type == ColRight)
+                status.isColRight = true;
+            if (type == ColLeft)
+                status.isColLeft = true;
+        }
+    }
+    return status;
+}
+
+bool Collision::IsCollided(vec4 r0, vector<vec4> rects)
 {
     bool isCol = false;
-    for (auto r : rects)
+    for (auto r1 : rects)
     {
-        if (Collision::IsCollided(r1, r))
+        if (Collision::IsCollided(r0, r1))
         {
             isCol = true;
             break;
@@ -42,10 +114,10 @@ bool Collision::IsCollided(vec4 r1, vector<vec4> rects)
     return isCol;
 }
 // return bool
-bool Collision::IsCollided(vec4 r1, vec4 r2)
+bool Collision::IsCollided(vec4 r0, vec4 r1)
 {
-    return (r1.x < r2.x + r2.z &&
-            r1.x + r1.z > r2.x &&
-            r1.y < r2.y + r2.w &&
-            r1.y + r1.w > r2.y);
+    return (r0.x < r1.x + r1.z &&
+            r0.x + r0.z > r1.x &&
+            r0.y < r1.y + r1.w &&
+            r0.y + r0.w > r1.y);
 }

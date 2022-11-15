@@ -26,9 +26,11 @@ void Stage::loadData()
     for (auto col : js["collision"])
     {
         Sprite *s = new Sprite();
+        collisions.push_back(vec4(col["x"], col["y"], col["w"], col["h"]));
+#if DEBUG
         s->Set("red.png", vec2(col["w"], col["h"]), vec2(col["x"], col["y"]));
         colDebug.push_back(s);
-        collisions.push_back(vec4(col["x"], col["y"], col["w"], col["h"]));
+#endif
     }
 }
 void Stage::SetPlayerEntry(int index)
@@ -42,15 +44,10 @@ void Stage::Update()
 
 void Stage::updateCollision()
 {
-    player->SetGround(Collision::IsCollided(player->GetCol(), collisions));
-}
-void Stage::drawCollision()
-{
-    for (auto col : colDebug)
-    {
-        shader->SetMat("modelMatrix", col->Tx.Get());
-        col->Draw();
-    }
+    vec2 plPos = player->GetPos();
+    CollisionStatus status = Collision::CollisonSystem(plPos, player->GetCol(), collisions);
+    player->SetPos(plPos);
+    player->SetGround(status.isColDown);
 }
 
 void Stage::DrawBG()
@@ -63,5 +60,18 @@ void Stage::DrawFG()
 {
     shader->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
+#if DEBUG
     drawCollision();
+#endif
 }
+
+#if DEBUG
+void Stage::drawCollision()
+{
+    for (auto col : colDebug)
+    {
+        shader->SetMat("modelMatrix", col->Tx.Get());
+        col->Draw();
+    }
+}
+#endif

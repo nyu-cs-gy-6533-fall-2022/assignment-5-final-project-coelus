@@ -5,7 +5,9 @@
 #include "Loader.h"
 #include "Shader.h"
 #include "Transform.h"
+#include "Global.h"
 
+#include <algorithm>
 using namespace glm;
 class Player
 {

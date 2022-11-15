@@ -12,16 +12,20 @@ void Player::loadData()
 {
 	json js = Loader::Load("player.json", vector<Sprite *>{sprite});
 	runSpeed = js["runSpeed"];
-
 	auto rb = js["rigidbody"];
+	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
+
+#if DEBUG
 	colDebug = new Sprite();
 	colDebug->Set("red.png", vec2(rb["w"], rb["h"]), vec2(0, 0));
-	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
+#endif
 }
 Player::~Player()
 {
-	delete colDebug;
 	delete sprite;
+#if DEBUG
+	delete colDebug;
+#endif
 }
 
 void Player::Control(bool right, bool left, bool up, bool down)
@@ -57,7 +61,9 @@ void Player::falling()
 	if (!isGround)
 	{
 
-		vectorSpd.y += 9.8f * deltaTime;
+		vectorSpd.y += 9.8f * deltaTime * Global::GravityRatio;
+
+		vectorSpd.y = clamp(vectorSpd.y, -Global::MaxSpd, Global::MaxSpd);
 	}
 	else
 	{
@@ -96,14 +102,17 @@ void Player::movement()
 
 void Player::Draw(double deltaTime)
 {
+#if DEBUG
 	drawCollision();
+#endif
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
 }
-
+#if DEBUG
 void Player::drawCollision()
 {
 	colDebug->Tx.Set(GetCol());
 	shader->SetMat("modelMatrix", colDebug->Tx.Get());
 	colDebug->Draw();
 }
+#endif
