@@ -29,6 +29,13 @@ void AnimSprite::Draw(double deltaTime, AnimationState state)
 
 	if (anim[state])
 	{
+		// reset anime before playing
+		if (!currentAnim || currentAnim->State != state)
+		{
+			currentAnim = anim[state];
+			currentAnim->Reset();
+		}
+
 		Tx.Scale = anim[state]->GetScale();
 		anim[state]->Play(*buffer, deltaTime);
 		anim[state]->texture->Bind();

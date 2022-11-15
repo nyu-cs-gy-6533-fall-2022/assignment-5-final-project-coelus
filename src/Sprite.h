@@ -11,8 +11,6 @@
 #ifndef _Sprite_
 #define _Sprite_
 
-
-
 class Sprite
 {
 public:
@@ -34,7 +32,7 @@ protected:
 class AnimSprite : public Sprite
 {
 public:
-	AnimSprite():Sprite(){};
+	AnimSprite() : Sprite(){};
 
 	~AnimSprite(){};
 
@@ -43,6 +41,7 @@ public:
 	void Add(AnimationData animData);
 
 private:
+	Animation *currentAnim = nullptr;
 	unordered_map<AnimationState, Animation *> anim;
 };
 #endif

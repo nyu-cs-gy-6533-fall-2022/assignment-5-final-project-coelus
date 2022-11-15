@@ -13,6 +13,8 @@ void Player::loadData()
 {
 	json js = Loader::Load("player.json", vector<Sprite *>{sprite});
 	runSpeed = js["runSpeed"];
+	jumpSpeed = js["jumpSpeed"];
+
 	auto rb = js["rigidbody"];
 	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
 	debug->AddDebug(vec4(0, 0, rb["w"], rb["h"]));
@@ -23,23 +25,27 @@ Player::~Player()
 	delete debug;
 }
 
-void Player::Control(bool right, bool left, bool up, bool down)
+void Player::Input(Control ctrl)
 {
-	if (right)
+	if (ctrl.right)
 	{
 		running(1);
 	}
-	else if (left)
+	else if (ctrl.left)
 	{
 		running(-1);
 	}
-	if (!(right || left))
+	if (ctrl.jump)
+	{
+		setJump();
+	}
+	if (!(ctrl.right || ctrl.left))
 	{
 		setIdle();
 	}
 	falling();
 	movement();
-	animStateUpdate(right, left, up, down);
+	animStateUpdate(ctrl);
 }
 
 void Player::running(int dir)
@@ -65,11 +71,11 @@ void Player::falling()
 		vectorSpd.y = 0;
 	}
 }
-void Player::animStateUpdate(bool right, bool left, bool up, bool down)
+void Player::animStateUpdate(Control ctrl)
 {
 	if (isGround)
 	{
-		if (right || left)
+		if (ctrl.right || ctrl.left)
 		{
 			state = Run;
 		}
@@ -83,11 +89,13 @@ void Player::animStateUpdate(bool right, bool left, bool up, bool down)
 		state = Fall;
 	}
 }
-
+void Player::setJump()
+{
+	vectorSpd.y += -jumpSpeed * deltaTime;
+}
 void Player::setIdle()
 {
 	vectorSpd.x = 0;
-	state = Idle;
 }
 void Player::movement()
 {

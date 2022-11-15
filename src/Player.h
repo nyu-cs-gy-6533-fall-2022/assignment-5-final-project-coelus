@@ -11,20 +11,26 @@
 #include <algorithm>
 using namespace glm;
 
-
 #ifndef _PLAYER_
 #define _PLAYER_
+
+struct Control
+{
+	bool right, left, up, down;
+	bool jump, attack, drag;
+};
 class Player
 {
 public:
 	Player(Shader *s, double &time);
 	~Player();
-	void Control(bool right, bool left, bool up, bool down);
+	void Input(Control ctrl);
 	void Draw(double deltaTime);
 
 	vec2 GetScale() { return pTx->Scale; };
 	vec2 GetPos() { return pTx->Position; };
 	void SetPos(vec2 pos) { pTx->Position = pos; }
+	vec2 GetCenterPos() { return pTx->GetCenterPos(); };
 	vec4 GetCol()
 	{
 		return vec4(pTx->Position + vec2(rigidbody.x, rigidbody.y), rigidbody.z, rigidbody.w);
@@ -37,7 +43,7 @@ private:
 	AnimSprite *sprite;
 	AnimationState state;
 
-	float runSpeed;
+	float runSpeed, jumpSpeed;
 	double &deltaTime;
 	bool isGround = true;
 	vec2 vectorSpd;
@@ -48,8 +54,8 @@ private:
 	void running(int dir);
 	void falling();
 	void setIdle();
+	void setJump();
 	void movement();
-	void animStateUpdate(bool right, bool left, bool up, bool down);
-	
+	void animStateUpdate(Control ctrl);
 };
 #endif

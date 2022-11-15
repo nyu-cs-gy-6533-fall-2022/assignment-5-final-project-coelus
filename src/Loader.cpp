@@ -37,6 +37,7 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
             anim["height"],
             anim["frameCount"],
             anim["secPerFrame"],
+            anim["isLoop"],
             anim["filename"]});
     }
 }

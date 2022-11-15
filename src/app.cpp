@@ -49,7 +49,6 @@ void App::init()
     stageSys->SetPlayerEntry("L8", 0);
     camera = new Camera(mWidth, mHeight, player, stageSys);
 
-    
     prevTime = glfwGetTime();
 }
 void App::loadIcon()
@@ -68,8 +67,9 @@ void App::input()
     bool left = glfwGetKey(pWindow, GLFW_KEY_LEFT);
     bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
     bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
+    bool jump = glfwGetKey(pWindow, GLFW_KEY_Z);
 
-    player->Control(right, left, up, down);
+    player->Input(Control{right, left, up, down, jump, false, false});
 }
 void App::resize()
 {

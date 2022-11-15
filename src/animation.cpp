@@ -5,12 +5,18 @@ using namespace std;
 Animation::Animation(AnimationData data)
 	: frameTime(0),
 	  frameIndex(0),
+	  State(data.state),
+	  centerX(data.centerX),
+	  centerY(data.centerY),
+	  width(data.width),
+	  height(data.height),
+	  frameCount(data.frameCount),
 	  secPerFrame(data.secPerFrame),
-	  frameCount(data.frameCount)
+	  isLoop(data.isLoop)
 {
+
 	texture = new Texture(data.filename);
-	width = data.width;
-	height = data.height;
+
 	for (int i = 0; i < data.frameCount; i++)
 	{
 		vec4 frame = vec4(1, data.height * i, data.width, data.height);
@@ -21,6 +27,11 @@ Animation::~Animation()
 {
 	delete texture;
 }
+void Animation::Reset()
+{
+	frameTime = 0;
+	frameIndex = 0;
+}
 void Animation::Play(BufferObject &buffer, double deltaTime)
 {
 	frameTime += deltaTime;
@@ -28,9 +39,21 @@ void Animation::Play(BufferObject &buffer, double deltaTime)
 	if (frameTime > secPerFrame)
 	{
 		frameTime = 0;
-		frameIndex = (frameIndex + 1) % frameCount;
+		if (isLoop)
+		{
+			frameIndex = (frameIndex + 1) % frameCount;
+		}
+		else
+		{
+			frameIndex = std::min(frameIndex + 1, frameCount - 1);
+		}
 	}
 
+	UpdateSprite(buffer);
+}
+
+void Animation::UpdateSprite(BufferObject &buffer)
+{
 	vec4 frame = frames[frameIndex];
 	frame.x /= texture->GetWidth();
 	frame.y /= texture->GetHeight();

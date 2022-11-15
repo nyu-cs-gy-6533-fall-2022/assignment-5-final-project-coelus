@@ -11,7 +11,10 @@ struct Transform
 	vec2 Scale = vec2(1);
 	float Angle = 0;
 
-	
+	vec2 GetCenterPos()
+	{
+		return Position + vec2(Scale.x / 2, Scale.y / 2);
+	};
 	void Set(vec4 rect)
 	{
 		Position = vec2(rect.x, rect.y);

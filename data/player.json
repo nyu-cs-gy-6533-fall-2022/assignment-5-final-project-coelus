@@ -17,6 +17,7 @@
             "height": 256,
             "frameCount": 4,
             "secPerFrame": 0.2,
+            "isLoop": true,
             "filename": "main/idle(256-line).png"
         },
         {
@@ -27,6 +28,7 @@
             "height": 256,
             "frameCount": 10,
             "secPerFrame": 0.07,
+            "isLoop": true,
             "filename": "main/run(256-line).png"
         },
         {
@@ -36,8 +38,9 @@
             "width": 256,
             "height": 256,
             "frameCount": 4,
-            "secPerFrame": 0.2,
-            "filename": "main/idle(256-line).png"
+            "secPerFrame": 0.07,
+            "isLoop": false,
+            "filename": "main/jump(256-line).png"
         },
         {
             "state": 3,
@@ -47,6 +50,7 @@
             "height": 256,
             "frameCount": 1,
             "secPerFrame": 1,
+            "isLoop": true,
             "filename": "main/fall.png"
         }
     ]
