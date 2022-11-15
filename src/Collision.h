@@ -1,7 +1,7 @@
 
 
 #include <glm/glm.hpp>
-
+#include <vector>
 using namespace std;
 using namespace glm;
 
@@ -19,7 +19,8 @@ enum CollisionType
 class Collision
 {
 public:
-    static CollisionType GetOverlapType(vec4 a, vec4 b);
-    static bool IsCollided(vec4 a, vec4 b);
+    static CollisionType GetOverlapType(vec4 r1, vec4 r2);
+    static bool IsCollided(vec4 main, vector<vec4> rects);
+    static bool IsCollided(vec4 r1, vec4 r2);
 };
 #endif

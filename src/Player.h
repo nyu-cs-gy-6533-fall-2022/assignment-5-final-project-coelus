@@ -13,11 +13,16 @@ public:
 	Player(Shader *s, double &time);
 	~Player();
 	void Control(bool right, bool left, bool up, bool down);
-
 	void Draw(double deltaTime);
-	void SetPos(vec2 pos);
-	vec2 GetPos();
-	
+
+	vec2 GetPos() { return pTx->Position; };
+	void SetPos(vec2 pos) { pTx->Position = pos; }
+	vec4 GetCol()
+	{
+		return vec4(pTx->Position + vec2(rigidbody.x, rigidbody.y), rigidbody.z, rigidbody.w);
+	}
+	void SetGround(bool flag) { isGround = flag; }
+
 private:
 	Transform *pTx;
 	Shader *shader;
@@ -28,7 +33,7 @@ private:
 	double &deltaTime;
 	bool isGround = true;
 	vec2 vectorSpd;
-	vec4 collision;
+	vec4 rigidbody;
 	Sprite *colDebug;
 
 	void loadData();
@@ -36,4 +41,6 @@ private:
 	void falling();
 	void setIdle();
 	void movement();
+	void animStateUpdate(bool right, bool left, bool up, bool down);
+	void drawCollision();
 };

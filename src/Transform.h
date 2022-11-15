@@ -11,6 +11,12 @@ struct Transform
 	vec2 Scale = vec2(1);
 	float Angle = 0;
 
+	
+	void Set(vec4 rect)
+	{
+		Position = vec2(rect.x, rect.y);
+		Scale = vec2(rect.z, rect.w);
+	}
 	mat4 Get()
 	{
 		return translate(mat4(1.0f), vec3(Position.x + (1 - dirX) * Scale.x / 2, Position.y, 1.0f)) *

@@ -1,6 +1,12 @@
 {
     "type": 0,
     "runSpeed": 700,
+    "rigidbody": {
+        "errX": 100,
+        "errY": 40,
+        "w": 50,
+        "h": 200
+    },
     "animation": [
         {
             "state": 0,

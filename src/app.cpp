@@ -86,24 +86,29 @@ void App::getDeltaTime()
     deltaTime = currentTime - prevTime;
     prevTime = currentTime;
 }
-
-void App::Update()
+void App::update()
+{
+    getDeltaTime();
+    input();
+    resize();
+    stage->Update();
+}
+void App::draw()
+{
+    glClearColor(0, 0, 0, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    shader->Use();
+    shader->SetMat("projMatrix", camera->Projection());
+    stage->DrawBG();
+    player->Draw(deltaTime);
+    stage->DrawFG();
+}
+void App::MainLoop()
 {
     while (!glfwWindowShouldClose(pWindow))
     {
-        getDeltaTime();
-        input();
-        resize();
-
-        glClearColor(0, 0, 0, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        shader->Use();
-        shader->SetMat("projMatrix", camera->Projection());
-        stage->DrawBG();
-        player->Draw(deltaTime);
-        stage->DrawFG();
-
+        update();
+        draw();
         glfwSwapBuffers(pWindow);
         glfwPollEvents();
     }

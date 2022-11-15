@@ -26,8 +26,7 @@ void Stage::loadData()
     for (auto col : js["collision"])
     {
         Sprite *s = new Sprite();
-        s->Set("red.png", vec2(col["w"], col["h"]));
-        s->Tx.Position = vec2(col["x"], col["y"]);
+        s->Set("red.png", vec2(col["w"], col["h"]), vec2(col["x"], col["y"]));
         colDebug.push_back(s);
         collisions.push_back(vec4(col["x"], col["y"], col["w"], col["h"]));
     }
@@ -35,6 +34,15 @@ void Stage::loadData()
 void Stage::SetPlayerEntry(int index)
 {
     player->SetPos(entries[index]);
+}
+void Stage::Update()
+{
+    updateCollision();
+}
+
+void Stage::updateCollision()
+{
+    player->SetGround(Collision::IsCollided(player->GetCol(), collisions));
 }
 void Stage::drawCollision()
 {

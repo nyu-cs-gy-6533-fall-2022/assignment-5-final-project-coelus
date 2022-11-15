@@ -41,7 +41,7 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
 void Loader::loadStage(const vector<Sprite *> sprite, json j)
 {
     auto ob = j["background"];
-    sprite[0]->Set(ob["filename"], vec2(ob["width"], ob["height"]));
+    sprite[0]->Set(ob["filename"], vec2(ob["width"], ob["height"]), vec2(0, 0));
     ob = j["frontground"];
-    sprite[1]->Set(ob["filename"], vec2(ob["width"], ob["height"]));
+    sprite[1]->Set(ob["filename"], vec2(ob["width"], ob["height"]), vec2(0, 0));
 }

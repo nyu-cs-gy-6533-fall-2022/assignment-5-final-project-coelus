@@ -18,7 +18,7 @@ public:
 	~Sprite();
 
 	void Draw();
-	void Set(string filePath, vec2 scale);
+	void Set(string filePath, vec2 scale, vec2 pos);
 	virtual void Add(AnimationData animData) {}
 
 	Transform Tx;

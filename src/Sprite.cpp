@@ -10,10 +10,11 @@ Sprite::~Sprite()
 	delete buffer;
 	delete texture;
 }
-void Sprite::Set(string filePath,vec2 scale)
+void Sprite::Set(string filePath, vec2 scale, vec2 pos)
 {
 	texture = new Texture(filePath);
-    Tx.Scale = scale;
+	Tx.Position = pos;
+	Tx.Scale = scale;
 }
 
 void Sprite::Draw()
@@ -22,7 +23,7 @@ void Sprite::Draw()
 	buffer->Draw();
 }
 
-//AnimSprite
+// AnimSprite
 void AnimSprite::Draw(double deltaTime, AnimationState state)
 {
 

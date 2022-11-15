@@ -12,18 +12,16 @@ void Player::loadData()
 {
 	json js = Loader::Load("player.json", vector<Sprite *>{sprite});
 	runSpeed = js["runSpeed"];
+
+	auto rb = js["rigidbody"];
+	colDebug = new Sprite();
+	colDebug->Set("red.png", vec2(rb["w"], rb["h"]), vec2(0, 0));
+	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
 }
 Player::~Player()
 {
+	delete colDebug;
 	delete sprite;
-}
-vec2 Player::GetPos()
-{
-	return pTx->Position;
-}
-void Player::SetPos(vec2 pos)
-{
-	pTx->Position = pos;
 }
 
 void Player::Control(bool right, bool left, bool up, bool down)
@@ -42,6 +40,7 @@ void Player::Control(bool right, bool left, bool up, bool down)
 	}
 	falling();
 	movement();
+	animStateUpdate(right, left, up, down);
 }
 
 void Player::running(int dir)
@@ -50,7 +49,6 @@ void Player::running(int dir)
 		(dir == -1 & pTx->dirX > 0))
 		pTx->dirX *= -1;
 
-	state = Run;
 	vectorSpd.x = runSpeed * dir * deltaTime;
 }
 
@@ -58,8 +56,30 @@ void Player::falling()
 {
 	if (!isGround)
 	{
-		state = Fall;
+
 		vectorSpd.y += 9.8f * deltaTime;
+	}
+	else
+	{
+		vectorSpd.y = 0;
+	}
+}
+void Player::animStateUpdate(bool right, bool left, bool up, bool down)
+{
+	if (isGround)
+	{
+		if (right || left)
+		{
+			state = Run;
+		}
+		else
+		{
+			state = Idle;
+		}
+	}
+	else
+	{
+		state = Fall;
 	}
 }
 
@@ -76,7 +96,14 @@ void Player::movement()
 
 void Player::Draw(double deltaTime)
 {
-
+	drawCollision();
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
+}
+
+void Player::drawCollision()
+{
+	colDebug->Tx.Set(GetCol());
+	shader->SetMat("modelMatrix", colDebug->Tx.Get());
+	colDebug->Draw();
 }

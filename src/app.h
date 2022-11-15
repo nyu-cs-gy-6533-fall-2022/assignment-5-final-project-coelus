@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <math.h>
 
-
 #include "Player.h"
 #include "Camera.h"
 #include "Shader.h"
@@ -23,7 +22,8 @@ class App
 public:
     App(int width, int height);
     ~App();
-    void Update();
+    
+    void MainLoop();
 
 private:
     int mWidth, mHeight;
@@ -37,6 +37,8 @@ private:
     void init();
     void resize();
     void input();
+    void draw();
+    void update();
     void getDeltaTime();
     void loadIcon();
 };

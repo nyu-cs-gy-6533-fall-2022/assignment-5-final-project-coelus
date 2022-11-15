@@ -1,7 +1,6 @@
 #include "Collision.h"
 
-
-//return CollisionType
+// return CollisionType
 CollisionType Collision::GetOverlapType(vec4 r1, vec4 r2)
 {
     float r1l = r1.x - r1.z / 2.f;
@@ -29,7 +28,20 @@ CollisionType Collision::GetOverlapType(vec4 r1, vec4 r2)
     }
 }
 
-//return bool
+bool Collision::IsCollided(vec4 r1, vector<vec4> rects)
+{
+    bool isCol = false;
+    for (auto r : rects)
+    {
+        if (Collision::IsCollided(r1, r))
+        {
+            isCol = true;
+            break;
+        }
+    }
+    return isCol;
+}
+// return bool
 bool Collision::IsCollided(vec4 r1, vec4 r2)
 {
     return (r1.x < r2.x + r2.z &&
