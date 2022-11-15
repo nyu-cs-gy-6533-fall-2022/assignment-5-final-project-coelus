@@ -51,8 +51,6 @@ void Stage::Update()
     updateCollision();
 }
 
-
-
 void Stage::updateTrigger()
 {
     // entry detect
@@ -85,4 +83,9 @@ void Stage::DrawFG()
     shader->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
     debug->DrawDebug();
+}
+
+vec2 Stage::GetBoundary()
+{
+    return bg->Tx.Scale;
 }

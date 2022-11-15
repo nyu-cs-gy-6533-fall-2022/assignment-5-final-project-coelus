@@ -52,6 +52,7 @@ public:
 	void DrawBG();
 
 	void SetPlayerEntry(int index);
+	vec2 GetBoundary();
 
 	NextStage NextStage;
 

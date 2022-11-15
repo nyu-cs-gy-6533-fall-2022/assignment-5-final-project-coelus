@@ -33,3 +33,7 @@ void StageSystem::DrawBG()
 {
     currentStage->DrawBG();
 }
+vec2 StageSystem::GetBoundary()
+{
+    return currentStage->GetBoundary();
+}

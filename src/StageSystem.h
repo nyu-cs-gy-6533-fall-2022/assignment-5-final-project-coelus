@@ -27,6 +27,7 @@ public:
     void DrawFG();
     void DrawBG();
     void SetPlayerEntry(string name, int index);
+    vec2 GetBoundary();
 
 private:
     Stage *currentStage;

@@ -45,9 +45,11 @@ void App::init()
     loadIcon();
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(shader, deltaTime);
-    camera = new Camera(mWidth, mHeight, player);
     stageSys = new StageSystem(player, shader);
-    stageSys->SetPlayerEntry("L8", 1);
+    stageSys->SetPlayerEntry("L8", 0);
+    camera = new Camera(mWidth, mHeight, player, stageSys);
+
+    
     prevTime = glfwGetTime();
 }
 void App::loadIcon()
