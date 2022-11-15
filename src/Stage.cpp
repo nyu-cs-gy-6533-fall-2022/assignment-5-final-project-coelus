@@ -4,16 +4,14 @@ Stage::Stage(Player *pl, Shader *s) : player(pl), shader(s)
 {
     bg = new Sprite();
     fg = new Sprite();
+    debug = new Debug(shader);
     loadData();
 }
 Stage::~Stage()
 {
     delete bg;
     delete fg;
-    for (auto col : colDebug)
-    {
-        delete col;
-    }
+    delete debug;
 }
 void Stage::loadData()
 {
@@ -21,21 +19,22 @@ void Stage::loadData()
 
     for (auto e : js["entry"])
     {
-        entries.push_back(vec2(e["x"], e["y"]));
+        spawn.push_back(vec2(e["spawnX"], e["spawnY"]));
+        vec4 newEntry = vec4(e["x"], e["y"], e["w"], e["h"]);
+        entries.push_back(newEntry);
+        debug->AddDebug(newEntry);
     }
     for (auto col : js["collision"])
     {
         Sprite *s = new Sprite();
-        collisions.push_back(vec4(col["x"], col["y"], col["w"], col["h"]));
-#if DEBUG
-        s->Set("red.png", vec2(col["w"], col["h"]), vec2(col["x"], col["y"]));
-        colDebug.push_back(s);
-#endif
+        vec4 newCol = vec4(col["x"], col["y"], col["w"], col["h"]);
+        collisions.push_back(newCol);
+        debug->AddDebug(newCol);
     }
 }
 void Stage::SetPlayerEntry(int index)
 {
-    player->SetPos(entries[index]);
+    player->SetPos(spawn[index]);
 }
 void Stage::Update()
 {
@@ -60,18 +59,6 @@ void Stage::DrawFG()
 {
     shader->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
-#if DEBUG
-    drawCollision();
-#endif
+    debug->DrawDebug();
 }
 
-#if DEBUG
-void Stage::drawCollision()
-{
-    for (auto col : colDebug)
-    {
-        shader->SetMat("modelMatrix", col->Tx.Get());
-        col->Draw();
-    }
-}
-#endif

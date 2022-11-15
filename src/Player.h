@@ -5,6 +5,7 @@
 #include "Loader.h"
 #include "Shader.h"
 #include "Transform.h"
+#include "Debug.h"
 #include "Global.h"
 
 #include <algorithm>
@@ -36,7 +37,7 @@ private:
 	bool isGround = true;
 	vec2 vectorSpd;
 	vec4 rigidbody;
-	Sprite *colDebug;
+	Debug *debug;
 
 	void loadData();
 	void running(int dir);
@@ -44,5 +45,5 @@ private:
 	void setIdle();
 	void movement();
 	void animStateUpdate(bool right, bool left, bool up, bool down);
-	void drawCollision();
+	
 };

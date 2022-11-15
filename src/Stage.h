@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Shader.h"
 #include "Collision.h"
+#include "Debug.h"
 #include <json.hpp>
 using json = nlohmann::json;
 
@@ -23,16 +24,17 @@ public:
 	void SetPlayerEntry(int index);
 
 private:
-	vector<Sprite *> colDebug;
 	vector<vec4> collisions;
-	vector<vec2> entries;
+	vector<vec4> entries;
+	vector<vec2> spawn;
+
+	Debug *debug;
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
 	Shader *shader;
 	void loadData();
 	void updateCollision();
-	void drawCollision();
 
 };
 #endif

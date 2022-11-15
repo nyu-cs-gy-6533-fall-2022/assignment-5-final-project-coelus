@@ -6,6 +6,7 @@ Player::Player(Shader *s, double &time)
 
 	sprite = new AnimSprite();
 	pTx = &sprite->Tx;
+	debug = new Debug(shader);
 	loadData();
 }
 void Player::loadData()
@@ -14,18 +15,12 @@ void Player::loadData()
 	runSpeed = js["runSpeed"];
 	auto rb = js["rigidbody"];
 	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
-
-#if DEBUG
-	colDebug = new Sprite();
-	colDebug->Set("red.png", vec2(rb["w"], rb["h"]), vec2(0, 0));
-#endif
+	debug->AddDebug(vec4(0, 0, rb["w"], rb["h"]));
 }
 Player::~Player()
 {
 	delete sprite;
-#if DEBUG
-	delete colDebug;
-#endif
+	delete debug;
 }
 
 void Player::Control(bool right, bool left, bool up, bool down)
@@ -102,17 +97,8 @@ void Player::movement()
 
 void Player::Draw(double deltaTime)
 {
-#if DEBUG
-	drawCollision();
-#endif
+	debug->SetDebugTx(0, GetCol());
+	debug->DrawDebug();
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
 }
-#if DEBUG
-void Player::drawCollision()
-{
-	colDebug->Tx.Set(GetCol());
-	shader->SetMat("modelMatrix", colDebug->Tx.Get());
-	colDebug->Draw();
-}
-#endif
