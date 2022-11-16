@@ -92,9 +92,9 @@ void App::getDeltaTime()
 void App::update()
 {
     getDeltaTime();
-    input();
     resize();
     stageSys->Update();
+    input();
 }
 void App::draw()
 {

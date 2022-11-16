@@ -82,7 +82,6 @@ void Player::soundUpdate(Control ctrl)
 
 	if (state == Run && (sprite->IsFrame(3) || sprite->IsFrame(8)))
 	{
-		cout << "step" << endl;
 		soundSys->Play(SFXPlayerStep);
 	}
 }
@@ -90,7 +89,10 @@ void Player::animStateUpdate(Control ctrl)
 {
 	if (isGround)
 	{
-
+		if (state == Fall)
+		{
+			soundSys->Play(SFXPlayerLanding);
+		}
 		if (ctrl.right || ctrl.left)
 		{
 			state = Run;
