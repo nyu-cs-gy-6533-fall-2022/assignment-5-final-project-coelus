@@ -3,9 +3,10 @@
 #include "Player.h"
 #include "Loader.h"
 #include "Shader.h"
-#include <json.hpp>
 #include "Stage.h"
+#include "Sound.h"
 
+#include <json.hpp>
 using json = nlohmann::json;
 
 #ifndef _STAGESYS_
@@ -13,7 +14,7 @@ using json = nlohmann::json;
 class StageSystem
 {
 public:
-    StageSystem(Player *pl, Shader *s);
+    StageSystem(SoundSystem *sndSys, Player *pl, Shader *s);
 
     ~StageSystem()
     {
@@ -30,6 +31,7 @@ public:
     vec2 GetBoundary();
 
 private:
+    SoundSystem *soundSys;
     Stage *currentStage;
     unordered_map<string, Stage *> stages;
     Player *player;

@@ -1,6 +1,7 @@
 #include "StageSystem.h"
 
-StageSystem::StageSystem(Player *pl, Shader *shader) : player(pl)
+StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, Shader *shader)
+    : soundSys(sndSys), player(pl)
 {
 
     json js = Loader::Load("game.json");
@@ -11,6 +12,7 @@ StageSystem::StageSystem(Player *pl, Shader *shader) : player(pl)
     startStage = js["startStage"];
     startEntry = js["startEntry"];
     SetPlayerEntry(startStage, startEntry);
+    soundSys->Play(BGMStage1);
 }
 
 void StageSystem::SetPlayerEntry(string name, int index)

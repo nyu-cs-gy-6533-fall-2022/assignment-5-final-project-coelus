@@ -32,8 +32,9 @@ void Animation::Reset()
 	frameTime = 0;
 	frameIndex = 0;
 }
-void Animation::Play(BufferObject &buffer, double deltaTime)
+void Animation::Play(BufferObject &buffer, double dt)
 {
+	deltaTime = dt;
 	frameTime += deltaTime;
 
 	if (frameTime > secPerFrame)
@@ -68,13 +69,4 @@ void Animation::UpdateSprite(BufferObject &buffer)
 		vec2(frame.x, frame.y + frame.w),
 		vec2(frame.x + frame.z, frame.y + frame.w)};
 	buffer.UpdateUVBO(uv);
-}
-
-glm::vec2 Animation::GetScale()
-{
-	return glm::vec2(width, height);
-}
-void Animation::SetSecPerFrame(float sec)
-{
-	secPerFrame = sec;
 }

@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(Shader *s, double &time)
-	: shader(s), deltaTime(time), state(Idle)
+Player::Player(SoundSystem *sndSys, Shader *s, double &time)
+	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle)
 {
 
 	sprite = new AnimSprite();
@@ -48,6 +48,7 @@ void Player::Input(Control ctrl)
 	}
 	movement();
 	animStateUpdate(ctrl);
+	soundUpdate(ctrl);
 }
 
 void Player::running(int dir)
@@ -76,10 +77,20 @@ void Player::falling()
 		vectorSpd.y = 0;
 	}
 }
+void Player::soundUpdate(Control ctrl)
+{
+
+	if (state == Run && (sprite->IsFrame(3) || sprite->IsFrame(8)))
+	{
+		cout << "step" << endl;
+		soundSys->Play(SFXPlayerStep);
+	}
+}
 void Player::animStateUpdate(Control ctrl)
 {
 	if (isGround)
 	{
+
 		if (ctrl.right || ctrl.left)
 		{
 			state = Run;
@@ -105,8 +116,8 @@ void Player::setJump()
 {
 	if (isGround && state != Jump)
 	{
-		cout << "jump" << endl;
 		vectorSpd.y = -jumpSpeed * deltaTime;
+		soundSys->Play(SFXPlayerJump);
 	}
 }
 void Player::setIdle()

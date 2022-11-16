@@ -9,7 +9,7 @@ using namespace glm;
 class Camera
 {
 public:
-	Camera(int w, int h, Player *player, StageSystem *stSys);
+	Camera(StageSystem *stSys, Player *pl, int w, int h);
 
 	mat4 Projection();
 	void UpdateProjection();

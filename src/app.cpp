@@ -44,12 +44,11 @@ App::~App()
 void App::init()
 {
     loadIcon();
-    soundSys = new SoundSystem("bgm/stage1.mp3");
-    soundSys->Play();
+    soundSys = new SoundSystem();
     shader = new Shader("sprite.vert", "sprite.frag");
-    player = new Player(shader, deltaTime);
-    stageSys = new StageSystem(player, shader);
-    camera = new Camera(mWidth, mHeight, player, stageSys);
+    player = new Player(soundSys, shader, deltaTime);
+    stageSys = new StageSystem(soundSys, player, shader);
+    camera = new Camera(stageSys, player, mWidth, mHeight);
 
     prevTime = glfwGetTime();
 }

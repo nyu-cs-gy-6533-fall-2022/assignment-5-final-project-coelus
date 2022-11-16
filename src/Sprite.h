@@ -39,6 +39,7 @@ public:
 	void Draw(double deltatime, AnimationState type);
 
 	void Add(AnimationData animData);
+	bool IsFrame(int index) { return currentAnim->IsFrame(index); }
 
 private:
 	Animation *currentAnim = nullptr;

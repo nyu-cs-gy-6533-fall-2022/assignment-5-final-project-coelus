@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Debug.h"
 #include "Global.h"
+#include "Sound.h"
 
 #include <algorithm>
 using namespace glm;
@@ -22,7 +23,7 @@ struct Control
 class Player
 {
 public:
-	Player(Shader *s, double &time);
+	Player(SoundSystem *sndSys, Shader *s, double &time);
 	~Player();
 	void Input(Control ctrl);
 	void Draw(double deltaTime);
@@ -46,6 +47,7 @@ private:
 	Shader *shader;
 	AnimSprite *sprite;
 	AnimationState state;
+	SoundSystem *soundSys;
 	Debug *debug;
 
 	float runSpeed, jumpSpeed;
@@ -60,6 +62,7 @@ private:
 	void setIdle();
 	void setJump();
 	void movement();
+	void soundUpdate(Control ctrl);
 	void animStateUpdate(Control ctrl);
 };
 #endif

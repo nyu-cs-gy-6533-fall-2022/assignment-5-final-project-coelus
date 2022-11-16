@@ -1,19 +1,30 @@
 #pragma once
 #include <bass.h>
+#include <unordered_map>
 #include <iostream>
 
 using namespace std;
+
+enum SoundType
+{
+    BGMStage1,
+    BGMBoss1,
+    SFXPlayerJump,
+    SFXPlayerStep,
+    SFXPlayerLanding
+};
 class SoundSystem
 {
 public:
-    SoundSystem(const string filename);
+    SoundSystem();
 
     ~SoundSystem();
 
-    void Play(bool isLoop = false);
+    void Play(SoundType type);
 
-    void Stop();
+    void Stop(SoundType type);
 
 private:
-    unsigned int channel;
+    unordered_map<SoundType, HSTREAM> channels;
+    void createSound(SoundType type, const string filename, bool isLoop = false);
 };

@@ -40,13 +40,15 @@ public:
 	void Reset();
 	void Play(BufferObject &buffer, double deltatime);
 	void UpdateSprite(BufferObject &buffer);
-	void SetSecPerFrame(float sec);
-	glm::vec2 GetScale();
+	void SetSecPerFrame(float sec) { secPerFrame = sec; }
+	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
+
+	glm::vec2 GetScale() { return glm::vec2(width, height); }
 	AnimationState State;
 	Texture *texture;
 
 private:
-	double frameTime, secPerFrame;
+	double deltaTime, frameTime, secPerFrame;
 	int frameIndex, frameCount;
 	int centerX, centerY, width, height;
 	bool isLoop;
