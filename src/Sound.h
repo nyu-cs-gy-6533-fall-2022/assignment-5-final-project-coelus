@@ -3,12 +3,12 @@
 #include <iostream>
 
 using namespace std;
-class Sound
+class SoundSystem
 {
 public:
-    Sound(const string filename);
+    SoundSystem(const string filename);
 
-    ~Sound();
+    ~SoundSystem();
 
     void Play(bool isLoop = false);
 

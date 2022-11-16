@@ -4,10 +4,13 @@ StageSystem::StageSystem(Player *pl, Shader *shader) : player(pl)
 {
 
     json js = Loader::Load("game.json");
-    for (string name : js["stage"])
+    for (string name : js["stages"])
     {
         stages[name] = new Stage(name + ".json", player, shader);
     }
+    startStage = js["startStage"];
+    startEntry = js["startEntry"];
+    SetPlayerEntry(startStage, startEntry);
 }
 
 void StageSystem::SetPlayerEntry(string name, int index)

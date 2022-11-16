@@ -35,6 +35,7 @@ App::~App()
     delete player;
     delete shader;
     delete stageSys;
+    delete soundSys;
 
     glfwTerminate();
 }
@@ -43,12 +44,11 @@ App::~App()
 void App::init()
 {
     loadIcon();
-    Sound *sound = new Sound("bgm/stage1.mp3");
-    sound->Play();
+    soundSys = new SoundSystem("bgm/stage1.mp3");
+    soundSys->Play();
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(shader, deltaTime);
     stageSys = new StageSystem(player, shader);
-    stageSys->SetPlayerEntry("L8", 0);
     camera = new Camera(mWidth, mHeight, player, stageSys);
 
     prevTime = glfwGetTime();

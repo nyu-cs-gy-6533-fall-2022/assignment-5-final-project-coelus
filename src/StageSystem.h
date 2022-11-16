@@ -33,5 +33,7 @@ private:
     Stage *currentStage;
     unordered_map<string, Stage *> stages;
     Player *player;
+    string startStage;
+    int startEntry;
 };
 #endif

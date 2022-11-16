@@ -36,6 +36,7 @@ private:
     Player *player;
     Shader *shader;
     Camera *camera;
+    SoundSystem *soundSys;
     
 
     void init();

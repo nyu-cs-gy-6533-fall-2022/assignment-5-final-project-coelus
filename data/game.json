@@ -1,5 +1,7 @@
 {
-    "stage": [
+    "startStage": "L8",
+    "startEntry": 1,
+    "stages": [
         "L8",
         "L9"
     ]
