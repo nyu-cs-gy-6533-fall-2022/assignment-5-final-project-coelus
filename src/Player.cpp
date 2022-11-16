@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
-	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle)
+	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle), position(vec2(0, 0))
 {
 
 	sprite = new AnimSprite();
@@ -17,8 +17,8 @@ void Player::loadData()
 	jumpSpeed = js["jumpSpeed"];
 
 	auto rb = js["rigidbody"];
-	rigidbody = vec4(rb["errX"], rb["errY"], rb["w"], rb["h"]);
-	debug->AddDebug(vec4(0, 0, rb["w"], rb["h"]));
+	rigidbody = vec4(0, 0, rb["w"], rb["h"]);
+	debug->AddDebug(rigidbody);
 }
 Player::~Player()
 {
@@ -58,7 +58,7 @@ void Player::running(int dir)
 		(dir == -1 & pTx->dirX > 0))
 		pTx->dirX *= -1;
 
-	vectorSpd.x = runSpeed * dir * deltaTime;
+	velocity.x = runSpeed * dir * deltaTime;
 }
 
 void Player::falling()
@@ -67,15 +67,15 @@ void Player::falling()
 	{
 		if (isTop)
 		{
-			vectorSpd.y = 0;
+			velocity.y = 0;
 		}
-		vectorSpd.y += 9.8f * deltaTime * Global::GravityRatio;
+		velocity.y += 9.8f * deltaTime * Global::GravityRatio;
 
-		vectorSpd.y = clamp(vectorSpd.y, -Global::MaxSpd, Global::MaxSpd);
+		velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
 	}
-	else if (vectorSpd.y > 0 && isGround)
+	else if (velocity.y > 0 && isGround)
 	{
-		vectorSpd.y = 0;
+		velocity.y = 0;
 	}
 }
 void Player::soundUpdate(Control ctrl)
@@ -105,7 +105,7 @@ void Player::animStateUpdate(Control ctrl)
 	}
 	else
 	{
-		if (vectorSpd.y < 0)
+		if (velocity.y < 0)
 		{
 			state = Jump;
 		}
@@ -119,24 +119,26 @@ void Player::setJump()
 {
 	if (isGround && state != Jump)
 	{
-		vectorSpd.y = -jumpSpeed * deltaTime;
+		velocity.y = -jumpSpeed * deltaTime;
 		soundSys->Play(SFXPlayerJump);
 	}
 }
 void Player::setIdle()
 {
-	vectorSpd.x = 0;
+	velocity.x = 0;
 }
 void Player::movement()
 {
-	pTx->Position.x += vectorSpd.x;
-	pTx->Position.y += vectorSpd.y;
+	position.x += velocity.x;
+	position.y += velocity.y;
 }
 
 void Player::Draw(double deltaTime)
 {
 	debug->SetDebugTx(0, GetCol());
 	debug->DrawDebug();
+
+	sprite->Adjusting(state, position);
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
 }

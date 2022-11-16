@@ -29,12 +29,12 @@ public:
 	void Draw(double deltaTime);
 
 	vec2 GetScale() { return pTx->Scale; };
-	vec2 GetPos() { return pTx->Position; };
-	void SetPos(vec2 pos) { pTx->Position = pos; }
-	vec2 GetCenterPos() { return pTx->GetCenterPos(); };
+	vec2 GetPos() { return position; };
+	void SetPos(vec2 pos) { position = pos; }
+	vec2 GetCenterPos() { return position + vec2(rigidbody.z / 2.f, rigidbody.w / 2.f); };
 	vec4 GetCol()
 	{
-		return vec4(pTx->Position + vec2(rigidbody.x, rigidbody.y), rigidbody.z, rigidbody.w);
+		return vec4(position, rigidbody.z, rigidbody.w);
 	}
 	void SetColStatus(CollisionStatus status)
 	{
@@ -52,7 +52,7 @@ private:
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
-	vec2 vectorSpd;
+	vec2 position, velocity;
 	vec4 rigidbody;
 	bool isGround, isTop;
 

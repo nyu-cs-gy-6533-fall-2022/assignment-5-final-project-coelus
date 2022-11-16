@@ -2,8 +2,8 @@
     "type": 1,
     "entry": [
         {
-            "spawnX": -100,
-            "spawnY": 1200,
+            "spawnX": 0,
+            "spawnY": 1240,
             "x": -400,
             "y": 640,
             "w": 400,

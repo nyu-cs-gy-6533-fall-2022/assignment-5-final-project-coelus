@@ -22,21 +22,25 @@ void Sprite::Draw()
 	texture->Bind();
 	buffer->Draw();
 }
-
+void AnimSprite::Adjusting(AnimationState state,vec2 plPos)
+{
+	if (anim[state])
+	{
+		if (!currentAnim || currentAnim->State != state)
+		{
+			currentAnim = anim[state];
+			currentAnim->Reset();
+		}
+		Tx.Position = plPos - currentAnim->GetCenterPos();
+		Tx.Scale = anim[state]->GetScale();
+	}
+}
 // AnimSprite
 void AnimSprite::Draw(double deltaTime, AnimationState state)
 {
 
 	if (anim[state])
 	{
-		// reset anime before playing
-		if (!currentAnim || currentAnim->State != state)
-		{
-			currentAnim = anim[state];
-			currentAnim->Reset();
-		}
-
-		Tx.Scale = anim[state]->GetScale();
 		anim[state]->Play(*buffer, deltaTime);
 		anim[state]->texture->Bind();
 	}

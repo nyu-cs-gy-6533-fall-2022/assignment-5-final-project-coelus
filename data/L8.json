@@ -2,8 +2,8 @@
     "type": 1,
     "entry": [
         {
-            "spawnX": 1750,
-            "spawnY": 1167,
+            "spawnX": 1870,
+            "spawnY": 1200,
             "x": 1920,
             "y": 640,
             "w": 400,
@@ -12,8 +12,8 @@
             "nextEntry": 1
         },
         {
-            "spawnX": 1750,
-            "spawnY": 6950,
+            "spawnX": 1870,
+            "spawnY": 6990,
             "x": 1920,
             "y": 6400,
             "w": 400,

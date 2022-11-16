@@ -43,7 +43,8 @@ public:
 	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
 
-	glm::vec2 GetScale() { return glm::vec2(width, height); }
+	vec2 GetCenterPos() { return vec2(centerX, centerY); }
+	vec2 GetScale() { return vec2(width, height); }
 	AnimationState State;
 	Texture *texture;
 
