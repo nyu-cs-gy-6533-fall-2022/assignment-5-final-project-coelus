@@ -69,8 +69,9 @@ void App::input()
     bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
     bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
     bool jump = glfwGetKey(pWindow, GLFW_KEY_Z);
+    bool attack = glfwGetKey(pWindow, GLFW_KEY_C);
 
-    player->Input(Control{right, left, up, down, jump, false, false});
+    player->Input(Control{right, left, up, down, jump, attack, false});
 }
 void App::resize()
 {

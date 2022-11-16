@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
-	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle), position(vec2(0, 0))
+	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle), isAttack(false), position(vec2(0, 0))
 {
 
 	sprite = new AnimSprite();
@@ -41,7 +41,10 @@ void Player::Input(Control ctrl)
 	{
 		setIdle();
 	}
-
+	if (ctrl.attack)
+	{
+		setAttack();
+	}
 	if (ctrl.jump)
 	{
 		setJump();
@@ -94,7 +97,11 @@ void Player::animStateUpdate(Control ctrl)
 		{
 			soundSys->Play(SFXPlayerLanding);
 		}
-		if (ctrl.right || ctrl.left)
+		if (isAttack)
+		{
+			state = Attack1;
+		}
+		else if (ctrl.right || ctrl.left)
 		{
 			state = Run;
 		}
@@ -113,6 +120,13 @@ void Player::animStateUpdate(Control ctrl)
 		{
 			state = Fall;
 		}
+	}
+}
+void Player::setAttack()
+{
+	if (isGround && !isAttack)
+	{
+		isAttack = true;
 	}
 }
 void Player::setJump()
@@ -138,7 +152,7 @@ void Player::Draw(double deltaTime)
 	debug->SetDebugTx(0, GetCol());
 	debug->DrawDebug();
 
-	sprite->Adjusting(state, position);
+	sprite->Set(state, position);
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
 }

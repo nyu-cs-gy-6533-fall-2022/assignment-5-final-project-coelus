@@ -21,7 +21,8 @@ enum AnimationState
 	Idle,
 	Run,
 	Jump,
-	Fall
+	Fall,
+	Attack1
 };
 
 struct AnimationData
@@ -43,8 +44,8 @@ public:
 	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
 
-	vec2 GetCenterPos() { return vec2(centerX, centerY); }
-	vec2 GetScale() { return vec2(width, height); }
+	vec4 GetRect(vec2 pos){return vec4(pos.x - centerX, pos.y - centerY, width, height);}
+
 	AnimationState State;
 	Texture *texture;
 

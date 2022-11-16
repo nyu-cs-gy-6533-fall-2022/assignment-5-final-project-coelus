@@ -35,7 +35,7 @@ public:
 	AnimSprite() : Sprite(){};
 
 	~AnimSprite(){};
-	void Adjusting(AnimationState type, vec2 plPos);
+	void Set(AnimationState type, vec2 pos);
 	void Draw(double deltatime, AnimationState type);
 
 	void Add(AnimationData animData);

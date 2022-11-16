@@ -10,46 +10,57 @@
         {
             "state": 0,
             "centerX": 100,
-            "centerY": 40,
+            "centerY": 35,
             "width": 256,
             "height": 256,
             "frameCount": 4,
             "secPerFrame": 0.2,
             "isLoop": true,
-            "filename": "main/idle(256-line).png"
+            "filename": "main/idle.png"
         },
         {
             "state": 1,
             "centerX": 100,
-            "centerY": 40,
+            "centerY": 35,
             "width": 256,
             "height": 256,
             "frameCount": 10,
             "secPerFrame": 0.07,
             "isLoop": true,
-            "filename": "main/run(256-line).png"
+            "filename": "main/run.png"
         },
         {
             "state": 2,
             "centerX": 100,
-            "centerY": 40,
+            "centerY": 35,
             "width": 256,
             "height": 256,
             "frameCount": 2,
             "secPerFrame": 0.1,
             "isLoop": false,
-            "filename": "main/jump(256-line).png"
+            "filename": "main/jump.png"
         },
         {
             "state": 3,
             "centerX": 100,
-            "centerY": 40,
+            "centerY": 35,
             "width": 256,
             "height": 256,
             "frameCount": 2,
             "secPerFrame": 0.07,
             "isLoop": true,
             "filename": "main/fall.png"
+        },
+        {
+            "state": 4,
+            "centerX": 230,
+            "centerY": 295,
+            "width": 1024,
+            "height": 512,
+            "frameCount": 9,
+            "secPerFrame": 0.05,
+            "isLoop": false,
+            "filename": "main/attack1.png"
         }
     ]
 }

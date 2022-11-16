@@ -22,7 +22,7 @@ void Sprite::Draw()
 	texture->Bind();
 	buffer->Draw();
 }
-void AnimSprite::Adjusting(AnimationState state,vec2 plPos)
+void AnimSprite::Set(AnimationState state, vec2 pos)
 {
 	if (anim[state])
 	{
@@ -31,8 +31,7 @@ void AnimSprite::Adjusting(AnimationState state,vec2 plPos)
 			currentAnim = anim[state];
 			currentAnim->Reset();
 		}
-		Tx.Position = plPos - currentAnim->GetCenterPos();
-		Tx.Scale = anim[state]->GetScale();
+		Tx.Set(anim[state]->GetRect(pos));
 	}
 }
 // AnimSprite

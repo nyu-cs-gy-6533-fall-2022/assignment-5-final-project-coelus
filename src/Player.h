@@ -32,10 +32,7 @@ public:
 	vec2 GetPos() { return position; };
 	void SetPos(vec2 pos) { position = pos; }
 	vec2 GetCenterPos() { return position + vec2(rigidbody.z / 2.f, rigidbody.w / 2.f); };
-	vec4 GetCol()
-	{
-		return vec4(position, rigidbody.z, rigidbody.w);
-	}
+	vec4 GetCol() { return vec4(position, rigidbody.z, rigidbody.w); }
 	void SetColStatus(CollisionStatus status)
 	{
 		isGround = status.isColDown;
@@ -54,12 +51,13 @@ private:
 	double &deltaTime;
 	vec2 position, velocity;
 	vec4 rigidbody;
-	bool isGround, isTop;
+	bool isGround, isTop, isAttack;
 
 	void loadData();
 	void running(int dir);
 	void falling();
 	void setIdle();
+	void setAttack();
 	void setJump();
 	void movement();
 	void soundUpdate(Control ctrl);
