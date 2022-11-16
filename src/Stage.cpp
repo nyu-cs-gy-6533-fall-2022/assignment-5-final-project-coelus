@@ -69,7 +69,7 @@ void Stage::updateCollision()
     vec2 plPos = player->GetPos();
     CollisionStatus status = Collision::CollisonSystem(plPos, player->GetCol(), collisions);
     player->SetPos(plPos);
-    player->SetGround(status.isColDown);
+    player->SetColStatus(status);
 }
 
 void Stage::DrawBG()

@@ -35,7 +35,11 @@ public:
 	{
 		return vec4(pTx->Position + vec2(rigidbody.x, rigidbody.y), rigidbody.z, rigidbody.w);
 	}
-	void SetGround(bool flag) { isGround = flag; }
+	void SetColStatus(CollisionStatus status)
+	{
+		isGround = status.isColDown;
+		isTop = status.isColTop;
+	}
 
 private:
 	Transform *pTx;
@@ -45,10 +49,10 @@ private:
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
-	bool isGround = true;
 	vec2 vectorSpd;
 	vec4 rigidbody;
 	Debug *debug;
+	bool isGround, isTop;
 
 	void loadData();
 	void running(int dir);

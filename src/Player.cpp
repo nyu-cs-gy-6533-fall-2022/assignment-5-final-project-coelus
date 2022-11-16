@@ -7,6 +7,7 @@ Player::Player(Shader *s, double &time)
 	sprite = new AnimSprite();
 	pTx = &sprite->Tx;
 	debug = new Debug(shader);
+
 	loadData();
 }
 void Player::loadData()
@@ -35,15 +36,16 @@ void Player::Input(Control ctrl)
 	{
 		running(-1);
 	}
-	if (ctrl.jump)
-	{
-		setJump();
-	}
+
 	if (!(ctrl.right || ctrl.left))
 	{
 		setIdle();
 	}
 	falling();
+	if (ctrl.jump)
+	{
+		setJump();
+	}
 	movement();
 	animStateUpdate(ctrl);
 }
@@ -61,7 +63,10 @@ void Player::falling()
 {
 	if (!isGround)
 	{
-
+		if (isTop)
+		{
+			vectorSpd.y = 0;
+		}
 		vectorSpd.y += 9.8f * deltaTime * Global::GravityRatio;
 
 		vectorSpd.y = clamp(vectorSpd.y, -Global::MaxSpd, Global::MaxSpd);
@@ -86,12 +91,23 @@ void Player::animStateUpdate(Control ctrl)
 	}
 	else
 	{
-		state = Fall;
+		if (vectorSpd.y < 0)
+		{
+			state = Jump;
+		}
+		else
+		{
+			state = Fall;
+		}
 	}
 }
 void Player::setJump()
 {
-	vectorSpd.y += -jumpSpeed * deltaTime;
+	if (isGround && state != Jump)
+	{
+		cout << "jump" << endl;
+		vectorSpd.y = -jumpSpeed * deltaTime;
+	}
 }
 void Player::setIdle()
 {

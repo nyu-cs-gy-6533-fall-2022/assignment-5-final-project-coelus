@@ -1,7 +1,7 @@
 {
     "type": 0,
     "runSpeed": 700,
-    "jumpSpeed": 700,
+    "jumpSpeed": 1000,
     "rigidbody": {
         "errX": 100,
         "errY": 40,
@@ -37,8 +37,8 @@
             "centerY": 0,
             "width": 256,
             "height": 256,
-            "frameCount": 4,
-            "secPerFrame": 0.07,
+            "frameCount": 2,
+            "secPerFrame": 0.1,
             "isLoop": false,
             "filename": "main/jump(256-line).png"
         },
@@ -48,8 +48,8 @@
             "centerY": 0,
             "width": 256,
             "height": 256,
-            "frameCount": 1,
-            "secPerFrame": 1,
+            "frameCount": 2,
+            "secPerFrame": 0.07,
             "isLoop": true,
             "filename": "main/fall.png"
         }
