@@ -25,8 +25,7 @@ public:
     };
 
     void Update();
-    void DrawFG();
-    void DrawBG();
+    void Draw();
     void SetPlayerEntry(string name, int index);
     vec2 GetBoundary();
 

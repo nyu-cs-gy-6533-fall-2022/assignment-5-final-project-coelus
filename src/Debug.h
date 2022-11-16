@@ -5,7 +5,7 @@
 #include <vector>
 using namespace glm;
 
-#define DEBUG true
+#define DEBUG false
 
 class Debug
 {

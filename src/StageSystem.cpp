@@ -30,14 +30,12 @@ void StageSystem::Update()
         nt->Init();
     }
 }
-void StageSystem::DrawFG()
-{
-    currentStage->DrawFG();
-}
-void StageSystem::DrawBG()
+void StageSystem::Draw()
 {
     currentStage->DrawBG();
+    currentStage->DrawFG();
 }
+
 vec2 StageSystem::GetBoundary()
 {
     return currentStage->GetBoundary();

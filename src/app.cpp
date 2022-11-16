@@ -102,9 +102,8 @@ void App::draw()
     glClear(GL_COLOR_BUFFER_BIT);
     shader->Use();
     shader->SetMat("projMatrix", camera->Projection());
-    stageSys->DrawBG();
+    stageSys->Draw();
     player->Draw(deltaTime);
-    stageSys->DrawFG();
 }
 void App::MainLoop()
 {
