@@ -6,15 +6,11 @@ Animation::Animation(AnimationData data)
 	: frameTime(0),
 	  frameIndex(0),
 	  State(data.state),
-	  centerX(data.centerX),
-	  centerY(data.centerY),
-	  width(data.width),
-	  height(data.height),
 	  frameCount(data.frameCount),
 	  secPerFrame(data.secPerFrame),
 	  isLoop(data.isLoop)
 {
-
+	tx.Set(vec2(0, 0), vec2(data.pivotX, data.pivotY), vec2(data.width, data.height));
 	texture = new Texture(data.filename);
 
 	for (int i = 0; i < data.frameCount; i++)

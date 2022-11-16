@@ -6,26 +6,44 @@ using namespace glm;
 #define _TRANSFORM_
 struct Transform
 {
-	int dirX = 1;
-	vec2 Position = vec2(0);
-	vec2 Scale = vec2(1);
-	float Angle = 0;
+	vec2 position = vec2(0);
+	vec2 pivot = vec2(0);
+	vec2 scale = vec2(1);
+	vec2 rigidBody = vec2(0);
 
-	vec2 GetCenterPos()
+	int dirX = 1;
+	float angle = 0;
+
+	void Set(vec2 pos, vec2 vpivot, vec2 vscale)
 	{
-		return Position + vec2(Scale.x / 2, Scale.y / 2);
-	};
-	
+		position = pos;
+		pivot = vpivot;
+		scale = vscale;
+	}
+
+	void Set(Transform tx)
+	{
+		pivot = tx.pivot;
+		position = tx.position;
+		scale = tx.scale;
+		rigidBody = tx.rigidBody;
+	}
 	void Set(vec4 rect)
 	{
-		Position = vec2(rect.x, rect.y);
-		Scale = vec2(rect.z, rect.w);
+		position = vec2(rect.x, rect.y);
+		scale = vec2(rect.z, rect.w);
 	}
 	mat4 Get()
 	{
-		return translate(mat4(1.0f), vec3(Position.x + (1 - dirX) * Scale.x / 2, Position.y, 1.0f)) *
-			   rotate(mat4(1.0f), Angle, vec3(0.0f, 0.0f, 1.0f)) *
-			   glm::scale(mat4(1.0f), vec3(Scale.x * dirX, Scale.y, 1.0f));
+		float x = position.x - pivot.x;
+		if (dirX == -1)
+		{
+			x = position.x + pivot.x + rigidBody.x;
+		}
+		float y = position.y - pivot.y;
+		return translate(mat4(1.0f), vec3(x, y, 1.0f)) *
+			   rotate(mat4(1.0f), angle, vec3(0.0f, 0.0f, 1.0f)) *
+			   glm::scale(mat4(1.0f), vec3(scale.x * dirX, scale.y, 1.0f));
 	}
 };
 

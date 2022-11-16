@@ -17,8 +17,8 @@ void Player::loadData()
 	jumpSpeed = js["jumpSpeed"];
 
 	auto rb = js["rigidbody"];
-	rigidbody = vec4(0, 0, rb["w"], rb["h"]);
-	debug->AddDebug(rigidbody);
+	rigidbody = vec2(rb["w"], rb["h"]);
+	debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
 }
 Player::~Player()
 {
@@ -152,7 +152,7 @@ void Player::Draw(double deltaTime)
 	debug->SetDebugTx(0, GetCol());
 	debug->DrawDebug();
 
-	sprite->Set(state, position);
+	sprite->Set(state, position, rigidbody);
 	shader->SetMat("modelMatrix", pTx->Get());
 	sprite->Draw(deltaTime, state);
 }

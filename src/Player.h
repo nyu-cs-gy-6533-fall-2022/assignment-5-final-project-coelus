@@ -28,11 +28,10 @@ public:
 	void Input(Control ctrl);
 	void Draw(double deltaTime);
 
-	vec2 GetScale() { return pTx->Scale; };
 	vec2 GetPos() { return position; };
 	void SetPos(vec2 pos) { position = pos; }
-	vec2 GetCenterPos() { return position + vec2(rigidbody.z / 2.f, rigidbody.w / 2.f); };
-	vec4 GetCol() { return vec4(position, rigidbody.z, rigidbody.w); }
+	vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
+	vec4 GetCol() { return vec4(position, rigidbody.x, rigidbody.y); }
 	void SetColStatus(CollisionStatus status)
 	{
 		isGround = status.isColDown;
@@ -49,8 +48,7 @@ private:
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
-	vec2 position, velocity;
-	vec4 rigidbody;
+	vec2 position, velocity, rigidbody;
 	bool isGround, isTop, isAttack;
 
 	void loadData();

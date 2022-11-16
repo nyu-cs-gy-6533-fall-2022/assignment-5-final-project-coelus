@@ -3,6 +3,7 @@
 
 #include "Texture.h"
 #include "BufferObject.h"
+#include "Transform.h"
 
 #include <glm/glm.hpp>
 
@@ -28,7 +29,7 @@ enum AnimationState
 struct AnimationData
 {
 	AnimationState state;
-	int centerX, centerY, width, height, frameCount;
+	int pivotX, pivotY, width, height, frameCount;
 	double secPerFrame;
 	bool isLoop;
 	string filename;
@@ -43,17 +44,20 @@ public:
 	void UpdateSprite(BufferObject &buffer);
 	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
-
-	vec4 GetRect(vec2 pos){return vec4(pos.x - centerX, pos.y - centerY, width, height);}
-
+	Transform GetTx(vec2 pos, vec2 rigidBody)
+	{
+		tx.rigidBody = rigidBody;
+		tx.position = pos;
+		return tx;
+	}
 	AnimationState State;
 	Texture *texture;
 
 private:
 	double deltaTime, frameTime, secPerFrame;
 	int frameIndex, frameCount;
-	int centerX, centerY, width, height;
 	bool isLoop;
+	Transform tx;
 
 	vector<vec4> frames;
 };

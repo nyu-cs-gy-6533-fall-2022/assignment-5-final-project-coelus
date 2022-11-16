@@ -87,5 +87,5 @@ void Stage::DrawFG()
 
 vec2 Stage::GetBoundary()
 {
-    return bg->Tx.Scale;
+    return bg->Tx.scale;
 }

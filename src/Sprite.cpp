@@ -13,8 +13,7 @@ Sprite::~Sprite()
 void Sprite::Set(string filePath, vec2 scale, vec2 pos)
 {
 	texture = new Texture(filePath);
-	Tx.Position = pos;
-	Tx.Scale = scale;
+	Tx.Set(pos, vec2(0, 0), scale);
 }
 
 void Sprite::Draw()
@@ -22,7 +21,7 @@ void Sprite::Draw()
 	texture->Bind();
 	buffer->Draw();
 }
-void AnimSprite::Set(AnimationState state, vec2 pos)
+void AnimSprite::Set(AnimationState state, vec2 pos, vec2 rigidBody)
 {
 	if (anim[state])
 	{
@@ -31,7 +30,7 @@ void AnimSprite::Set(AnimationState state, vec2 pos)
 			currentAnim = anim[state];
 			currentAnim->Reset();
 		}
-		Tx.Set(anim[state]->GetRect(pos));
+		Tx.Set(anim[state]->GetTx(pos, rigidBody));
 	}
 }
 // AnimSprite

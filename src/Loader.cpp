@@ -31,8 +31,8 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
 
         sprite[0]->Add(AnimationData{
             anim["state"],
-            anim["centerX"],
-            anim["centerY"],
+            anim["pivotX"],
+            anim["pivotY"],
             anim["width"],
             anim["height"],
             anim["frameCount"],
