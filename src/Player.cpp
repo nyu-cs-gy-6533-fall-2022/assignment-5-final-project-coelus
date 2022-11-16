@@ -41,11 +41,12 @@ void Player::Input(Control ctrl)
 	{
 		setIdle();
 	}
-	falling();
+
 	if (ctrl.jump)
 	{
 		setJump();
 	}
+	falling();
 	movement();
 	animStateUpdate(ctrl);
 	soundUpdate(ctrl);
@@ -72,7 +73,7 @@ void Player::falling()
 
 		vectorSpd.y = clamp(vectorSpd.y, -Global::MaxSpd, Global::MaxSpd);
 	}
-	else
+	else if (vectorSpd.y > 0 && isGround)
 	{
 		vectorSpd.y = 0;
 	}
