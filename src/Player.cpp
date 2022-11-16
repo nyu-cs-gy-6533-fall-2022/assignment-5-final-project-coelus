@@ -28,6 +28,11 @@ Player::~Player()
 
 void Player::Input(Control ctrl)
 {
+	if (ctrl.attack)
+	{
+		setAttack();
+	}
+
 	if (ctrl.right)
 	{
 		running(1);
@@ -41,10 +46,7 @@ void Player::Input(Control ctrl)
 	{
 		setIdle();
 	}
-	if (ctrl.attack)
-	{
-		setAttack();
-	}
+
 	if (ctrl.jump)
 	{
 		setJump();
@@ -57,11 +59,13 @@ void Player::Input(Control ctrl)
 
 void Player::running(int dir)
 {
+	if (isAttack)
+		return;
 	if ((dir == 1 & pTx->dirX < 0) ||
 		(dir == -1 & pTx->dirX > 0))
 		pTx->dirX *= -1;
 
-	velocity.x = runSpeed * dir * deltaTime;
+	velocity.x = runSpeed * pTx->dirX * deltaTime;
 }
 
 void Player::falling()
@@ -88,18 +92,29 @@ void Player::soundUpdate(Control ctrl)
 	{
 		soundSys->Play(SFXPlayerStep);
 	}
+	else if (state == Attack1 && (sprite->IsFrame(1)))
+	{
+		soundSys->Play(SFXPlayerAttack);
+	}
+	
 }
 void Player::animStateUpdate(Control ctrl)
 {
+
 	if (isGround)
 	{
 		if (state == Fall)
 		{
 			soundSys->Play(SFXPlayerLanding);
 		}
+
 		if (isAttack)
 		{
 			state = Attack1;
+			if (sprite->IsFrame(8))
+			{
+				isAttack = false;
+			}
 		}
 		else if (ctrl.right || ctrl.left)
 		{
@@ -126,7 +141,9 @@ void Player::setAttack()
 {
 	if (isGround && !isAttack)
 	{
+		velocity.x = 0;
 		isAttack = true;
+		
 	}
 }
 void Player::setJump()

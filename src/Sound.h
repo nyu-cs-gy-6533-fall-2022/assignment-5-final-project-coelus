@@ -11,7 +11,8 @@ enum SoundType
     BGMBoss1,
     SFXPlayerJump,
     SFXPlayerStep,
-    SFXPlayerLanding
+    SFXPlayerLanding,
+    SFXPlayerAttack
 };
 class SoundSystem
 {
