@@ -32,6 +32,8 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/nlohmann")
 ##stb
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/stb")
 
+
+
 ### Add OpenGL
 set(INCLUDE_DIRS ${OPENGL_INCLUDE_DIR})
 set(LIBRARIES ${OPENGL_LIBRARIES})
@@ -76,6 +78,9 @@ file(GLOB HEADERS
 file(GLOB GLSL
 "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.glsl"
 )
-
+##bass
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/bass")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/bass/bass.dll" "${CMAKE_BINARY_DIR}/bass.dll" COPYONLY)
 add_executable(${PROJECT_NAME}_bin ${SOURCES} ${HEADERS} ${GLSL})
-target_link_libraries(${PROJECT_NAME}_bin ${LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_bin  ${LIBRARIES} ${OPENGL_LIBRARIES} "${CMAKE_CURRENT_SOURCE_DIR}/lib/bass/bass.lib" )
+

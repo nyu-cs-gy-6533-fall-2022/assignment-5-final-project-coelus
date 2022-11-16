@@ -1,7 +1,7 @@
 {
     "type": 0,
     "runSpeed": 700,
-    "jumpSpeed": 1000,
+    "jumpSpeed": 1100,
     "rigidbody": {
         "errX": 100,
         "errY": 40,

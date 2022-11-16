@@ -19,7 +19,7 @@ public:
 	~Sprite();
 
 	void Draw();
-	void Set(string filePath, vec2 scale, vec2 pos);
+	void Set(string filePath, vec2 scale, vec2 pos = vec2(0, 0));
 	virtual void Add(AnimationData animData) {}
 
 	Transform Tx;

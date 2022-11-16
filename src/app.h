@@ -14,6 +14,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "Sound.h"
+
 using namespace std;
 using namespace glm;
 

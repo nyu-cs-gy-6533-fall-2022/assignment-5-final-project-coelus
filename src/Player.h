@@ -46,12 +46,12 @@ private:
 	Shader *shader;
 	AnimSprite *sprite;
 	AnimationState state;
+	Debug *debug;
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
 	vec2 vectorSpd;
 	vec4 rigidbody;
-	Debug *debug;
 	bool isGround, isTop;
 
 	void loadData();

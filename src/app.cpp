@@ -43,6 +43,8 @@ App::~App()
 void App::init()
 {
     loadIcon();
+    Sound *sound = new Sound("bgm/stage1.mp3");
+    sound->Play();
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(shader, deltaTime);
     stageSys = new StageSystem(player, shader);
