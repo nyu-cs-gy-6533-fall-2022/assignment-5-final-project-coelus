@@ -2,14 +2,14 @@
     "type": 1,
     "entry": [
         {
-            "spawnX": 1870,
+            "spawnX": 1800,
             "spawnY": 1220,
             "x": 1920,
             "y": 640,
             "w": 400,
             "h": 767,
             "nextStage": "L8",
-            "nextEntry": 1
+            "nextEntry": 0
         },
         {
             "spawnX": 1870,
@@ -94,6 +94,12 @@
             "y": 7170,
             "w": 1920,
             "h": 510
+        },
+        {
+            "x": 1792,
+            "y": 640,
+            "w": 128,
+            "h": 766
         }
     ],
     "background": {

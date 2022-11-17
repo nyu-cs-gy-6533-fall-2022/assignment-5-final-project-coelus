@@ -8,6 +8,7 @@
 #include "Debug.h"
 #include "Global.h"
 #include "Sound.h"
+#include "FSM.h"
 
 #include <algorithm>
 using namespace glm;
