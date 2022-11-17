@@ -1,19 +1,34 @@
 #include "Player.h"
 
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
-	: soundSys(sndSys), shader(s), deltaTime(time), state(Idle), isAttack(false), position(vec2(0, 0))
+	: soundSys(sndSys),
+	  shader(s),
+	  deltaTime(time),
+	  state(Idle),
+	  nextState(EmptyState),
+	  position(vec2(0, 0)),
+	  ctrlX(false)
 {
 
 	sprite = new AnimSprite();
 	debug = new Debug(shader);
 	pTx = &sprite->Tx;
 
-	fsm = new FSM(FSMInput{velocity, state, deltaTime, isGround, isTop, isAttack});
+	fsm = new FSM(
+		FSMInput{soundSys, sprite,
+				 runSpeed, jumpSpeed,
+				 pTx->dirX,
+				 velocity,
+				 state,
+				 deltaTime,
+				 isGround, isTop,
+				 ctrlX});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
 	fsm->Add<PlayerFall>(Fall);
 	fsm->Add<PlayerAttack1>(Attack1);
+	fsm->Set(Idle);
 
 	loadData();
 }
@@ -36,136 +51,62 @@ Player::~Player()
 
 void Player::Input(Control ctrl)
 {
-	if (ctrl.attack)
-	{
-		setAttack();
-	}
-
+	ctrlX = ctrl.right || ctrl.left;
 	if (ctrl.right)
 	{
-		running(1);
+		setDirX(1);
+		nextState = Run;
 	}
 	else if (ctrl.left)
 	{
-		running(-1);
-	}
-
-	if (!(ctrl.right || ctrl.left))
-	{
-		setIdle();
-	}
-
-	if (ctrl.jump)
-	{
-		setJump();
-	}
-	falling();
-	movement();
-	animStateUpdate(ctrl);
-	soundUpdate(ctrl);
-}
-
-void Player::running(int dir)
-{
-	if (isAttack)
-		return;
-	if ((dir == 1 & pTx->dirX < 0) ||
-		(dir == -1 & pTx->dirX > 0))
-		pTx->dirX *= -1;
-
-	velocity.x = runSpeed * pTx->dirX * deltaTime;
-}
-
-void Player::falling()
-{
-	if (!isGround)
-	{
-		if (isTop)
-		{
-			velocity.y = 0;
-		}
-		velocity.y += 9.8f * deltaTime * Global::GravityRatio;
-
-		velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
-	}
-	else if (velocity.y > 0 && isGround)
-	{
-		velocity.y = 0;
-	}
-}
-void Player::soundUpdate(Control ctrl)
-{
-
-	if (state == Run && (sprite->IsFrame(3) || sprite->IsFrame(8)))
-	{
-		soundSys->Play(SFXPlayerStep);
-	}
-	else if (state == Attack1 && (sprite->IsFrame(1)))
-	{
-		soundSys->Play(SFXPlayerAttack);
-	}
-}
-void Player::animStateUpdate(Control ctrl)
-{
-
-	if (isGround)
-	{
-		if (state == Fall)
-		{
-			soundSys->Play(SFXPlayerLanding);
-		}
-
-		if (isAttack)
-		{
-			state = Attack1;
-			if (sprite->IsFrame(8))
-			{
-				isAttack = false;
-			}
-		}
-		else if (ctrl.right || ctrl.left)
-		{
-			state = Run;
-		}
-		else
-		{
-			state = Idle;
-		}
+		setDirX(-1);
+		nextState = Run;
 	}
 	else
 	{
-		if (velocity.y < 0)
-		{
-			state = Jump;
-		}
-		else
-		{
-			state = Fall;
-		}
+		nextState = Idle;
 	}
-}
-void Player::setAttack()
-{
-	if (isGround && !isAttack)
+
+	if (!isGround)
 	{
-		velocity.x = 0;
-		isAttack = true;
+		nextState = Fall;
 	}
-}
-void Player::setJump()
-{
-	if (isGround && state != Jump)
+	if (ctrl.attack && isGround)
 	{
-		velocity.y = -jumpSpeed * deltaTime;
-		soundSys->Play(SFXPlayerJump);
+		nextState = Attack1;
+	}
+	if (ctrl.jump && isGround)
+	{
+		nextState = Jump;
+	}
+
+	stateUpdate();
+	fsm->Update();
+	movement();
+}
+void Player::stateUpdate()
+{
+	if (!fsm->TryNextState(nextState))
+		return;
+	if (nextState != EmptyState)
+	{
+		state = nextState;
+		nextState = EmptyState;
+		fsm->Exit();
+		fsm->Set(state);
+		fsm->Enter();
 	}
 }
-void Player::setIdle()
+void Player::setDirX(int dir)
 {
-	velocity.x = 0;
+	if ((dir == 1 & pTx->dirX < 0) ||
+		(dir == -1 & pTx->dirX > 0))
+		pTx->dirX *= -1;
 }
+
 void Player::movement()
 {
+	velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
 	position.x += velocity.x;
 	position.y += velocity.y;
 }

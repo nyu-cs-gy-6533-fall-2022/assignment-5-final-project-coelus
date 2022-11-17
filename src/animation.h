@@ -23,7 +23,8 @@ enum AnimationState
 	Run,
 	Jump,
 	Fall,
-	Attack1
+	Attack1,
+	EmptyState
 };
 
 struct AnimationData

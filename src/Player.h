@@ -43,7 +43,7 @@ private:
 	Transform *pTx;
 	Shader *shader;
 	AnimSprite *sprite;
-	AnimationState state;
+	AnimationState state, nextState;
 	SoundSystem *soundSys;
 	Debug *debug;
 	FSM *fsm;
@@ -51,17 +51,12 @@ private:
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
 	vec2 position, velocity, rigidbody;
-	bool isGround, isTop, isAttack;
-	
+	bool isGround, isTop;
+	bool ctrlX;
 
 	void loadData();
-	void running(int dir);
-	void falling();
-	void setIdle();
-	void setAttack();
-	void setJump();
+	void setDirX(int dir);
+	void stateUpdate();
 	void movement();
-	void soundUpdate(Control ctrl);
-	void animStateUpdate(Control ctrl);
 };
 #endif
