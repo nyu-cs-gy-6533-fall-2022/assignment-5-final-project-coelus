@@ -8,7 +8,7 @@
 #include "Debug.h"
 #include "Global.h"
 #include "Sound.h"
-#include "FSM.h"
+#include "fsm/FSM.h"
 
 #include <algorithm>
 using namespace glm;
@@ -51,6 +51,7 @@ private:
 	double &deltaTime;
 	vec2 position, velocity, rigidbody;
 	bool isGround, isTop, isAttack;
+	
 
 	void loadData();
 	void running(int dir);

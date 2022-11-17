@@ -67,6 +67,7 @@ endif()
 ### Compile all the cpp files in src
 file(GLOB SOURCES
 "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/fsm/*.cpp"
 )
 
 ### Collect all the h files in src
