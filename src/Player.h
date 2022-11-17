@@ -46,6 +46,7 @@ private:
 	AnimationState state;
 	SoundSystem *soundSys;
 	Debug *debug;
+	FSM *fsm;
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;

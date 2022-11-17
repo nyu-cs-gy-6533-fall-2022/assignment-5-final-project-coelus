@@ -18,7 +18,7 @@ public:
         }
     }
     template <class T>
-    void Add(AnimationState state)
+    void Add(const AnimationState state)
     {
         fsm[state] = new T(input);
     }

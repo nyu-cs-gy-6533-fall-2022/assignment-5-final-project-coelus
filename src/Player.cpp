@@ -8,6 +8,14 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	pTx = &sprite->Tx;
 	debug = new Debug(shader);
 
+	fsm = new FSM(FSMInput{velocity, state});
+	fsm->Add<PlayerIdle>(Idle);
+	fsm->Add<PlayerRun>(Run);
+	fsm->Add<PlayerJump>(Jump);
+	fsm->Add<PlayerFall>(Fall);
+	fsm->Add<PlayerAttack1>(Attack1);
+
+
 	loadData();
 }
 void Player::loadData()
@@ -24,6 +32,7 @@ Player::~Player()
 {
 	delete sprite;
 	delete debug;
+	delete fsm;
 }
 
 void Player::Input(Control ctrl)
@@ -96,7 +105,6 @@ void Player::soundUpdate(Control ctrl)
 	{
 		soundSys->Play(SFXPlayerAttack);
 	}
-	
 }
 void Player::animStateUpdate(Control ctrl)
 {
@@ -143,7 +151,6 @@ void Player::setAttack()
 	{
 		velocity.x = 0;
 		isAttack = true;
-		
 	}
 }
 void Player::setJump()
