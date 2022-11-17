@@ -12,7 +12,7 @@ public:
     virtual void Update() = 0;
     virtual void Exit() = 0;
 
-private:
+protected:
     FSMInput input;
 };
 
@@ -48,7 +48,23 @@ class PlayerFall : public FiniteState
 public:
     PlayerFall(FSMInput i) : FiniteState(i){};
     void Enter(){};
-    void Update(){};
+    void Update()
+    {
+        if (!input.isGround)
+        {
+            if (input.isTop)
+            {
+                input.velocity.y = 0;
+            }
+            input.velocity.y += 9.8f * input.deltaTime * Global::GravityRatio;
+
+            input.velocity.y = clamp(input.velocity.y, -Global::MaxSpd, Global::MaxSpd);
+        }
+        else if (input.velocity.y > 0 && input.isGround)
+        {
+            input.velocity.y = 0;
+        }
+    };
     void Exit(){};
 };
 

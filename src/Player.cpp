@@ -5,16 +5,15 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 {
 
 	sprite = new AnimSprite();
-	pTx = &sprite->Tx;
 	debug = new Debug(shader);
+	pTx = &sprite->Tx;
 
-	fsm = new FSM(FSMInput{velocity, state});
+	fsm = new FSM(FSMInput{velocity, state, deltaTime, isGround, isTop, isAttack});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
 	fsm->Add<PlayerFall>(Fall);
 	fsm->Add<PlayerAttack1>(Attack1);
-
 
 	loadData();
 }
