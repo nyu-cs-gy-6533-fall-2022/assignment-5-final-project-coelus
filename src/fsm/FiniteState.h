@@ -14,14 +14,16 @@ public:
           jumpSpeed(data.jumpSpeed),
           dirX(data.dirX),
           velocity(data.velocity),
-          state(data.state),
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
           ctrlX(data.ctrlX)
     {
     }
-    virtual bool TryNextState(AnimationState state) = 0;
+    virtual int GetPossibleState()
+    {
+        return possibleState.input;
+    }
     virtual void Enter() = 0;
     virtual void Update() = 0;
     virtual void Exit() = 0;
@@ -32,14 +34,22 @@ protected:
     float &runSpeed, &jumpSpeed;
     int &dirX;
     vec2 &velocity;
-    AnimationState &state;
     double &deltaTime;
     bool &isGround, &isTop;
-    bool &ctrlX;
+    int &ctrlX;
+
+    FSMInput possibleState;
+
+    void setDirX()
+    {
+        if ((ctrlX == 1 & dirX < 0) ||
+            (ctrlX == -1 & dirX > 0))
+            dirX *= -1;
+    }
 
     void moveX()
     {
-        if (ctrlX)
+        if (ctrlX != 0)
         {
             velocity.x = runSpeed * dirX * deltaTime;
         }
@@ -60,8 +70,11 @@ protected:
 class PlayerIdle : public FiniteState
 {
 public:
-    PlayerIdle(FSMData data) : FiniteState(data){};
-    bool TryNextState(AnimationState state) { return state != Idle; }
+    PlayerIdle(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<AnimationState>{Run, Fall, Jump, Attack1});
+    };
+
     void Enter()
     {
         velocity.x = 0;
@@ -74,11 +87,15 @@ public:
 class PlayerRun : public FiniteState
 {
 public:
-    PlayerRun(FSMData data) : FiniteState(data){};
-    bool TryNextState(AnimationState state) { return state != Run; }
+    PlayerRun(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<AnimationState>{Idle, Fall, Jump, Attack1});
+    };
+
     void Enter(){};
     void Update()
     {
+        setDirX();
         moveX();
         if (sprite->IsFrame(3) || sprite->IsFrame(8))
         {
@@ -91,10 +108,15 @@ public:
 class PlayerJump : public FiniteState
 {
 public:
-    PlayerJump(FSMData data) : FiniteState(data){};
-    bool TryNextState(AnimationState state)
+    PlayerJump(FSMData data) : FiniteState(data)
     {
-        return state == Fall;
+        possibleState.Add(vector<AnimationState>{Fall});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
     }
     void Enter()
     {
@@ -103,6 +125,7 @@ public:
     };
     void Update()
     {
+        setDirX();
         moveX();
         falling();
     };
@@ -112,14 +135,22 @@ public:
 class PlayerFall : public FiniteState
 {
 public:
-    PlayerFall(FSMData data) : FiniteState(data){};
-    bool TryNextState(AnimationState state)
+    PlayerFall(FSMData data) : FiniteState(data)
     {
-        return (state == Run || state == Idle);
+        possibleState.Add(vector<AnimationState>{Idle, Run});
+    };
+
+    int GetPossibleState()
+    {
+        if (!isGround)
+            return 0;
+        return possibleState.input;
     }
+
     void Enter(){};
     void Update()
     {
+        setDirX();
         moveX();
         falling();
     };
@@ -133,10 +164,15 @@ public:
 class PlayerAttack1 : public FiniteState
 {
 public:
-    PlayerAttack1(FSMData data) : FiniteState(data){};
-    bool TryNextState(AnimationState state)
+    PlayerAttack1(FSMData data) : FiniteState(data)
     {
-        return sprite->IsEnd();
+        possibleState.Add(vector<AnimationState>{Idle, Run});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
     }
     void Enter()
     {

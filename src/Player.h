@@ -43,19 +43,18 @@ private:
 	Transform *pTx;
 	Shader *shader;
 	AnimSprite *sprite;
-	AnimationState state, nextState;
 	SoundSystem *soundSys;
 	Debug *debug;
 	FSM *fsm;
+	FSMInput fsmInput;
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
 	vec2 position, velocity, rigidbody;
 	bool isGround, isTop;
-	bool ctrlX;
+	int ctrlX;
 
 	void loadData();
-	void setDirX(int dir);
 	void stateUpdate();
 	void movement();
 };

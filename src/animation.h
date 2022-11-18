@@ -19,12 +19,13 @@ using namespace glm;
 
 enum AnimationState
 {
+	EmptyState,
 	Idle,
 	Run,
 	Jump,
 	Fall,
 	Attack1,
-	EmptyState
+	
 };
 
 struct AnimationData

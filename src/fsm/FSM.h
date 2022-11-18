@@ -8,7 +8,7 @@ using namespace glm;
 class FSM
 {
 public:
-    FSM(FSMData in) : data(in){};
+    FSM(FSMData d) : data(d){};
     ~FSM()
     {
         for (auto fs : fsm)
@@ -23,14 +23,17 @@ public:
     }
     void Set(AnimationState state)
     {
+        currentState = state;
         fs = fsm[state];
     }
-    bool TryNextState(AnimationState state){return fs->TryNextState(state); }
+    AnimationState GetState(){return currentState;};
+    int GetPossibleState() { return fs->GetPossibleState(); }
     void Enter() { fs->Enter(); };
     void Update() { fs->Update(); };
     void Exit() { fs->Exit(); };
 
 private:
+    AnimationState currentState;
     SoundSystem *soundSys;
     FSMData data;
     FiniteState *fs;

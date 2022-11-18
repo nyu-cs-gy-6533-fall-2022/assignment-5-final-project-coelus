@@ -4,10 +4,8 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	: soundSys(sndSys),
 	  shader(s),
 	  deltaTime(time),
-	  state(Idle),
-	  nextState(EmptyState),
 	  position(vec2(0, 0)),
-	  ctrlX(false)
+	  ctrlX(0)
 {
 
 	sprite = new AnimSprite();
@@ -16,13 +14,12 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 
 	fsm = new FSM(
 		FSMData{soundSys, sprite,
-				 runSpeed, jumpSpeed,
-				 pTx->dirX,
-				 velocity,
-				 state,
-				 deltaTime,
-				 isGround, isTop,
-				 ctrlX});
+				runSpeed, jumpSpeed,
+				pTx->dirX,
+				velocity,
+				deltaTime,
+				isGround, isTop,
+				ctrlX});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
@@ -51,33 +48,34 @@ Player::~Player()
 
 void Player::Input(Control ctrl)
 {
-	ctrlX = ctrl.right || ctrl.left;
+	fsmInput.Init();
 	if (ctrl.right)
 	{
-		setDirX(1);
-		nextState = Run;
+		ctrlX = 1;
+		fsmInput.Add(Run);
 	}
 	else if (ctrl.left)
 	{
-		setDirX(-1);
-		nextState = Run;
+		ctrlX = -1;
+		fsmInput.Add(Run);
 	}
 	else
 	{
-		nextState = Idle;
+		ctrlX = 0;
+		fsmInput.Add(Idle);
 	}
 
 	if (!isGround)
 	{
-		nextState = Fall;
+		fsmInput.Add(Fall);
 	}
 	if (ctrl.attack && isGround)
 	{
-		nextState = Attack1;
+		fsmInput.Add(Attack1);
 	}
 	if (ctrl.jump && isGround)
 	{
-		nextState = Jump;
+		fsmInput.Add(Jump);
 	}
 
 	stateUpdate();
@@ -86,22 +84,13 @@ void Player::Input(Control ctrl)
 }
 void Player::stateUpdate()
 {
-	if (!fsm->TryNextState(nextState))
-		return;
-	if (nextState != EmptyState)
+	AnimationState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
+	if (nextState != EmptyState && nextState != fsm->GetState())
 	{
-		state = nextState;
-		nextState = EmptyState;
 		fsm->Exit();
-		fsm->Set(state);
+		fsm->Set(nextState);
 		fsm->Enter();
 	}
-}
-void Player::setDirX(int dir)
-{
-	if ((dir == 1 & pTx->dirX < 0) ||
-		(dir == -1 & pTx->dirX > 0))
-		pTx->dirX *= -1;
 }
 
 void Player::movement()
@@ -116,7 +105,7 @@ void Player::Draw(double deltaTime)
 	debug->SetDebugTx(0, GetCol());
 	debug->DrawDebug();
 
-	sprite->Set(state, position, rigidbody);
+	sprite->Set(fsm->GetState(), position, rigidbody);
 	shader->SetMat("modelMatrix", pTx->Get());
-	sprite->Draw(deltaTime, state);
+	sprite->Draw(deltaTime, fsm->GetState());
 }

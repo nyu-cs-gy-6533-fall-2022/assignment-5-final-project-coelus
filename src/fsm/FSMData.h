@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <math.h>
+using namespace std;
+
 struct FSMData
 {
     SoundSystem *soundSys;
@@ -6,8 +10,39 @@ struct FSMData
     float &runSpeed, &jumpSpeed;
     int &dirX;
     vec2 &velocity;
-    AnimationState &state;
     double &deltaTime;
     bool &isGround, &isTop;
-    bool &ctrlX;
+    int &ctrlX;
+};
+
+struct FSMInput
+{
+    int input = 0;
+    void Init()
+    {
+        input = 0;
+    }
+    void Add(AnimationState state)
+    {
+        input |= (1 << state);
+    }
+    void Add(vector<AnimationState> states)
+    {
+        for (auto s : states)
+        {
+            Add(s);
+        }
+    }
+    int GetMSB(int val)
+    {
+        int b = 0;
+        while (val >>= 1)
+            b++;
+        return b;
+    }
+    AnimationState GetNextState(int possibleState)
+    {
+        int res = input & possibleState;
+        return (AnimationState)GetMSB(res);
+    }
 };
