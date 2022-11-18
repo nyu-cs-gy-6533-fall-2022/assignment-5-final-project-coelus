@@ -52,6 +52,7 @@ private:
 	double &deltaTime;
 	vec2 position, velocity, rigidbody;
 	bool isGround, isTop;
+	bool canJumpAttack;
 	int ctrlX;
 
 	void loadData();

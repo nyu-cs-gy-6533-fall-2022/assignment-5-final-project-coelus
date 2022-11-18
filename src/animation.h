@@ -26,7 +26,8 @@ enum ActionState
 	Fall,
 	Attack1,
 	Attack2,
-	Attack3
+	Attack3,
+	JumpAttack
 
 };
 

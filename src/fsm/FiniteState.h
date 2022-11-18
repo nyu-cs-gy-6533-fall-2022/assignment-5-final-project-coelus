@@ -17,6 +17,7 @@ public:
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
+          canJumpAttack(data.canJumpAttack),
           ctrlX(data.ctrlX)
     {
     }
@@ -36,9 +37,10 @@ protected:
     vec2 &velocity;
     double &deltaTime;
     bool &isGround, &isTop;
+    bool &canJumpAttack;
     int &ctrlX;
 
-    FSMInput possibleState;
+    FSMInput possibleState, interruptState;
 
     void setDirX()
     {
@@ -114,12 +116,13 @@ class PlayerJump : public FiniteState
 public:
     PlayerJump(FSMData data) : FiniteState(data)
     {
+        interruptState.Add(vector<ActionState>{JumpAttack});
         possibleState.Add(vector<ActionState>{Fall});
     };
     int GetPossibleState()
     {
         if (!sprite->IsEnd())
-            return 0;
+            return interruptState.input;
         return possibleState.input;
     }
     void Enter()
@@ -142,13 +145,14 @@ class PlayerFall : public FiniteState
 public:
     PlayerFall(FSMData data) : FiniteState(data)
     {
+        interruptState.Add(vector<ActionState>{JumpAttack});
         possibleState.Add(vector<ActionState>{Idle, Run});
     };
 
     int GetPossibleState()
     {
         if (!isGround)
-            return 0;
+            return interruptState.input;
         return possibleState.input;
     }
 
@@ -252,6 +256,37 @@ public:
         {
             soundSys->Play(SFXPlayerAttack);
         }
+    };
+    void Exit(){};
+};
+
+class PlayerJumpAttack : public FiniteState
+{
+public:
+    PlayerJumpAttack(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{Fall});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+    void Enter()
+    {
+        FiniteState::Enter();
+        setDirX();
+        canJumpAttack = false;
+        velocity.x = 0;
+    };
+    void Update()
+    {
+        if (sprite->IsFrame(2))
+        {
+            soundSys->Play(SFXPlayerAttack);
+        }
+        velocity.y = 0;
     };
     void Exit(){};
 };

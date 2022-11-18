@@ -83,6 +83,17 @@
             "secPerFrame": 0.05,
             "isLoop": false,
             "filename": "main/attack3.png"
+        },
+        {
+            "state": 8,
+            "pivotX": 230,
+            "pivotY": 295,
+            "width": 1024,
+            "height": 512,
+            "frameCount": 7,
+            "secPerFrame": 0.05,
+            "isLoop": false,
+            "filename": "main/jumpAttack.png"
         }
     ]
 }

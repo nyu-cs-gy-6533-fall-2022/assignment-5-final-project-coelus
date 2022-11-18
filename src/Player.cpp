@@ -7,7 +7,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	  position(vec2(0, 0)),
 	  ctrlX(0)
 {
-	
+
 	sprite = new AnimSprite();
 	debug = new Debug(shader);
 	pTx = &sprite->Tx;
@@ -20,6 +20,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 				velocity,
 				deltaTime,
 				isGround, isTop,
+				canJumpAttack,
 				ctrlX});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
@@ -28,6 +29,8 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	fsm->Add<PlayerAttack1>(Attack1);
 	fsm->Add<PlayerAttack2>(Attack2);
 	fsm->Add<PlayerAttack3>(Attack3);
+	fsm->Add<PlayerJumpAttack>(JumpAttack);
+
 	fsm->Set(Idle);
 
 	loadData();
@@ -72,11 +75,22 @@ void Player::Input(Control ctrl)
 	{
 		fsmInput.Add(Fall);
 	}
-	if (ctrl.attack && isGround)
+	if (ctrl.attack)
 	{
-		fsmInput.Add(Attack1);
-		fsmInput.Add(Attack2);
-		fsmInput.Add(Attack3);
+		if (isGround)
+		{
+			fsmInput.Add(Attack1);
+			fsmInput.Add(Attack2);
+			fsmInput.Add(Attack3);
+		}
+		else if (canJumpAttack)
+		{
+			fsmInput.Add(JumpAttack);
+		}
+	}
+	if (isGround)
+	{
+		canJumpAttack = true;
 	}
 	if (ctrl.jump && isGround)
 	{

@@ -10,6 +10,7 @@ struct FSMData
     vec2 &velocity;
     double &deltaTime;
     bool &isGround, &isTop;
+    bool &canJumpAttack;
     int &ctrlX;
 };
 
