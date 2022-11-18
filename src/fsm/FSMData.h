@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <math.h>
 using namespace std;
 
 struct FSMData
@@ -35,14 +33,13 @@ struct FSMInput
     }
     int GetMSB(int val)
     {
-        int b = 0;
+        int bit = 0;
         while (val >>= 1)
-            b++;
-        return b;
+            bit++;
+        return bit;
     }
     ActionState GetNextState(int possibleState)
     {
-        int res = input & possibleState;
-        return (ActionState)GetMSB(res);
+        return (ActionState)GetMSB(input & possibleState);
     }
 };

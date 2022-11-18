@@ -174,6 +174,64 @@ class PlayerAttack1 : public FiniteState
 public:
     PlayerAttack1(FSMData data) : FiniteState(data)
     {
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Attack2});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+    void Enter()
+    {
+        FiniteState::Enter();
+        setDirX();
+        velocity.x = 50 * dirX * deltaTime;
+    };
+    void Update()
+    {
+        if (sprite->IsFrame(3))
+        {
+            soundSys->Play(SFXPlayerAttack);
+        }
+    };
+    void Exit(){};
+};
+
+class PlayerAttack2 : public FiniteState
+{
+public:
+    PlayerAttack2(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Attack3});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+    void Enter()
+    {
+        FiniteState::Enter();
+        setDirX();
+        velocity.x = 50 * dirX * deltaTime;
+    };
+    void Update()
+    {
+        if (sprite->IsFrame(2))
+        {
+            soundSys->Play(SFXPlayerAttack);
+        }
+    };
+    void Exit(){};
+};
+
+class PlayerAttack3 : public FiniteState
+{
+public:
+    PlayerAttack3(FSMData data) : FiniteState(data)
+    {
         possibleState.Add(vector<ActionState>{Idle, Run, Fall});
     };
     int GetPossibleState()
@@ -185,11 +243,12 @@ public:
     void Enter()
     {
         FiniteState::Enter();
+        setDirX();
         velocity.x = 50 * dirX * deltaTime;
     };
     void Update()
     {
-        if (sprite->IsFrame(1))
+        if (sprite->IsFrame(2))
         {
             soundSys->Play(SFXPlayerAttack);
         }

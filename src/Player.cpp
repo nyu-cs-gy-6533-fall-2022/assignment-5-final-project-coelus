@@ -7,10 +7,11 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	  position(vec2(0, 0)),
 	  ctrlX(0)
 {
-
+	
 	sprite = new AnimSprite();
 	debug = new Debug(shader);
 	pTx = &sprite->Tx;
+	pTx->dirX = -1;
 
 	fsm = new FSM(
 		FSMData{soundSys, sprite,
@@ -25,6 +26,8 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	fsm->Add<PlayerJump>(Jump);
 	fsm->Add<PlayerFall>(Fall);
 	fsm->Add<PlayerAttack1>(Attack1);
+	fsm->Add<PlayerAttack2>(Attack2);
+	fsm->Add<PlayerAttack3>(Attack3);
 	fsm->Set(Idle);
 
 	loadData();
@@ -38,7 +41,6 @@ void Player::loadData()
 	auto rb = js["rigidbody"];
 	rigidbody = vec2(rb["w"], rb["h"]);
 	debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
-	
 }
 Player::~Player()
 {
@@ -73,6 +75,8 @@ void Player::Input(Control ctrl)
 	if (ctrl.attack && isGround)
 	{
 		fsmInput.Add(Attack1);
+		fsmInput.Add(Attack2);
+		fsmInput.Add(Attack3);
 	}
 	if (ctrl.jump && isGround)
 	{
