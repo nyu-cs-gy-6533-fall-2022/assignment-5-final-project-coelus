@@ -14,6 +14,7 @@ public:
           jumpSpeed(data.jumpSpeed),
           dirX(data.dirX),
           velocity(data.velocity),
+          force(data.force),
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
@@ -34,7 +35,7 @@ protected:
     AnimSprite *sprite;
     float &runSpeed, &jumpSpeed;
     int &dirX;
-    vec2 &velocity;
+    vec2 &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;
@@ -48,7 +49,16 @@ protected:
             (ctrlX == -1 & dirX > 0))
             dirX *= -1;
     }
-
+    void stopX()
+    {
+        velocity.x = 0;
+        force.x = 0;
+    }
+    void stopY()
+    {
+        velocity.y = 0;
+        force.y = 0;
+    }
     void moveX()
     {
         if (ctrlX != 0)
@@ -64,7 +74,7 @@ protected:
             {
                 velocity.y = 0;
             }
-            velocity.y += 9.8f * deltaTime * Global::GravityRatio;
+            force.y = 9.8f * deltaTime * Global::GravityRatio;
         }
     }
 };
@@ -80,8 +90,8 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        velocity.x = 0;
-        velocity.y = 0;
+        force = vec2(0);
+        velocity = vec2(0);
     };
     void Update(){};
     void Exit(){};
@@ -168,8 +178,11 @@ public:
     };
     void Exit()
     {
-        soundSys->Play(SFXPlayerLanding);
-        velocity.y = 0;
+        if (isGround)
+        {
+            soundSys->Play(SFXPlayerLanding);
+            stopY();
+        }
     };
 };
 
@@ -190,16 +203,27 @@ public:
     {
         FiniteState::Enter();
         setDirX();
-        velocity.x = 50 * dirX * deltaTime;
+        stopX();
     };
     void Update()
     {
+        force.x = attackForce * dirX * deltaTime;
+        if (sprite->IsFrameGreater(4))
+        {
+            stopX();
+        }
         if (sprite->IsFrame(3))
         {
             soundSys->Play(SFXPlayerAttack);
         }
     };
-    void Exit(){};
+    void Exit()
+    {
+        stopX();
+    };
+
+private:
+    float attackForce = 30;
 };
 
 class PlayerAttack2 : public FiniteState
@@ -219,16 +243,27 @@ public:
     {
         FiniteState::Enter();
         setDirX();
-        velocity.x = 50 * dirX * deltaTime;
+        stopX();
     };
     void Update()
     {
+        force.x = attackForce * dirX * deltaTime;
+        if (sprite->IsFrameGreater(4))
+        {
+            stopX();
+        }
         if (sprite->IsFrame(2))
         {
             soundSys->Play(SFXPlayerAttack);
         }
     };
-    void Exit(){};
+    void Exit()
+    {
+        stopX();
+    };
+
+private:
+    float attackForce = 40;
 };
 
 class PlayerAttack3 : public FiniteState
@@ -248,16 +283,27 @@ public:
     {
         FiniteState::Enter();
         setDirX();
-        velocity.x = 50 * dirX * deltaTime;
+        stopX();
     };
     void Update()
     {
+        force.x = attackForce * dirX * deltaTime;
+        if (sprite->IsFrameGreater(5))
+        {
+            stopX();
+        }
         if (sprite->IsFrame(2))
         {
             soundSys->Play(SFXPlayerAttack);
         }
     };
-    void Exit(){};
+    void Exit()
+    {
+        stopX();
+    };
+
+private:
+    float attackForce = 60;
 };
 
 class PlayerJumpAttack : public FiniteState
@@ -265,7 +311,7 @@ class PlayerJumpAttack : public FiniteState
 public:
     PlayerJumpAttack(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Fall});
+        possibleState.Add(vector<ActionState>{Fall, Idle, Run});
     };
     int GetPossibleState()
     {
@@ -278,15 +324,26 @@ public:
         FiniteState::Enter();
         setDirX();
         canJumpAttack = false;
-        velocity.x = 0;
+        stopX();
     };
     void Update()
     {
+        force.x = attackForce * dirX * deltaTime;
+        if (sprite->IsFrameGreater(4))
+        {
+            stopX();
+        }
         if (sprite->IsFrame(2))
         {
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
     };
-    void Exit(){};
+    void Exit()
+    {
+        stopX();
+    };
+
+private:
+    float attackForce = 20;
 };

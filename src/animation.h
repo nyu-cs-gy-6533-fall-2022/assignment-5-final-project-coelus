@@ -49,6 +49,8 @@ public:
 	void UpdateSprite(BufferObject &buffer);
 	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
+	bool IsFrameGreater(int index) { return frameIndex >= index; }
+
 	bool IsEnd() { return isEnd; }
 	Transform GetTx(vec2 pos, vec2 rigidBody)
 	{

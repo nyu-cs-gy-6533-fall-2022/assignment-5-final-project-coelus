@@ -7,7 +7,7 @@ struct FSMData
     AnimSprite *sprite;
     float &runSpeed, &jumpSpeed;
     int &dirX;
-    vec2 &velocity;
+    vec2 &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;

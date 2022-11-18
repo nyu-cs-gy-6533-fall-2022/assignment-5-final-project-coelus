@@ -17,7 +17,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 		FSMData{soundSys, sprite,
 				runSpeed, jumpSpeed,
 				pTx->dirX,
-				velocity,
+				velocity, force,
 				deltaTime,
 				isGround, isTop,
 				canJumpAttack,
@@ -115,6 +115,8 @@ void Player::stateUpdate()
 
 void Player::movement()
 {
+	velocity.x += force.x;
+	velocity.y += force.y;
 	velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
 	position.x += velocity.x;
 	position.y += velocity.y;

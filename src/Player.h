@@ -50,7 +50,7 @@ private:
 
 	float runSpeed, jumpSpeed;
 	double &deltaTime;
-	vec2 position, velocity, rigidbody;
+	vec2 position, velocity, force, rigidbody;
 	bool isGround, isTop;
 	bool canJumpAttack;
 	int ctrlX;

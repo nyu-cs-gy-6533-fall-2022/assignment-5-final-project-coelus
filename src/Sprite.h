@@ -44,6 +44,7 @@ public:
 	void Reset() { anim[action]->Reset(); }
 
 	bool IsFrame(int index) { return anim[action]->IsFrame(index); }
+	bool IsFrameGreater(int index) { return anim[action]->IsFrameGreater(index); }
 	bool IsEnd() { return anim[action]->IsEnd(); }
 
 private:
