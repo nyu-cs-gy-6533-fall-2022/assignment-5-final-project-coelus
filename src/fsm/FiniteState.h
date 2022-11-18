@@ -1,24 +1,24 @@
 #pragma once
 #include "Animation.h"
-#include "FSMInput.h"
+#include "FSMData.h"
 #include <glm/glm.hpp>
 using namespace glm;
 
 class FiniteState
 {
 public:
-    FiniteState(FSMInput input)
-        : soundSys(input.soundSys),
-          sprite(input.sprite),
-          runSpeed(input.runSpeed),
-          jumpSpeed(input.jumpSpeed),
-          dirX(input.dirX),
-          velocity(input.velocity),
-          state(input.state),
-          deltaTime(input.deltaTime),
-          isGround(input.isGround),
-          isTop(input.isTop),
-          ctrlX(input.ctrlX)
+    FiniteState(FSMData data)
+        : soundSys(data.soundSys),
+          sprite(data.sprite),
+          runSpeed(data.runSpeed),
+          jumpSpeed(data.jumpSpeed),
+          dirX(data.dirX),
+          velocity(data.velocity),
+          state(data.state),
+          deltaTime(data.deltaTime),
+          isGround(data.isGround),
+          isTop(data.isTop),
+          ctrlX(data.ctrlX)
     {
     }
     virtual bool TryNextState(AnimationState state) = 0;
@@ -60,7 +60,7 @@ protected:
 class PlayerIdle : public FiniteState
 {
 public:
-    PlayerIdle(FSMInput input) : FiniteState(input){};
+    PlayerIdle(FSMData data) : FiniteState(data){};
     bool TryNextState(AnimationState state) { return state != Idle; }
     void Enter()
     {
@@ -74,7 +74,7 @@ public:
 class PlayerRun : public FiniteState
 {
 public:
-    PlayerRun(FSMInput input) : FiniteState(input){};
+    PlayerRun(FSMData data) : FiniteState(data){};
     bool TryNextState(AnimationState state) { return state != Run; }
     void Enter(){};
     void Update()
@@ -91,7 +91,7 @@ public:
 class PlayerJump : public FiniteState
 {
 public:
-    PlayerJump(FSMInput input) : FiniteState(input){};
+    PlayerJump(FSMData data) : FiniteState(data){};
     bool TryNextState(AnimationState state)
     {
         return state == Fall;
@@ -112,10 +112,10 @@ public:
 class PlayerFall : public FiniteState
 {
 public:
-    PlayerFall(FSMInput input) : FiniteState(input){};
+    PlayerFall(FSMData data) : FiniteState(data){};
     bool TryNextState(AnimationState state)
     {
-        return state == Run || state == Idle;
+        return (state == Run || state == Idle);
     }
     void Enter(){};
     void Update()
@@ -133,10 +133,10 @@ public:
 class PlayerAttack1 : public FiniteState
 {
 public:
-    PlayerAttack1(FSMInput input) : FiniteState(input){};
+    PlayerAttack1(FSMData data) : FiniteState(data){};
     bool TryNextState(AnimationState state)
     {
-        return sprite->IsFrame(8);
+        return sprite->IsEnd();
     }
     void Enter()
     {

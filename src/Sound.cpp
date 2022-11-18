@@ -11,8 +11,6 @@ SoundSystem::SoundSystem()
     createSound(SFXPlayerLanding, "sfx/landing.mp3");
     createSound(SFXPlayerStep, "sfx/step.mp3");
     createSound(SFXPlayerAttack, "sfx/swordattack.mp3");
-    
-    
 }
 SoundSystem::~SoundSystem()
 {

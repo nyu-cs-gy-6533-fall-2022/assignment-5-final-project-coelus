@@ -1,5 +1,5 @@
 #pragma once
-struct FSMInput
+struct FSMData
 {
     SoundSystem *soundSys;
     AnimSprite *sprite;

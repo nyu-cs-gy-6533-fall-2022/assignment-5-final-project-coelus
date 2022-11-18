@@ -54,7 +54,9 @@
         "typeinfo": "cpp",
         "optional": "cpp",
         "any": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     },
     "cmake.configureOnOpen": true
 }

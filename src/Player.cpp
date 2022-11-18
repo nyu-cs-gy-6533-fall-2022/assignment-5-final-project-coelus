@@ -15,7 +15,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	pTx = &sprite->Tx;
 
 	fsm = new FSM(
-		FSMInput{soundSys, sprite,
+		FSMData{soundSys, sprite,
 				 runSpeed, jumpSpeed,
 				 pTx->dirX,
 				 velocity,

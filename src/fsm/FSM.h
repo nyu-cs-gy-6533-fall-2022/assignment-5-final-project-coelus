@@ -1,14 +1,14 @@
 #pragma once
 #include "Animation.h"
 #include "FiniteState.h"
-#include "FSMInput.h"
+#include "FSMData.h"
 #include <glm/glm.hpp>
 using namespace glm;
 
 class FSM
 {
 public:
-    FSM(FSMInput in) : input(in){};
+    FSM(FSMData in) : data(in){};
     ~FSM()
     {
         for (auto fs : fsm)
@@ -19,7 +19,7 @@ public:
     template <class T>
     void Add(const AnimationState state)
     {
-        fsm[state] = new T(input);
+        fsm[state] = new T(data);
     }
     void Set(AnimationState state)
     {
@@ -32,7 +32,7 @@ public:
 
 private:
     SoundSystem *soundSys;
-    FSMInput input;
+    FSMData data;
     FiniteState *fs;
     unordered_map<AnimationState, FiniteState *> fsm;
 };

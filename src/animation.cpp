@@ -8,7 +8,8 @@ Animation::Animation(AnimationData data)
 	  State(data.state),
 	  frameCount(data.frameCount),
 	  secPerFrame(data.secPerFrame),
-	  isLoop(data.isLoop)
+	  isLoop(data.isLoop),
+	  isEnd(false)
 {
 	tx.Set(vec2(0, 0), vec2(data.pivotX, data.pivotY), vec2(data.width, data.height));
 	texture = new Texture(data.filename);
@@ -27,6 +28,7 @@ void Animation::Reset()
 {
 	frameTime = 0;
 	frameIndex = 0;
+	isEnd = false;
 }
 void Animation::Play(BufferObject &buffer, double dt)
 {
@@ -42,6 +44,10 @@ void Animation::Play(BufferObject &buffer, double dt)
 		}
 		else
 		{
+			if (frameIndex + 1 >= frameCount)
+			{
+				isEnd = true;
+			}
 			frameIndex = std::min(frameIndex + 1, frameCount - 1);
 		}
 	}

@@ -45,6 +45,7 @@ public:
 	void UpdateSprite(BufferObject &buffer);
 	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
+	bool IsEnd() { return isEnd; }
 	Transform GetTx(vec2 pos, vec2 rigidBody)
 	{
 		tx.rigidBody = rigidBody;
@@ -57,7 +58,7 @@ public:
 private:
 	double deltaTime, frameTime, secPerFrame;
 	int frameIndex, frameCount;
-	bool isLoop;
+	bool isLoop, isEnd;
 	Transform tx;
 
 	vector<vec4> frames;

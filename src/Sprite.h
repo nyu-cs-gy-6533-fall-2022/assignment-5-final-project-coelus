@@ -40,6 +40,7 @@ public:
 
 	void Add(AnimationData animData);
 	bool IsFrame(int index) { return currentAnim->IsFrame(index); }
+	bool IsEnd() { return currentAnim->IsEnd(); }
 
 private:
 	Animation *currentAnim = nullptr;
