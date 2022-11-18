@@ -38,6 +38,7 @@ void Player::loadData()
 	auto rb = js["rigidbody"];
 	rigidbody = vec2(rb["w"], rb["h"]);
 	debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
+	
 }
 Player::~Player()
 {
@@ -84,10 +85,11 @@ void Player::Input(Control ctrl)
 }
 void Player::stateUpdate()
 {
-	AnimationState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
+	ActionState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
 	if (nextState != EmptyState && nextState != fsm->GetState())
 	{
 		fsm->Exit();
+		sprite->Set(nextState);
 		fsm->Set(nextState);
 		fsm->Enter();
 	}
@@ -105,7 +107,7 @@ void Player::Draw(double deltaTime)
 	debug->SetDebugTx(0, GetCol());
 	debug->DrawDebug();
 
-	sprite->Set(fsm->GetState(), position, rigidbody);
+	sprite->Set(position, rigidbody);
 	shader->SetMat("modelMatrix", pTx->Get());
-	sprite->Draw(deltaTime, fsm->GetState());
+	sprite->Draw(deltaTime);
 }

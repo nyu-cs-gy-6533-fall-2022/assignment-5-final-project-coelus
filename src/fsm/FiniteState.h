@@ -24,7 +24,7 @@ public:
     {
         return possibleState.input;
     }
-    virtual void Enter() = 0;
+    virtual void Enter() { sprite->Reset(); };
     virtual void Update() = 0;
     virtual void Exit() = 0;
 
@@ -72,11 +72,12 @@ class PlayerIdle : public FiniteState
 public:
     PlayerIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<AnimationState>{Run, Fall, Jump, Attack1});
+        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1});
     };
 
     void Enter()
     {
+        FiniteState::Enter();
         velocity.x = 0;
         velocity.y = 0;
     };
@@ -89,10 +90,13 @@ class PlayerRun : public FiniteState
 public:
     PlayerRun(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<AnimationState>{Idle, Fall, Jump, Attack1});
+        possibleState.Add(vector<ActionState>{Idle, Fall, Jump, Attack1});
     };
 
-    void Enter(){};
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
     void Update()
     {
         setDirX();
@@ -110,7 +114,7 @@ class PlayerJump : public FiniteState
 public:
     PlayerJump(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<AnimationState>{Fall});
+        possibleState.Add(vector<ActionState>{Fall});
     };
     int GetPossibleState()
     {
@@ -120,6 +124,7 @@ public:
     }
     void Enter()
     {
+        FiniteState::Enter();
         velocity.y = -jumpSpeed * deltaTime;
         soundSys->Play(SFXPlayerJump);
     };
@@ -137,7 +142,7 @@ class PlayerFall : public FiniteState
 public:
     PlayerFall(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<AnimationState>{Idle, Run});
+        possibleState.Add(vector<ActionState>{Idle, Run});
     };
 
     int GetPossibleState()
@@ -147,7 +152,10 @@ public:
         return possibleState.input;
     }
 
-    void Enter(){};
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
     void Update()
     {
         setDirX();
@@ -166,7 +174,7 @@ class PlayerAttack1 : public FiniteState
 public:
     PlayerAttack1(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<AnimationState>{Idle, Run});
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall});
     };
     int GetPossibleState()
     {
@@ -176,6 +184,7 @@ public:
     }
     void Enter()
     {
+        FiniteState::Enter();
         velocity.x = 50 * dirX * deltaTime;
     };
     void Update()

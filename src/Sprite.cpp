@@ -21,27 +21,13 @@ void Sprite::Draw()
 	texture->Bind();
 	buffer->Draw();
 }
-void AnimSprite::Set(AnimationState state, vec2 pos, vec2 rigidBody)
-{
-	if (anim[state])
-	{
-		if (!currentAnim || currentAnim->State != state)
-		{
-			currentAnim = anim[state];
-			currentAnim->Reset();
-		}
-		Tx.Set(anim[state]->GetTx(pos, rigidBody));
-	}
-}
+
 // AnimSprite
-void AnimSprite::Draw(double deltaTime, AnimationState state)
+void AnimSprite::Draw(double deltaTime)
 {
 
-	if (anim[state])
-	{
-		anim[state]->Play(*buffer, deltaTime);
-		anim[state]->texture->Bind();
-	}
+	anim[action]->Play(*buffer, deltaTime);
+	anim[action]->texture->Bind();
 	buffer->Draw();
 }
 

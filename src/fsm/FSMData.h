@@ -22,11 +22,11 @@ struct FSMInput
     {
         input = 0;
     }
-    void Add(AnimationState state)
+    void Add(ActionState state)
     {
         input |= (1 << state);
     }
-    void Add(vector<AnimationState> states)
+    void Add(vector<ActionState> states)
     {
         for (auto s : states)
         {
@@ -40,9 +40,9 @@ struct FSMInput
             b++;
         return b;
     }
-    AnimationState GetNextState(int possibleState)
+    ActionState GetNextState(int possibleState)
     {
         int res = input & possibleState;
-        return (AnimationState)GetMSB(res);
+        return (ActionState)GetMSB(res);
     }
 };

@@ -17,25 +17,25 @@ public:
         }
     }
     template <class T>
-    void Add(const AnimationState state)
+    void Add(const ActionState state)
     {
         fsm[state] = new T(data);
     }
-    void Set(AnimationState state)
+    void Set(ActionState state)
     {
         currentState = state;
         fs = fsm[state];
     }
-    AnimationState GetState(){return currentState;};
+    ActionState GetState(){return currentState;};
     int GetPossibleState() { return fs->GetPossibleState(); }
     void Enter() { fs->Enter(); };
     void Update() { fs->Update(); };
     void Exit() { fs->Exit(); };
 
 private:
-    AnimationState currentState;
+    ActionState currentState;
     SoundSystem *soundSys;
     FSMData data;
     FiniteState *fs;
-    unordered_map<AnimationState, FiniteState *> fsm;
+    unordered_map<ActionState, FiniteState *> fsm;
 };

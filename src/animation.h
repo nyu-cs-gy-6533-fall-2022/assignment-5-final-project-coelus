@@ -17,7 +17,7 @@
 
 using namespace glm;
 
-enum AnimationState
+enum ActionState
 {
 	EmptyState,
 	Idle,
@@ -30,7 +30,7 @@ enum AnimationState
 
 struct AnimationData
 {
-	AnimationState state;
+	ActionState state;
 	int pivotX, pivotY, width, height, frameCount;
 	double secPerFrame;
 	bool isLoop;
@@ -53,7 +53,7 @@ public:
 		tx.position = pos;
 		return tx;
 	}
-	AnimationState State;
+	ActionState State;
 	Texture *texture;
 
 private:

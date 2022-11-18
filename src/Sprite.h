@@ -35,15 +35,19 @@ public:
 	AnimSprite() : Sprite(){};
 
 	~AnimSprite(){};
-	void Set(AnimationState state, vec2 pos, vec2 rigidBody);
-	void Draw(double deltatime, AnimationState type);
-
+	void Draw(double deltatime);
 	void Add(AnimationData animData);
-	bool IsFrame(int index) { return currentAnim->IsFrame(index); }
-	bool IsEnd() { return currentAnim->IsEnd(); }
+
+	void Set(ActionState state) { action = state; }
+	void Set(vec2 pos, vec2 rigidBody) { Tx.Set(anim[action]->GetTx(pos, rigidBody)); }
+
+	void Reset() { anim[action]->Reset(); }
+
+	bool IsFrame(int index) { return anim[action]->IsFrame(index); }
+	bool IsEnd() { return anim[action]->IsEnd(); }
 
 private:
-	Animation *currentAnim = nullptr;
-	unordered_map<AnimationState, Animation *> anim;
+	ActionState action = Idle;
+	unordered_map<ActionState, Animation *> anim;
 };
 #endif
