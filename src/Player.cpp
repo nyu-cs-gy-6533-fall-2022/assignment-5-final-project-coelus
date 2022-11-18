@@ -75,6 +75,14 @@ void Player::Input(Control ctrl)
 	{
 		fsmInput.Add(Fall);
 	}
+	else
+	{
+		if (ctrl.jump)
+		{
+			fsmInput.Add(Jump);
+		}
+		canJumpAttack = true;
+	}
 	if (ctrl.attack)
 	{
 		if (isGround)
@@ -87,14 +95,6 @@ void Player::Input(Control ctrl)
 		{
 			fsmInput.Add(JumpAttack);
 		}
-	}
-	if (isGround)
-	{
-		canJumpAttack = true;
-	}
-	if (ctrl.jump && isGround)
-	{
-		fsmInput.Add(Jump);
 	}
 
 	stateUpdate();
