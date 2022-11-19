@@ -3,7 +3,7 @@
 The proposal is at the top of the folder called proposal.pdf
 
 
-##Implemented Systems
+##Already Implemented Systems
 1. 2D animation system that supports loops and different frame rates.
 2. Data loader that reads JSON files and generates stage and creature classes.
 3. A Collision Detection system that can return which side is collided.
@@ -12,3 +12,4 @@ The proposal is at the top of the folder called proposal.pdf
 6. Finite-State Machine for controlling player states, which also can easily extend new states.
 7. Sound manager using bass.h
 8. Deferred Key system for adding tolerance to player inputs.
+9. Debug system for visualizing the collision range.
