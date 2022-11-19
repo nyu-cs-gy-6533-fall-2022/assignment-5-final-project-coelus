@@ -14,6 +14,7 @@ public:
           runSpeed(data.runSpeed),
           jumpSpeed(data.jumpSpeed),
           dirX(data.dirX),
+          position(data.position),
           velocity(data.velocity),
           force(data.force),
           deltaTime(data.deltaTime),
@@ -23,7 +24,8 @@ public:
           ctrlX(data.ctrlX),
           dAttack(data.dAttack),
           dChain(data.dChain),
-          dJump(data.dJump)
+          dJump(data.dJump),
+          downDistance(data.downDistance)
 
     {
     }
@@ -46,12 +48,13 @@ protected:
     AnimSprite *sprite;
     float &runSpeed, &jumpSpeed;
     int &dirX;
-    vec2 &velocity, &force;
+    vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
+    float &downDistance;
 
     FSMInput possibleState, interruptState;
 
@@ -187,7 +190,10 @@ public:
     };
     void Update()
     {
-        dJump.Set(true);
+        if (downDistance <= toleranceH)
+            dJump.Set(true);
+        else dJump.Set(false);
+
         setDirX();
         moveX();
         falling();
@@ -201,6 +207,10 @@ public:
             stopY();
         }
     };
+
+private:
+    // toleranc distance for jump deffered
+    float toleranceH = 150.f;
 };
 
 class PlayerAttack1 : public FiniteState

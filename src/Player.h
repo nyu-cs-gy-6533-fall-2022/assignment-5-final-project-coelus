@@ -39,6 +39,7 @@ public:
 	{
 		isGround = status.isColDown;
 		isTop = status.isColTop;
+		downDistance = status.distance.y;
 	}
 
 private:
@@ -57,6 +58,8 @@ private:
 	bool canJumpAttack;
 	int ctrlX;
 	DefferedKey dAttack, dChain, dJump;
+
+	float downDistance;
 
 	void loadData();
 	void stateUpdate();

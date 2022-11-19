@@ -17,12 +17,13 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 		FSMData{soundSys, sprite,
 				runSpeed, jumpSpeed,
 				pTx->dirX,
-				velocity, force,
+				position, velocity, force,
 				deltaTime,
 				isGround, isTop,
 				canJumpAttack,
 				ctrlX,
-				dAttack, dChain, dJump});
+				dAttack, dChain, dJump,
+				downDistance});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
@@ -98,7 +99,7 @@ void Player::Update(Control ctrl)
 			fsmInput.Add(JumpAttack);
 		}
 	}
-	
+
 	dAttack.Press(ctrl.attack);
 	dJump.Press(ctrl.jump);
 

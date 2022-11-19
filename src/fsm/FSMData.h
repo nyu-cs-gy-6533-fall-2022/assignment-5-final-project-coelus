@@ -9,12 +9,13 @@ struct FSMData
     AnimSprite *sprite;
     float &runSpeed, &jumpSpeed;
     int &dirX;
-    vec2 &velocity, &force;
+    vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
+    float &downDistance;
 };
 
 struct FSMInput

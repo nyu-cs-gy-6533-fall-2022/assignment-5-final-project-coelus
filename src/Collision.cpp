@@ -1,7 +1,7 @@
 #include "Collision.h"
 
 // return CollisionType
-CollisionType Collision::GetOverlapType(vec4 r0, vec4 r1, float &resErr)
+CollisionType Collision::GetOverlapType(vec4 r0, vec4 r1, float &resErr, vec4 &distance)
 {
     float r0l = r0.x;
     float r0r = r0.x + r0.z;
@@ -17,6 +17,13 @@ CollisionType Collision::GetOverlapType(vec4 r0, vec4 r1, float &resErr)
     bool notOverlapT = r1t > r0b;
     bool notOverlapB = r1b < r0t;
     bool isOverlap = !(notOverlapL || notOverlapR || notOverlapT || notOverlapB);
+
+    // only getting for bottom right now
+    if (!(notOverlapL || notOverlapR) && distance.y > abs(r0b - r1t))
+    {
+
+        distance = vec4(0, abs(r0b - r1t), 0, 0);
+    }
 
     if (isOverlap)
     {
@@ -53,6 +60,7 @@ CollisionType Collision::GetOverlapType(vec4 r0, vec4 r1, float &resErr)
     {
         return ColNone;
     }
+    return ColNone;
 }
 
 void Collision::ResolveCollision(vec2 &pos, CollisionType type, float resErr)
@@ -77,13 +85,14 @@ void Collision::ResolveCollision(vec2 &pos, CollisionType type, float resErr)
     }
 }
 
-CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0,  const vector<vec4> &rects)
+CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0, const vector<vec4> &rects)
 {
     CollisionStatus status;
+    status.distance = vec4(numeric_limits<float>::max());
     for (auto r1 : rects)
     {
         float err = 0;
-        CollisionType type = GetOverlapType(r0, r1, err);
+        CollisionType type = GetOverlapType(r0, r1, err, status.distance);
         if (type != ColNone)
         {
             ResolveCollision(targetPos, type, err);
@@ -100,9 +109,7 @@ CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0,  const vecto
     return status;
 }
 
-
-
-bool Collision::IsCollided(vec4 r0,  const vector<vec4> &rects, int &resIndex)
+bool Collision::IsCollided(vec4 r0, const vector<vec4> &rects, int &resIndex)
 {
     bool isCol = false;
     for (int i = 0; i < rects.size(); i++)
