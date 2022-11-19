@@ -25,6 +25,7 @@ struct DefferedKey
     }
     void Reset()
     {
+        keyPressed = false;
         isDeffered = false;
     }
 };

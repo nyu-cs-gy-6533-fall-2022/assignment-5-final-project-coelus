@@ -171,7 +171,7 @@ public:
     PlayerFall(FSMData data) : FiniteState(data)
     {
         interruptState.Add(vector<ActionState>{JumpAttack});
-        possibleState.Add(vector<ActionState>{Idle, Run});
+        possibleState.Add(vector<ActionState>{Idle, Run, Jump});
     };
 
     int GetPossibleState()
@@ -187,12 +187,14 @@ public:
     };
     void Update()
     {
+        dJump.Set(true);
         setDirX();
         moveX();
         falling();
     };
     void Exit()
     {
+
         if (isGround)
         {
             soundSys->Play(SFXPlayerLanding);
@@ -227,7 +229,7 @@ public:
     };
     void Update()
     {
-        bool canDeffered = sprite->IsFrameGreater(5);
+        bool canDeffered = sprite->IsFrameGreater(4);
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 
@@ -277,7 +279,7 @@ public:
     void Update()
     {
 
-        bool canDeffered = sprite->IsFrameGreater(4);
+        bool canDeffered = sprite->IsFrameGreater(3);
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 
@@ -322,7 +324,7 @@ public:
     };
     void Update()
     {
-        bool canDeffered = sprite->IsFrameGreater(5);
+        bool canDeffered = sprite->IsFrameGreater(4);
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 

@@ -72,18 +72,15 @@ void Player::Update(Control ctrl)
 		fsmInput.Add(Idle);
 	}
 
-
-	
 	if (!isGround)
 	{
 		fsmInput.Add(Fall);
 	}
 	else
 	{
-		dJump.Press(false);
 		if (ctrl.jump)
 		{
-			dJump.Press(true);
+
 			fsmInput.Add(Jump);
 		}
 		canJumpAttack = true;
@@ -100,14 +97,12 @@ void Player::Update(Control ctrl)
 		{
 			fsmInput.Add(JumpAttack);
 		}
-		dAttack.Press(true);
 	}
-	else
-	{
-		dAttack.Press(false);
-	}
+	
+	dAttack.Press(ctrl.attack);
+	dJump.Press(ctrl.jump);
 
-	//deffered keys
+	// deffered keys
 	if (dAttack.IsDeffered())
 	{
 		if (isGround)
