@@ -1,5 +1,6 @@
 #pragma once
 #include "Animation.h"
+#include "DefferedKey.h"
 #include "FSMData.h"
 #include <glm/glm.hpp>
 using namespace glm;
@@ -20,15 +21,23 @@ public:
           isTop(data.isTop),
           canJumpAttack(data.canJumpAttack),
           ctrlX(data.ctrlX),
-          ctrlAttack(data.ctrlAttack),
-          isChain(data.isChain)
+          dAttack(data.dAttack),
+          dChain(data.dChain),
+          dJump(data.dJump)
+
     {
     }
     virtual int GetPossibleState()
     {
         return possibleState.input;
     }
-    virtual void Enter() { sprite->Reset(); };
+    virtual void Enter()
+    {
+        dAttack.Reset();
+        dChain.Reset();
+        dJump.Reset();
+        sprite->Reset();
+    };
     virtual void Update() = 0;
     virtual void Exit() = 0;
 
@@ -42,7 +51,7 @@ protected:
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
-    bool &ctrlAttack, &isChain;
+    DefferedKey &dAttack, &dChain, &dJump;
 
     FSMInput possibleState, interruptState;
 
@@ -146,6 +155,9 @@ public:
     };
     void Update()
     {
+        bool canDeffered = sprite->IsFrameGreater(1);
+        dAttack.Set(canDeffered);
+
         setDirX();
         moveX();
         falling();
@@ -210,16 +222,14 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        isChain = false;
         setDirX();
         stopX();
     };
     void Update()
     {
-        if (ctrlAttack && sprite->IsFrameGreater(6))
-        {
-            isChain = true;
-        }
+        bool canDeffered = sprite->IsFrameGreater(5);
+        dAttack.Set(canDeffered);
+        dJump.Set(canDeffered);
 
         force.x = attackForce * dirX * deltaTime;
         if (sprite->IsFrameGreater(4))
@@ -234,7 +244,6 @@ public:
     };
     void Exit()
     {
-        isChain = false;
         stopX();
     };
 
@@ -261,16 +270,17 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        isChain = false;
+
         setDirX();
         stopX();
     };
     void Update()
     {
-        if (ctrlAttack && sprite->IsFrameGreater(5))
-        {
-            isChain = true;
-        }
+
+        bool canDeffered = sprite->IsFrameGreater(4);
+        dAttack.Set(canDeffered);
+        dJump.Set(canDeffered);
+
         force.x = attackForce * dirX * deltaTime;
         if (sprite->IsFrameGreater(4))
         {
@@ -283,7 +293,7 @@ public:
     };
     void Exit()
     {
-        isChain = false;
+
         stopX();
     };
 
@@ -296,7 +306,7 @@ class PlayerAttack3 : public FiniteState
 public:
     PlayerAttack3(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Jump, Run, Fall});
+        possibleState.Add(vector<ActionState>{Idle, Jump, Run, Fall, Attack1});
     };
     int GetPossibleState()
     {
@@ -312,6 +322,10 @@ public:
     };
     void Update()
     {
+        bool canDeffered = sprite->IsFrameGreater(5);
+        dAttack.Set(canDeffered);
+        dJump.Set(canDeffered);
+
         force.x = attackForce * dirX * deltaTime;
         if (sprite->IsFrameGreater(5))
         {

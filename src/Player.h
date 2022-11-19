@@ -8,6 +8,8 @@
 #include "Debug.h"
 #include "Global.h"
 #include "Sound.h"
+#include "DefferedKey.h"
+
 #include "fsm/FSM.h"
 
 #include <algorithm>
@@ -54,7 +56,7 @@ private:
 	bool isGround, isTop;
 	bool canJumpAttack;
 	int ctrlX;
-	bool ctrlAttack, isChain;
+	DefferedKey dAttack, dChain, dJump;
 
 	void loadData();
 	void stateUpdate();

@@ -5,8 +5,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	  shader(s),
 	  deltaTime(time),
 	  position(vec2(0, 0)),
-	  ctrlX(0),
-	  ctrlAttack(false)
+	  ctrlX(0)
 {
 
 	sprite = new AnimSprite();
@@ -23,7 +22,7 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 				isGround, isTop,
 				canJumpAttack,
 				ctrlX,
-				ctrlAttack, isChain});
+				dAttack, dChain, dJump});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
@@ -73,22 +72,21 @@ void Player::Update(Control ctrl)
 		fsmInput.Add(Idle);
 	}
 
+
+	
 	if (!isGround)
 	{
 		fsmInput.Add(Fall);
 	}
 	else
 	{
+		dJump.Press(false);
 		if (ctrl.jump)
 		{
+			dJump.Press(true);
 			fsmInput.Add(Jump);
 		}
 		canJumpAttack = true;
-	}
-	if (isChain)
-	{
-		fsmInput.Add(Attack2);
-		fsmInput.Add(Attack3);
 	}
 	if (ctrl.attack)
 	{
@@ -102,13 +100,31 @@ void Player::Update(Control ctrl)
 		{
 			fsmInput.Add(JumpAttack);
 		}
-		ctrlAttack = true;
+		dAttack.Press(true);
 	}
 	else
 	{
-		ctrlAttack = false;
+		dAttack.Press(false);
 	}
 
+	//deffered keys
+	if (dAttack.IsDeffered())
+	{
+		if (isGround)
+		{
+			fsmInput.Add(Attack1);
+			fsmInput.Add(Attack2);
+			fsmInput.Add(Attack3);
+		}
+		else if (canJumpAttack)
+		{
+			fsmInput.Add(JumpAttack);
+		}
+	}
+	if (dJump.IsDeffered())
+	{
+		fsmInput.Add(Jump);
+	}
 	stateUpdate();
 	fsm->Update();
 	movement();

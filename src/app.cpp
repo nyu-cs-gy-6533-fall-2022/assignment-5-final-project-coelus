@@ -27,8 +27,8 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
 
     glDisable(GL_DEPTH_TEST);
 
-    KeyInput::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
-    glfwSetKeyCallback(pWindow, KeyInput::KeyCallback);
+    InputSystem::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
+    glfwSetKeyCallback(pWindow, InputSystem::KeyCallback);
 
     init();
 }
@@ -90,9 +90,9 @@ void App::playerUpdate()
     bool left = glfwGetKey(pWindow, GLFW_KEY_LEFT);
     bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
     bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
-    bool jump = KeyInput::Get(GLFW_KEY_Z);
-    bool attack = KeyInput::Get(GLFW_KEY_C);
-    KeyInput::Reset();
+    bool jump = InputSystem::Get(GLFW_KEY_Z);
+    bool attack = InputSystem::Get(GLFW_KEY_C);
+    InputSystem::Reset();
 
     player->Update(Control{right, left, up, down, jump, attack, false});
 }

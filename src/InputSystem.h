@@ -7,7 +7,7 @@
 using namespace std;
 
 static unordered_map<int, bool> keyDown;
-class KeyInput
+class InputSystem
 {
 public:
     static void KeyCallback(GLFWwindow *window, int activeKey, int scancode, int action, int mods)

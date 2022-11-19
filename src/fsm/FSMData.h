@@ -1,4 +1,6 @@
 #pragma once
+#include "DefferedKey.h"
+
 using namespace std;
 
 struct FSMData
@@ -12,7 +14,7 @@ struct FSMData
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
-    bool &ctrlAttack,&isChain;
+    DefferedKey &dAttack, &dChain, &dJump;
 };
 
 struct FSMInput

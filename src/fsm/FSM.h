@@ -2,6 +2,7 @@
 #include "Animation.h"
 #include "FiniteState.h"
 #include "FSMData.h"
+
 #include <glm/glm.hpp>
 using namespace glm;
 

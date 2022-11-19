@@ -10,7 +10,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "StageSystem.h"
-#include "KeyInput.h"
+#include "InputSystem.h"
 #include "Sound.h"
 
 #include <GLFW/glfw3.h>
