@@ -27,6 +27,9 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
 
     glDisable(GL_DEPTH_TEST);
 
+    KeyInput::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
+    glfwSetKeyCallback(pWindow, KeyInput::KeyCallback);
+
     init();
 }
 
@@ -44,6 +47,7 @@ App::~App()
 void App::init()
 {
     loadIcon();
+
     soundSys = new SoundSystem();
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(soundSys, shader, deltaTime);
@@ -62,17 +66,6 @@ void App::loadIcon()
     glfwSetWindowIcon(pWindow, 1, &img);
 }
 
-void App::input()
-{
-    bool right = glfwGetKey(pWindow, GLFW_KEY_RIGHT);
-    bool left = glfwGetKey(pWindow, GLFW_KEY_LEFT);
-    bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
-    bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
-    bool jump = glfwGetKey(pWindow, GLFW_KEY_Z);
-    bool attack = glfwGetKey(pWindow, GLFW_KEY_C);
-
-    player->Input(Control{right, left, up, down, jump, attack, false});
-}
 void App::resize()
 {
     int width, height;
@@ -90,12 +83,26 @@ void App::getDeltaTime()
     deltaTime = currentTime - prevTime;
     prevTime = currentTime;
 }
+
+void App::playerUpdate()
+{
+    bool right = glfwGetKey(pWindow, GLFW_KEY_RIGHT);
+    bool left = glfwGetKey(pWindow, GLFW_KEY_LEFT);
+    bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
+    bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
+    bool jump = KeyInput::Get(GLFW_KEY_Z);
+    bool attack = KeyInput::Get(GLFW_KEY_C);
+    KeyInput::Reset();
+
+    player->Update(Control{right, left, up, down, jump, attack, false});
+}
+
 void App::update()
 {
     getDeltaTime();
     resize();
     stageSys->Update();
-    input();
+    playerUpdate();
 }
 void App::draw()
 {
@@ -106,6 +113,7 @@ void App::draw()
     stageSys->Draw();
     player->Draw(deltaTime);
 }
+
 void App::MainLoop()
 {
     while (!glfwWindowShouldClose(pWindow))

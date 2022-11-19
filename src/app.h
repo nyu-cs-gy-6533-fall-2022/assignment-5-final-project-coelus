@@ -10,11 +10,13 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "StageSystem.h"
+#include "KeyInput.h"
+#include "Sound.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "Sound.h"
+
 
 using namespace std;
 using namespace glm;
@@ -41,9 +43,9 @@ private:
 
     void init();
     void resize();
-    void input();
     void draw();
     void update();
+    void playerUpdate();
     void getDeltaTime();
     void loadIcon();
 };

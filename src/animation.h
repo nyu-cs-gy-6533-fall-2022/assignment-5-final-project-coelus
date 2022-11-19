@@ -23,10 +23,10 @@ enum ActionState
 	Idle,
 	Run,
 	Jump,
-	Fall,
 	Attack1,
 	Attack2,
 	Attack3,
+	Fall,
 	JumpAttack
 
 };
@@ -35,7 +35,7 @@ struct AnimationData
 {
 	ActionState state;
 	int pivotX, pivotY, width, height, frameCount;
-	double secPerFrame;
+	double secPerFrame, secLastFrame;
 	bool isLoop;
 	string filename;
 };
@@ -47,10 +47,9 @@ public:
 	void Reset();
 	void Play(BufferObject &buffer, double deltatime);
 	void UpdateSprite(BufferObject &buffer);
-	void SetSecPerFrame(float sec) { secPerFrame = sec; }
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
 	bool IsFrameGreater(int index) { return frameIndex >= index; }
-
+	bool CanInterrupt() { return frameTime >= secPerFrame && frameIndex == frameCount - 1; }
 	bool IsEnd() { return isEnd; }
 	Transform GetTx(vec2 pos, vec2 rigidBody)
 	{
@@ -62,7 +61,8 @@ public:
 	Texture *texture;
 
 private:
-	double deltaTime, frameTime, secPerFrame;
+	const double secPerFrame, secLastFrame;
+	double deltaTime, frameTime;
 	int frameIndex, frameCount;
 	bool isLoop, isEnd;
 	Transform tx;

@@ -8,6 +8,7 @@ Animation::Animation(AnimationData data)
 	  State(data.state),
 	  frameCount(data.frameCount),
 	  secPerFrame(data.secPerFrame),
+	  secLastFrame(data.secLastFrame),
 	  isLoop(data.isLoop),
 	  isEnd(false)
 {
@@ -35,7 +36,12 @@ void Animation::Play(BufferObject &buffer, double dt)
 	deltaTime = dt;
 	frameTime += deltaTime;
 
-	if (frameTime > secPerFrame)
+	double currentFramsec = secPerFrame;
+	if (frameIndex == frameCount - 1)
+	{
+		currentFramsec = secLastFrame;
+	}
+	if (frameTime > currentFramsec)
 	{
 		frameTime = 0;
 		if (isLoop)

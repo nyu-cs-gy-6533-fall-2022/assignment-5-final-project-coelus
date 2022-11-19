@@ -28,6 +28,11 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
 
     for (auto anim : j["animation"])
     {
+        double secLastFrame = anim["secPerFrame"];
+        if (anim.contains("secLastFrame"))
+        {
+            secLastFrame = anim["secLastFrame"];
+        }
 
         sprite[0]->Add(AnimationData{
             anim["state"],
@@ -37,6 +42,7 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
             anim["height"],
             anim["frameCount"],
             anim["secPerFrame"],
+            secLastFrame,
             anim["isLoop"],
             anim["filename"]});
     }

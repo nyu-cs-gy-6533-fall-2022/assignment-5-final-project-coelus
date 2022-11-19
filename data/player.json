@@ -42,6 +42,41 @@
         },
         {
             "state": 4,
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 1024,
+            "height": 512,
+            "frameCount": 9,
+            "secPerFrame": 0.045,
+            "secLastFrame": 0.25,
+            "isLoop": false,
+            "filename": "main/attack1.png"
+        },
+        {
+            "state": 5,
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 1024,
+            "height": 512,
+            "frameCount": 8,
+            "secPerFrame": 0.045,
+            "secLastFrame": 0.25,
+            "isLoop": false,
+            "filename": "main/attack2.png"
+        },
+        {
+            "state": 6,
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 1024,
+            "height": 512,
+            "frameCount": 10,
+            "secPerFrame": 0.045,
+            "isLoop": false,
+            "filename": "main/attack3.png"
+        },
+        {
+            "state": 7,
             "pivotX": 100,
             "pivotY": 35,
             "width": 256,
@@ -52,42 +87,9 @@
             "filename": "main/fall.png"
         },
         {
-            "state": 5,
-            "pivotX": 230,
-            "pivotY": 295,
-            "width": 1024,
-            "height": 512,
-            "frameCount": 9,
-            "secPerFrame": 0.045,
-            "isLoop": false,
-            "filename": "main/attack1.png"
-        },
-        {
-            "state": 6,
-            "pivotX": 230,
-            "pivotY": 295,
-            "width": 1024,
-            "height": 512,
-            "frameCount": 8,
-            "secPerFrame": 0.045,
-            "isLoop": false,
-            "filename": "main/attack2.png"
-        },
-        {
-            "state": 7,
-            "pivotX": 230,
-            "pivotY": 295,
-            "width": 1024,
-            "height": 512,
-            "frameCount": 10,
-            "secPerFrame": 0.045,
-            "isLoop": false,
-            "filename": "main/attack3.png"
-        },
-        {
             "state": 8,
             "pivotX": 230,
-            "pivotY": 295,
+            "pivotY": 292,
             "width": 1024,
             "height": 512,
             "frameCount": 7,

@@ -12,6 +12,7 @@ struct FSMData
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
+    bool &ctrlAttack,&isChain;
 };
 
 struct FSMInput

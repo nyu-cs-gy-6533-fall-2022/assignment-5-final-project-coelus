@@ -26,7 +26,7 @@ class Player
 public:
 	Player(SoundSystem *sndSys, Shader *s, double &time);
 	~Player();
-	void Input(Control ctrl);
+	void Update(Control ctrl);
 	void Draw(double deltaTime);
 
 	vec2 GetPos() { return position; };
@@ -54,6 +54,7 @@ private:
 	bool isGround, isTop;
 	bool canJumpAttack;
 	int ctrlX;
+	bool ctrlAttack, isChain;
 
 	void loadData();
 	void stateUpdate();

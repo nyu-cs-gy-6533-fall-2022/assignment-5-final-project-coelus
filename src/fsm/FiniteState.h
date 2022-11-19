@@ -19,7 +19,9 @@ public:
           isGround(data.isGround),
           isTop(data.isTop),
           canJumpAttack(data.canJumpAttack),
-          ctrlX(data.ctrlX)
+          ctrlX(data.ctrlX),
+          ctrlAttack(data.ctrlAttack),
+          isChain(data.isChain)
     {
     }
     virtual int GetPossibleState()
@@ -40,6 +42,7 @@ protected:
     bool &isGround, &isTop;
     bool &canJumpAttack;
     int &ctrlX;
+    bool &ctrlAttack, &isChain;
 
     FSMInput possibleState, interruptState;
 
@@ -191,27 +194,39 @@ class PlayerAttack1 : public FiniteState
 public:
     PlayerAttack1(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Attack2});
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack2});
+        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack2});
     };
     int GetPossibleState()
     {
-        if (!sprite->IsEnd())
+        if (sprite->CanInterrupt())
+            return interruptState.input;
+
+        else if (!sprite->IsEnd())
             return 0;
+
         return possibleState.input;
     }
     void Enter()
     {
         FiniteState::Enter();
+        isChain = false;
         setDirX();
         stopX();
     };
     void Update()
     {
+        if (ctrlAttack && sprite->IsFrameGreater(6))
+        {
+            isChain = true;
+        }
+
         force.x = attackForce * dirX * deltaTime;
         if (sprite->IsFrameGreater(4))
         {
             stopX();
         }
+
         if (sprite->IsFrame(3))
         {
             soundSys->Play(SFXPlayerAttack);
@@ -219,6 +234,7 @@ public:
     };
     void Exit()
     {
+        isChain = false;
         stopX();
     };
 
@@ -231,22 +247,30 @@ class PlayerAttack2 : public FiniteState
 public:
     PlayerAttack2(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Attack3});
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack3});
+        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack3});
     };
     int GetPossibleState()
     {
-        if (!sprite->IsEnd())
+        if (sprite->CanInterrupt())
+            return interruptState.input;
+        else if (!sprite->IsEnd())
             return 0;
         return possibleState.input;
     }
     void Enter()
     {
         FiniteState::Enter();
+        isChain = false;
         setDirX();
         stopX();
     };
     void Update()
     {
+        if (ctrlAttack && sprite->IsFrameGreater(5))
+        {
+            isChain = true;
+        }
         force.x = attackForce * dirX * deltaTime;
         if (sprite->IsFrameGreater(4))
         {
@@ -259,6 +283,7 @@ public:
     };
     void Exit()
     {
+        isChain = false;
         stopX();
     };
 
@@ -271,7 +296,7 @@ class PlayerAttack3 : public FiniteState
 public:
     PlayerAttack3(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Run, Fall});
+        possibleState.Add(vector<ActionState>{Idle, Jump, Run, Fall});
     };
     int GetPossibleState()
     {

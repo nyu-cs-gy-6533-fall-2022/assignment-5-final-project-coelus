@@ -5,7 +5,8 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	  shader(s),
 	  deltaTime(time),
 	  position(vec2(0, 0)),
-	  ctrlX(0)
+	  ctrlX(0),
+	  ctrlAttack(false)
 {
 
 	sprite = new AnimSprite();
@@ -21,7 +22,8 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 				deltaTime,
 				isGround, isTop,
 				canJumpAttack,
-				ctrlX});
+				ctrlX,
+				ctrlAttack, isChain});
 	fsm->Add<PlayerIdle>(Idle);
 	fsm->Add<PlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
@@ -52,7 +54,7 @@ Player::~Player()
 	delete fsm;
 }
 
-void Player::Input(Control ctrl)
+void Player::Update(Control ctrl)
 {
 	fsmInput.Init();
 	if (ctrl.right)
@@ -83,6 +85,11 @@ void Player::Input(Control ctrl)
 		}
 		canJumpAttack = true;
 	}
+	if (isChain)
+	{
+		fsmInput.Add(Attack2);
+		fsmInput.Add(Attack3);
+	}
 	if (ctrl.attack)
 	{
 		if (isGround)
@@ -95,6 +102,11 @@ void Player::Input(Control ctrl)
 		{
 			fsmInput.Add(JumpAttack);
 		}
+		ctrlAttack = true;
+	}
+	else
+	{
+		ctrlAttack = false;
 	}
 
 	stateUpdate();
