@@ -3,7 +3,7 @@
 The proposal is at the top of the folder called proposal.pdf
 
 
-##Already Implemented Systems
+## Already Implemented Systems
 1. 2D animation system that supports loops and different frame rates.
 2. Data loader that reads JSON files and generates stage and creature classes.
 3. A Collision Detection system that can return which side is collided.
