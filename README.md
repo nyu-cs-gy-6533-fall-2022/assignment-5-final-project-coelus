@@ -13,4 +13,4 @@ The proposal is at the top of the folder called proposal.pdf
 7. Sound manager using bass.h
 8. Deferred Key system for adding tolerance to player inputs.
 9. Debug system for visualizing the collision range.
-10.Camera that chases the player and clamps the position depends on the stage size. 
+10. Camera that chases the player and clamps the position depends on the stage size. 
