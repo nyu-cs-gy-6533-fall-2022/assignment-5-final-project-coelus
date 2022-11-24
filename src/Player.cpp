@@ -1,18 +1,9 @@
 #include "Player.h"
 
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
-	: soundSys(sndSys),
-	  shader(s),
-	  deltaTime(time),
-	  position(vec2(0, 0)),
+	: Creature(sndSys, s, time),
 	  ctrlX(0)
 {
-
-	sprite = new AnimSprite();
-	debug = new Debug(shader);
-	pTx = &sprite->Tx;
-	pTx->dirX = -1;
-
 	fsm = new FSM(
 		FSMData{soundSys, sprite,
 				runSpeed, jumpSpeed,
@@ -47,13 +38,6 @@ void Player::loadData()
 	rigidbody = vec2(rb["w"], rb["h"]);
 	debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
 }
-Player::~Player()
-{
-	delete sprite;
-	delete debug;
-	delete fsm;
-}
-
 void Player::Update(Control ctrl)
 {
 	fsmInput.Init();
@@ -121,37 +105,7 @@ void Player::Update(Control ctrl)
 	{
 		fsmInput.Add(Jump);
 	}
-	stateUpdate();
+	StateUpdate();
 	fsm->Update();
-	movement();
-}
-void Player::stateUpdate()
-{
-	ActionState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
-	if (nextState != EmptyState && nextState != fsm->GetState())
-	{
-		fsm->Exit();
-		sprite->Set(nextState);
-		fsm->Set(nextState);
-		fsm->Enter();
-	}
-}
-
-void Player::movement()
-{
-	velocity.x += force.x;
-	velocity.y += force.y;
-	velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
-	position.x += velocity.x;
-	position.y += velocity.y;
-}
-
-void Player::Draw(double deltaTime)
-{
-	debug->SetDebugTx(0, GetCol());
-	debug->DrawDebug();
-
-	sprite->Set(position, rigidbody);
-	shader->SetMat("modelMatrix", pTx->Get());
-	sprite->Draw(deltaTime);
+	Movement();
 }
