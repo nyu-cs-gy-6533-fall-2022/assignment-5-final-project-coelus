@@ -31,7 +31,7 @@ public:
 
 private:
     int mWidth, mHeight;
-    double prevTime, deltaTime;
+    double prevTime=0, deltaTime=0;
     GLFWwindow *pWindow;
 
     StageSystem *stageSys;
