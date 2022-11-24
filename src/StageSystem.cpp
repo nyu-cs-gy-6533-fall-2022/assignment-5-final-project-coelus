@@ -1,13 +1,13 @@
 #include "StageSystem.h"
 
-StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, Shader *shader)
-    : soundSys(sndSys), player(pl)
+StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, Shader *shader, double &time)
+    : soundSys(sndSys), player(pl), deltaTime(time)
 {
 
     json js = Loader::Load("game.json");
     for (string name : js["stages"])
     {
-        stages[name] = new Stage(name + ".json", player, shader);
+        stages[name] = new Stage(name + ".json",soundSys, player, shader,time);
     }
     startStage = js["startStage"];
     startEntry = js["startEntry"];
@@ -32,8 +32,7 @@ void StageSystem::Update()
 }
 void StageSystem::Draw()
 {
-    currentStage->DrawBG();
-    currentStage->DrawFG();
+    currentStage->Draw();
 }
 
 vec2 StageSystem::GetBoundary()

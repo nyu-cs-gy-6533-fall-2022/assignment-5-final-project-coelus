@@ -1,5 +1,22 @@
 {
     "type": 1,
+    "monsters":[{
+        "name":"snail",
+        "x": 1100,
+        "y": 1150
+    },{
+        "name":"snail",
+        "x": 1100,
+        "y": 2811
+    },{
+        "name":"snail",
+        "x": 900,
+        "y": 5067
+    },{
+        "name":"snail",
+        "x": 1870,
+        "y": 6990
+    }],
     "entry": [
         {
             "spawnX": 1800,

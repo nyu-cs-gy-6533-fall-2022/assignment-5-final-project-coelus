@@ -1,25 +1,14 @@
 #include "Player.h"
 
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
-	: Creature(sndSys, s, time),
-	  ctrlX(0)
+	: Creature(sndSys, s, time)
 {
-	fsm = new FSM(
-		FSMData{soundSys, sprite,
-				runSpeed, jumpSpeed,
-				pTx->dirX,
-				position, velocity, force,
-				deltaTime,
-				isGround, isTop,
-				canJumpAttack,
-				ctrlX,
-				dAttack, dChain, dJump,
-				downDistance});
-	fsm->Add<PlayerIdle>(Idle);
-	fsm->Add<PlayerRun>(Run);
+	
+	fsm->Add<FSPlayerIdle>(Idle);
+	fsm->Add<FSPlayerRun>(Run);
 	fsm->Add<PlayerJump>(Jump);
-	fsm->Add<PlayerFall>(Fall);
-	fsm->Add<PlayerAttack1>(Attack1);
+	fsm->Add<FSPlayerFall>(Fall);
+	fsm->Add<FSPlayerAttack1>(Attack1);
 	fsm->Add<PlayerAttack2>(Attack2);
 	fsm->Add<PlayerAttack3>(Attack3);
 	fsm->Add<PlayerJumpAttack>(JumpAttack);

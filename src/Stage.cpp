@@ -1,7 +1,7 @@
 #include "Stage.h"
 
-Stage::Stage(string filename, Player *pl, Shader *s)
-    : player(pl), shader(s)
+Stage::Stage(string filename, SoundSystem *sndSys, Player *pl, Shader *s, double &time)
+    : player(pl), shader(s), soundSys(sndSys), deltaTime(time)
 {
     bg = new Sprite();
     fg = new Sprite();
@@ -13,6 +13,10 @@ Stage::~Stage()
     delete bg;
     delete fg;
     delete debug;
+    for (auto m : monsters)
+    {
+        delete m;
+    }
 }
 void Stage::loadData(string filename)
 {
@@ -40,6 +44,17 @@ void Stage::loadData(string filename)
         collisions.push_back(newCol);
         debug->AddDebug(newCol);
     }
+    for (auto monster : js["monsters"])
+    {
+        Creature *c;
+        if (monster["name"] == "snail")
+        {
+            c = new Snail(soundSys, shader, deltaTime);
+        }
+
+        c->SetPos(vec2(monster["x"], monster["y"]));
+        monsters.push_back(c);
+    }
 }
 void Stage::SetPlayerEntry(int index)
 {
@@ -47,8 +62,28 @@ void Stage::SetPlayerEntry(int index)
 }
 void Stage::Update()
 {
+    
     updateTrigger();
     updateCollision();
+    updateMonsters();
+}
+void Stage::Draw()
+{
+    drawBG();
+    drawFG();
+    drawMonsters();
+}
+vec2 Stage::GetBoundary()
+{
+    return bg->Tx.scale;
+}
+
+void Stage::updateMonsters()
+{
+    for (auto m : monsters)
+    {
+        m->Update(Control{});
+    }
 }
 
 void Stage::updateTrigger()
@@ -70,22 +105,32 @@ void Stage::updateCollision()
     CollisionStatus status = Collision::CollisonSystem(plPos, player->GetCol(), collisions);
     player->SetPos(plPos);
     player->SetColStatus(status);
+
+    for (auto monster : monsters)
+    {
+        vec2 pos = monster->GetPos();
+        CollisionStatus status = Collision::CollisonSystem(pos, monster->GetCol(), collisions);
+        monster->SetPos(pos);
+        monster->SetColStatus(status);
+    }
 }
 
-void Stage::DrawBG()
+void Stage::drawBG()
 {
     shader->SetMat("modelMatrix", bg->Tx.Get());
     bg->Draw();
 }
 
-void Stage::DrawFG()
+void Stage::drawFG()
 {
     shader->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
     debug->DrawDebug();
 }
-
-vec2 Stage::GetBoundary()
+void Stage::drawMonsters()
 {
-    return bg->Tx.scale;
+    for (auto m : monsters)
+    {
+        m->Draw();
+    }
 }

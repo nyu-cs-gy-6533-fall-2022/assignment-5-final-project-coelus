@@ -27,7 +27,11 @@ enum ActionState
 	Attack2,
 	Attack3,
 	Fall,
-	JumpAttack
+	JumpAttack,
+
+	SnailIdle,
+	SnailAttack,
+	SnailFall
 
 };
 

@@ -1,0 +1,43 @@
+{
+    "type": 0,
+    "runSpeed": 500,
+    "rigidbody": {
+        "w": 256,
+        "h": 152
+    },
+    "animation": [
+        {
+            "state": 9,
+            "pivotX": 122,
+            "pivotY": 345,
+            "width": 512,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 1,
+            "isLoop": true,
+            "filename": "snail/snail-move.png"
+        },
+        {
+            "state": 10,
+            "pivotX": 122,
+            "pivotY": 345,
+            "width": 512,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.1,
+            "isLoop": true,
+            "filename": "snail/snail-move.png"
+        },
+        {
+            "state": 11,
+            "pivotX": 122,
+            "pivotY": 345,
+            "width": 512,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.1,
+            "isLoop": true,
+            "filename": "snail/snail-move.png"
+        }
+    ]
+}

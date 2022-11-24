@@ -29,12 +29,25 @@ public:
         : soundSys(sndSys),
           shader(s),
           deltaTime(time),
-          position(vec2(0, 0))
+          position(vec2(0)),
+          velocity(vec2(0)),
+          ctrlX(0)
     {
         sprite = new AnimSprite();
         debug = new Debug(shader);
         pTx = &sprite->Tx;
         pTx->dirX = -1;
+        fsm = new FSM(
+            FSMData{soundSys, sprite,
+                    runSpeed, jumpSpeed,
+                    pTx->dirX,
+                    position, velocity, force,
+                    deltaTime,
+                    isGround, isTop,
+                    canJumpAttack,
+                    ctrlX,
+                    dAttack, dChain, dJump,
+                    downDistance});
     }
     ~Creature()
     {
@@ -75,11 +88,11 @@ public:
         position.y += velocity.y;
     }
 
-    void Draw(double deltaTime)
+    void Draw()
     {
         debug->SetDebugTx(0, GetCol());
         debug->DrawDebug();
-
+        
         sprite->Set(position, rigidbody);
         shader->SetMat("modelMatrix", pTx->Get());
         sprite->Draw(deltaTime);
@@ -98,6 +111,9 @@ protected:
     double &deltaTime;
     vec2 position, velocity, force, rigidbody;
     bool isGround, isTop;
+    bool canJumpAttack;
     float downDistance;
+    int ctrlX;
+    DefferedKey dAttack, dChain, dJump;
 };
 #endif

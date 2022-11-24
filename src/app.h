@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <math.h>
 
-#include "Player.h"
+#include "creature/Player.h"
 #include "Camera.h"
 #include "Shader.h"
 #include "StageSystem.h"

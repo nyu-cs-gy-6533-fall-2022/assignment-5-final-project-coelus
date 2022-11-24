@@ -1,5 +1,10 @@
 {
     "type": 1,
+    "monsters":[{
+        "name":"snail",
+        "x": 950,
+        "y": 3204
+    }],
     "entry": [
         {
             "spawnX": 0,

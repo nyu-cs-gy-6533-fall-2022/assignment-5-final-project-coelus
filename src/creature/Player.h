@@ -1,7 +1,7 @@
 
 #pragma once
 #include "Creature.h"
-using namespace glm;
+
 
 #ifndef _PLAYER_
 #define _PLAYER_
@@ -13,9 +13,8 @@ public:
 	void Update(Control ctrl);
 
 private:
-	bool canJumpAttack;
-	int ctrlX;
-	DefferedKey dAttack, dChain, dJump;
+	
+	
 	void loadData();
 };
 #endif

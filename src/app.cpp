@@ -51,7 +51,7 @@ void App::init()
     soundSys = new SoundSystem();
     shader = new Shader("sprite.vert", "sprite.frag");
     player = new Player(soundSys, shader, deltaTime);
-    stageSys = new StageSystem(soundSys, player, shader);
+    stageSys = new StageSystem(soundSys, player, shader, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
 
     prevTime = glfwGetTime();
@@ -111,7 +111,7 @@ void App::draw()
     shader->Use();
     shader->SetMat("projMatrix", camera->Projection());
     stageSys->Draw();
-    player->Draw(deltaTime);
+    player->Draw();
 }
 
 void App::MainLoop()

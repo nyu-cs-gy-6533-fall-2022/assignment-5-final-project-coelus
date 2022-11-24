@@ -1,6 +1,6 @@
 
 #pragma once
-#include "Player.h"
+#include "creature/Player.h"
 #include "Loader.h"
 #include "Shader.h"
 #include "Stage.h"
@@ -14,7 +14,7 @@ using json = nlohmann::json;
 class StageSystem
 {
 public:
-    StageSystem(SoundSystem *sndSys, Player *pl, Shader *s);
+    StageSystem(SoundSystem *sndSys, Player *pl, Shader *s, double &time);
 
     ~StageSystem()
     {
@@ -31,6 +31,7 @@ public:
 
 private:
     SoundSystem *soundSys;
+    double &deltaTime;
     Stage *currentStage;
     unordered_map<string, Stage *> stages;
     Player *player;

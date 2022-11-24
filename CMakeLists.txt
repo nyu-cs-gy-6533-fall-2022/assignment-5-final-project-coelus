@@ -68,6 +68,7 @@ endif()
 file(GLOB SOURCES
 "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 "${CMAKE_CURRENT_SOURCE_DIR}/src/fsm/*.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/creature/*.cpp"
 )
 
 ### Collect all the h files in src
