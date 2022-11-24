@@ -414,7 +414,11 @@ public:
         force = vec2(0);
         velocity = vec2(0);
     };
-    void Update(){ };
+    void Update()
+    {
+        force = vec2(0);
+        velocity = vec2(0);
+    };
     void Exit(){};
 };
 

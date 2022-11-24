@@ -1,6 +1,6 @@
 {
     "type": 0,
-    "runSpeed": 500,
+    "runSpeed": 300,
     "rigidbody": {
         "w": 256,
         "h": 152

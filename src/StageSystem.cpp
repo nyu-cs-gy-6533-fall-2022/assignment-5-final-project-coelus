@@ -7,7 +7,7 @@ StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, Shader *shader, double
     json js = Loader::Load("game.json");
     for (string name : js["stages"])
     {
-        stages[name] = new Stage(name + ".json",soundSys, player, shader,time);
+        stages[name] = new Stage(name + ".json", soundSys, player, shader, time);
     }
     startStage = js["startStage"];
     startEntry = js["startEntry"];
@@ -22,13 +22,14 @@ void StageSystem::SetPlayerEntry(string name, int index)
 }
 void StageSystem::Update()
 {
-    currentStage->Update();
+    
     NextStage *nt = &currentStage->NextStage;
     if (nt->isReady)
     {
         SetPlayerEntry(nt->nextStage, nt->nextEntry);
         nt->Init();
     }
+    currentStage->Update();
 }
 void StageSystem::Draw()
 {

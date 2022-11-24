@@ -29,8 +29,8 @@ public:
         : soundSys(sndSys),
           shader(s),
           deltaTime(time),
-          position(vec2(0)),
-          velocity(vec2(0)),
+          position(vec2(0,0)),
+          velocity(vec2(0,0)),
           ctrlX(0)
     {
         sprite = new AnimSprite();
@@ -57,6 +57,7 @@ public:
     }
     virtual void Update(Control ctrl){};
 
+    Transform GetTx() { return *pTx; };
     vec2 GetPos() { return position; };
     void SetPos(vec2 pos) { position = pos; }
     vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
@@ -65,7 +66,12 @@ public:
     {
         isGround = status.isColDown;
         isTop = status.isColTop;
+        isFront = status.isColLeft & pTx->dirX == -1 | status.isColRight & pTx->dirX == 1;
         downDistance = status.distance.y;
+    }
+    void SetPreditColStatus(CollisionStatus status)
+    {
+        willFall = !status.isColDown;
     }
     void StateUpdate()
     {
@@ -92,7 +98,7 @@ public:
     {
         debug->SetDebugTx(0, GetCol());
         debug->DrawDebug();
-        
+
         sprite->Set(position, rigidbody);
         shader->SetMat("modelMatrix", pTx->Get());
         sprite->Draw(deltaTime);
@@ -110,7 +116,8 @@ protected:
     float runSpeed, jumpSpeed;
     double &deltaTime;
     vec2 position, velocity, force, rigidbody;
-    bool isGround, isTop;
+    bool isGround, isTop, isFront;
+    bool willFall = false;
     bool canJumpAttack;
     float downDistance;
     int ctrlX;

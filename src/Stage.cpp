@@ -13,10 +13,6 @@ Stage::~Stage()
     delete bg;
     delete fg;
     delete debug;
-    for (auto m : monsters)
-    {
-        delete m;
-    }
 }
 void Stage::loadData(string filename)
 {
@@ -62,10 +58,10 @@ void Stage::SetPlayerEntry(int index)
 }
 void Stage::Update()
 {
-    
+    updateMonsters();
     updateTrigger();
     updateCollision();
-    updateMonsters();
+    
 }
 void Stage::Draw()
 {
@@ -112,6 +108,10 @@ void Stage::updateCollision()
         CollisionStatus status = Collision::CollisonSystem(pos, monster->GetCol(), collisions);
         monster->SetPos(pos);
         monster->SetColStatus(status);
+        vec4 rect = monster->GetCol();
+        rect += vec4(rect.z * monster->GetTx().dirX, 0, 0, 0);
+        CollisionStatus predictStatus = Collision::CollisonSystem(pos, rect, collisions);
+        monster->SetPreditColStatus(predictStatus);
     }
 }
 

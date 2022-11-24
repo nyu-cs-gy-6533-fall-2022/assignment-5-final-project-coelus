@@ -10,7 +10,7 @@ public:
         fsm->Add<FSSnailAttack>(SnailAttack);
         fsm->Add<FSSnailFall>(SnailFall);
         fsm->Set(SnailIdle);
-
+        ctrlX = 1;
         loadData();
     }
     void Update(Control ctrl)
@@ -19,8 +19,15 @@ public:
         if (!isGround)
         {
             fsmInput.Add(SnailFall);
-        }else{
-            ctrlX = 1;
+        }
+        else
+        {
+            
+            if (isFront || willFall)
+            {
+                ctrlX *= -1;
+            }
+
             fsmInput.Add(SnailAttack);
         }
         StateUpdate();
