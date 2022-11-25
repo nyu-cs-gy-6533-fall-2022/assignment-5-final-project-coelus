@@ -102,11 +102,13 @@ void Stage::updateTrigger()
     {
         vec2 pos = monster->GetPos();
         resIndex = -1;
-        if (Collision::IsCollided(monster->GetCol(), player->GetHitbox(), resIndex))
+        vector<HitboxData> hitboxs = player->GetHitbox();
+        if (Collision::IsCollided(monster->GetCol(), hitboxs, resIndex))
         {
+            HitboxData hitbox = hitboxs[resIndex];
             int dir = player->GetPos().x > monster->GetPos().x ? 1 : -1;
             monster->SetDirX(dir);
-            monster->SetDamagedForce(vec2(-dir * 100, -50));
+            monster->SetDamagedForce(vec2(-dir * hitbox.force.x, hitbox.force.y));
             monster->SetDamage();
         }
     }

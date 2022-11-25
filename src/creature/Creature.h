@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "DefferedKey.h"
 #include "fsm/FSM.h"
+#include "Hitbox.h"
 
 #include <algorithm>
 
@@ -17,6 +18,7 @@ using namespace glm;
 
 #ifndef _Creature_
 #define _Creature_
+
 struct Control
 {
     bool right, left, up, down;
@@ -50,7 +52,7 @@ public:
                     ctrlX,
                     dAttack, dChain, dJump,
                     downDistance,
-                    hitboxs, hitboxtime});
+                    hitboxs});
     }
     ~Creature()
     {
@@ -68,7 +70,7 @@ public:
     void SetPos(vec2 pos) { position = pos; }
     vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
     vec4 GetCol() { return vec4(position, rigidbody.x, rigidbody.y); }
-    vector<vec4> GetHitbox() { return hitboxs; }
+    vector<HitboxData> GetHitbox() { return hitboxs; }
     void SetColStatus(CollisionStatus status)
     {
         isGround = status.isColDown;
@@ -111,19 +113,17 @@ protected:
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
 
-    vector<vec4> hitboxs;
-    vector<float> hitboxtime;
+    vector<HitboxData> hitboxs;
 
     void updateHitBox()
     {
-        for (int i = hitboxtime.size() - 1; i >= 0; i--)
+        for (int i = hitboxs.size() - 1; i >= 0; i--)
         {
-            if (hitboxtime[i] <= 0)
+            if (hitboxs[i].time <= 0)
             {
                 hitboxs.erase(hitboxs.begin() + i);
-                hitboxtime.erase(hitboxtime.begin() + i);
             }
-            hitboxtime[i] -= deltaTime;
+            hitboxs[i].time -= deltaTime;
         }
     }
     void stateUpdate()

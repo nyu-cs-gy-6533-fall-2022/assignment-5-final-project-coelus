@@ -1,5 +1,6 @@
 #pragma once
 #include "DefferedKey.h"
+#include "Hitbox.h"
 
 using namespace std;
 
@@ -18,8 +19,7 @@ struct FSMData
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
-    vector<vec4> &hitboxs;
-    vector<float> &hitboxtime;
+    vector<HitboxData> &hitboxs;
     
 };
 

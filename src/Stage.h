@@ -8,6 +8,7 @@
 #include "Collision.h"
 #include "Debug.h"
 #include "Sound.h"
+#include "Hitbox.h"
 
 #include <json.hpp>
 using json = nlohmann::json;

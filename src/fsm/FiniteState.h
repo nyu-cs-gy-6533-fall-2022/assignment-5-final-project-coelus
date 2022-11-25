@@ -30,8 +30,7 @@ public:
           dChain(data.dChain),
           dJump(data.dJump),
           downDistance(data.downDistance),
-          hitboxs(data.hitboxs),
-          hitboxtime(data.hitboxtime)
+          hitboxs(data.hitboxs)
 
     {
     }
@@ -62,8 +61,7 @@ protected:
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
-    vector<vec4> &hitboxs;
-    vector<float> &hitboxtime;
+    vector<HitboxData> &hitboxs;
     int &dirX;
 
     FSMInput possibleState, interruptState;
@@ -112,11 +110,10 @@ protected:
             force.y = 9.8f * deltaTime * Global::GravityRatio;
         }
     }
-    void addHitBox(vec4 hitbox, float time = 0.18f)
+    void addHitBox(vec4 hitbox, vec2 force, float time = 0.18f)
     {
         debug->AddDebug(hitbox);
-        hitboxs.push_back(hitbox);
-        hitboxtime.push_back(time);
+        hitboxs.push_back(HitboxData{hitbox, force, time});
     }
 };
 
@@ -278,7 +275,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240));
+            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(80, -50));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -328,7 +325,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240));
+            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(110, -50));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -374,7 +371,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240));
+            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(150, -50));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -416,7 +413,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300));
+            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(80, -50));
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;

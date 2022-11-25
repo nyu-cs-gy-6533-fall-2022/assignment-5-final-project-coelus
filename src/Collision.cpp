@@ -109,6 +109,23 @@ CollisionStatus Collision::CollisonSystem(vec2 &targetPos, vec4 r0, const vector
     return status;
 }
 
+
+bool Collision::IsCollided(vec4 r0, const vector<HitboxData> &hitboxs, int &resIndex)
+{
+    bool isCol = false;
+    for (int i = 0; i < hitboxs.size(); i++)
+    {
+        if (Collision::IsCollided(r0, hitboxs[i].hitboxs))
+        {
+            resIndex = i;
+            isCol = true;
+            break;
+        }
+    }
+    return isCol;
+}
+
+
 bool Collision::IsCollided(vec4 r0, const vector<vec4> &rects, int &resIndex)
 {
     bool isCol = false;
