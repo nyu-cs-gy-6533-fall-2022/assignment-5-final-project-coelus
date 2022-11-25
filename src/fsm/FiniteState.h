@@ -19,7 +19,6 @@ public:
           position(data.position),
           velocity(data.velocity),
           force(data.force),
-          damagedForce(data.damagedForce),
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
@@ -30,7 +29,9 @@ public:
           dChain(data.dChain),
           dJump(data.dJump),
           downDistance(data.downDistance),
-          hitboxs(data.hitboxs)
+          hitboxs(data.hitboxs),
+          hp(data.hp),
+          damage(data.damage)
 
     {
     }
@@ -54,7 +55,7 @@ protected:
     Debug *debug;
     float &runSpeed, &jumpSpeed;
     Transform *pTx;
-    vec2 &position, &velocity, &force, &damagedForce;
+    vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack, &isDamaged;
@@ -63,6 +64,8 @@ protected:
     float &downDistance;
     vector<HitboxData> &hitboxs;
     int &dirX;
+    int &hp;
+    DamageData &damage;
 
     FSMInput possibleState, interruptState;
 
@@ -110,10 +113,10 @@ protected:
             force.y = 9.8f * deltaTime * Global::GravityRatio;
         }
     }
-    void addHitBox(vec4 hitbox, vec2 force, float time = 0.18f)
+    void addHitBox(vec4 hitbox, vec2 force, int damage, float time = 0.18f)
     {
         debug->AddDebug(hitbox);
-        hitboxs.push_back(HitboxData{hitbox, force, time});
+        hitboxs.push_back(HitboxData{hitbox, force, damage, time});
     }
 };
 
@@ -275,7 +278,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(80, -50));
+            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -325,7 +328,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(110, -50));
+            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -371,7 +374,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(150, -50));
+            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -413,7 +416,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(80, -50));
+            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -432,7 +435,7 @@ class FSSnailIdle : public FiniteState
 public:
     FSSnailIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged});
+        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged, Died});
     };
 
     void Enter()
@@ -454,7 +457,7 @@ class FSSnailAttack : public FiniteState
 public:
     FSSnailAttack(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged, Died});
     };
 
     void Enter()
@@ -524,9 +527,9 @@ public:
     {
 
         FiniteState::Enter();
-        velocity.x = 0;
-        velocity.y = 0;
-
+        velocity = vec2(0);
+        hp -= damage.losthp;
+        dirX = damage.dirX;
         soundSys->Play(SFXPlayerHit);
     };
     void Update()
@@ -542,8 +545,8 @@ public:
         }
         if (!sprite->IsFrameGreater(1))
         {
-            force.x = damagedForce.x * deltaTime;
-            force.y = damagedForce.y * deltaTime;
+            force.x = damage.force.x * deltaTime;
+            force.y = damage.force.y * deltaTime;
         }
         else
         {
@@ -556,6 +559,28 @@ public:
 
         isDamaged = false;
     };
+
+private:
+};
+
+class FSDied : public FiniteState
+{
+public:
+    FSDied(FSMData data) : FiniteState(data){};
+
+    int GetPossibleState()
+    {
+        return 0;
+    }
+
+    void Enter()
+    {
+        FiniteState::Enter();
+        velocity = vec2(0);
+        force = vec2(0);
+    };
+    void Update(){};
+    void Exit(){};
 
 private:
 };

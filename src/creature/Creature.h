@@ -34,7 +34,8 @@ public:
           deltaTime(time),
           position(vec2(0, 0)),
           velocity(vec2(0, 0)),
-          ctrlX(0)
+          ctrlX(0),
+          hp(200)
     {
         sprite = new AnimSprite();
         debug = new Debug(shader);
@@ -44,7 +45,7 @@ public:
             FSMData{soundSys, sprite, debug,
                     runSpeed, jumpSpeed,
                     pTx,
-                    position, velocity, force, damagedForce,
+                    position, velocity, force,
                     deltaTime,
                     isGround, isTop,
                     canJumpAttack,
@@ -52,7 +53,8 @@ public:
                     ctrlX,
                     dAttack, dChain, dJump,
                     downDistance,
-                    hitboxs});
+                    hitboxs,
+                    hp, damage});
     }
     ~Creature()
     {
@@ -62,8 +64,14 @@ public:
     }
     virtual void Update(Control ctrl){};
     void SetDirX(int dir) { pTx->dirX = dir; }
-    void SetDamagedForce(vec2 force) { damagedForce = force; }
-    void SetDamage() { isDamaged = true; }
+    void SetDamage(Creature *attacker, HitboxData hitbox)
+    {
+        int dir = attacker->GetPos().x > position.x ? 1 : -1;
+        damage.dirX = dir;
+        damage.force = vec2(-dir * hitbox.force.x, hitbox.force.y);
+        damage.losthp = hitbox.damage;
+        isDamaged = true;
+    }
 
     Transform GetTx() { return *pTx; };
     vec2 GetPos() { return position; };
@@ -101,13 +109,14 @@ protected:
     Debug *debug;
     FSM *fsm;
     FSMInput fsmInput;
-
+    int hp;
     float runSpeed, jumpSpeed;
     double &deltaTime;
-    vec2 position, velocity, force, rigidbody, damagedForce;
+    vec2 position, velocity, force, rigidbody;
     bool isGround, isTop, isFront;
     bool willFall = false;
     bool canJumpAttack;
+    DamageData damage;
     bool isDamaged = false;
     float downDistance;
     int ctrlX;

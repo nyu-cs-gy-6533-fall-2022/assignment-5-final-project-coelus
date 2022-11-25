@@ -106,10 +106,8 @@ void Stage::updateTrigger()
         if (Collision::IsCollided(monster->GetCol(), hitboxs, resIndex))
         {
             HitboxData hitbox = hitboxs[resIndex];
-            int dir = player->GetPos().x > monster->GetPos().x ? 1 : -1;
-            monster->SetDirX(dir);
-            monster->SetDamagedForce(vec2(-dir * hitbox.force.x, hitbox.force.y));
-            monster->SetDamage();
+
+            monster->SetDamage(player,hitbox);
         }
     }
 }

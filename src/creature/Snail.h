@@ -10,6 +10,7 @@ public:
         fsm->Add<FSSnailAttack>(SnailAttack);
         fsm->Add<FSSnailFall>(SnailFall);
         fsm->Add<FSSnailDamaged>(SnailDamaged);
+        fsm->Add<FSDied>(Died);
         fsm->Set(SnailIdle);
         ctrlX = 1;
         loadData();
@@ -19,7 +20,12 @@ public:
     }
     void Update(Control ctrl)
     {
+
         fsmInput.Init();
+        if (hp <= 0)
+        {
+            fsmInput.Add(Died);
+        }
         // after been attack do idle
         if (idleFlag && !isDamaged)
         {
@@ -27,7 +33,7 @@ public:
             attackTime = 0;
             waitTime = 3;
         }
-        
+
         if (!isGround)
         {
             fsmInput.Add(SnailFall);

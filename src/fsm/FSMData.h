@@ -11,7 +11,7 @@ struct FSMData
     Debug *debug;
     float &runSpeed, &jumpSpeed;
     Transform *pTx;
-    vec2 &position, &velocity, &force, &damagedForce;
+    vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;
@@ -20,7 +20,8 @@ struct FSMData
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
     vector<HitboxData> &hitboxs;
-    
+    int &hp;
+    DamageData &damage;
 };
 
 struct FSMInput
