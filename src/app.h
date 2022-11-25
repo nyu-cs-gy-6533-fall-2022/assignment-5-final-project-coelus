@@ -35,7 +35,7 @@ private:
 
     StageSystem *stageSys;
     Player *player;
-    Shader *shader;
+    vector<Shader*> shaders;
     Camera *camera;
     SoundSystem *soundSys;
     

@@ -36,9 +36,12 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
 App::~App()
 {
     delete player;
-    delete shader;
     delete stageSys;
     delete soundSys;
+
+    for(auto s:shaders){
+        delete s;
+    }
 
     glfwTerminate();
 }
@@ -49,9 +52,10 @@ void App::init()
     loadIcon();
 
     soundSys = new SoundSystem();
-    shader = new Shader("sprite.vert", "sprite.frag");
-    player = new Player(soundSys, shader, deltaTime);
-    stageSys = new StageSystem(soundSys, player, shader, deltaTime);
+    shaders.push_back(new Shader("sprite.vert", "sprite.frag"));
+    shaders.push_back(new Shader("dissolve.vert", "dissolve.frag"));
+    player = new Player(soundSys, shaders, deltaTime);
+    stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
 
     prevTime = glfwGetTime();
@@ -109,8 +113,10 @@ void App::draw()
 {
     glClearColor(0, 0, 0, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    shader->Use();
-    shader->SetMat("projMatrix", camera->Projection());
+    shaders[1]->Use();
+    shaders[1]->SetMat("projMatrix", camera->Projection());
+    shaders[0]->Use();
+    shaders[0]->SetMat("projMatrix", camera->Projection());
     stageSys->Draw();
     player->Draw();
 }

@@ -1,13 +1,13 @@
 #include "StageSystem.h"
 
-StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, Shader *shader, double &time)
+StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, vector<Shader*> &shaders, double &time)
     : soundSys(sndSys), player(pl), deltaTime(time)
 {
 
     json js = Loader::Load("game.json");
     for (string name : js["stages"])
     {
-        stages[name] = new Stage(name + ".json", soundSys, player, shader, time);
+        stages[name] = new Stage(name + ".json", soundSys, player, shaders, time);
     }
     startStage = js["startStage"];
     startEntry = js["startEntry"];

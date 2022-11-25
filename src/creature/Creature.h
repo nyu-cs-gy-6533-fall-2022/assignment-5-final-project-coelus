@@ -28,17 +28,18 @@ struct Control
 class Creature
 {
 public:
-    Creature(SoundSystem *sndSys, Shader *s, double &time)
+    Creature(SoundSystem *sndSys, vector<Shader *> &s, double &time)
         : soundSys(sndSys),
-          shader(s),
+          shaders(s),
           deltaTime(time),
           position(vec2(0, 0)),
           velocity(vec2(0, 0)),
           ctrlX(0),
-          hp(200)
+          initHp(20),
+          hp(initHp)
     {
         sprite = new AnimSprite();
-        debug = new Debug(shader);
+        debug = new Debug(shaders);
         pTx = &sprite->Tx;
         pTx->dirX = -1;
         fsm = new FSM(
@@ -106,19 +107,36 @@ public:
         debug->DrawDebug();
 
         sprite->Set(position, rigidbody);
-        shader->SetMat("modelMatrix", pTx->Get());
+        if (fsm->GetState() == Died)
+        {
+
+            shaders[1]->Use();
+            shaders[1]->SetMat("modelMatrix", pTx->Get());
+            shaders[1]->SetFloat("dissolveTime", dissolveTime);
+            dissolveTime -= deltaTime;
+            if (dissolveTime < 0)
+            {
+                dissolveTime = 0;
+            }
+        }
+        else
+        {
+            shaders[0]->Use();
+            shaders[0]->SetMat("modelMatrix", pTx->Get());
+        }
+
         sprite->Draw(deltaTime);
     }
 
 protected:
     Transform *pTx;
-    Shader *shader;
+    vector<Shader *> &shaders;
     AnimSprite *sprite;
     SoundSystem *soundSys;
     Debug *debug;
     FSM *fsm;
     FSMInput fsmInput;
-    int hp;
+    int initHp, hp;
     float runSpeed, jumpSpeed;
     double &deltaTime;
     vec2 initPosition, position, velocity, force, rigidbody;
@@ -130,6 +148,8 @@ protected:
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
+
+    float dissolveTime = 1.5f;
 
     vector<HitboxData> hitboxs;
 

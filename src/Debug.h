@@ -10,7 +10,7 @@ using namespace glm;
 class Debug
 {
 public:
-    Debug(Shader *s) : shader(s){};
+    Debug(vector<Shader*> &s) : shaders(s){};
     ~Debug()
     {
         for (auto rect : debugRect)
@@ -23,6 +23,6 @@ public:
     void SetDebugTx(int index, vec4 rect);
 
 private:
-    Shader *shader;
+    vector<Shader*> &shaders;
     vector<Sprite *> debugRect;
 };

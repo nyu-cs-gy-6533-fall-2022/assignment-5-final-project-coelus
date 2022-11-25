@@ -25,7 +25,7 @@ Shader::Shader(const string vertShaderName, const string fragShaderName)
     glCompileShader(vert);
     glAttachShader(id, vert);
 
-    frag= glCreateShader(GL_FRAGMENT_SHADER);
+    frag = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(frag, 1, &fragShader, NULL);
     glCompileShader(frag);
     glAttachShader(id, frag);
@@ -47,6 +47,13 @@ Shader::~Shader()
 void Shader::Use()
 {
     glUseProgram(id);
+}
+
+void Shader::SetFloat(const char *name, float val)
+{
+    GLfloat *glval = new GLfloat[1];
+    glval[0] = val;
+    glUniform1fv(glGetUniformLocation(id, name), 1, glval);
 }
 
 void Shader::SetMat(const char *name, mat4 mat)

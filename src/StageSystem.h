@@ -14,7 +14,7 @@ using json = nlohmann::json;
 class StageSystem
 {
 public:
-    StageSystem(SoundSystem *sndSys, Player *pl, Shader *s, double &time);
+    StageSystem(SoundSystem *sndSys, Player *pl, vector<Shader*> &shaders, double &time);
 
     ~StageSystem()
     {

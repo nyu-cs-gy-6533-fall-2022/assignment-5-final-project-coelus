@@ -8,7 +8,7 @@
 class Player : public Creature
 {
 public:
-	Player(SoundSystem *sndSys, Shader *s, double &time);
+	Player(SoundSystem *sndSys, vector<Shader*> &s, double &time);
 	void Update(Control ctrl);
 
 private:

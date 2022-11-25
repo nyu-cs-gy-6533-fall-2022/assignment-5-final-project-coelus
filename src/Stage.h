@@ -47,7 +47,7 @@ struct Entry
 class Stage
 {
 public:
-	Stage(string filename, SoundSystem *sndSys, Player *pl, Shader *s, double &time);
+	Stage(string filename, SoundSystem *sndSys, Player *pl, vector<Shader*> &s, double &time);
 
 	~Stage();
 
@@ -64,7 +64,7 @@ private:
 	Sprite *fg;
 	Player *player;
 	vector<Creature *> monsters;
-	Shader *shader;
+	vector<Shader*> &shaders;
 	SoundSystem *soundSys;
 	double &deltaTime;
 

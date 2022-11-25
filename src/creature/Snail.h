@@ -5,7 +5,7 @@
 class Snail : public Creature
 {
 public:
-    Snail(SoundSystem *sndSys, Shader *s, double &t) : Creature(sndSys, s, t)
+    Snail(SoundSystem *sndSys, vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
     {
         fsm->Add<FSSnailIdle>(SnailIdle);
         fsm->Add<FSSnailAttack>(SnailAttack);
@@ -21,7 +21,8 @@ public:
     }
     void Reset()
     {
-        hp = 200;
+        dissolveTime = 1.5f;
+        hp = initHp;
         isDamaged = false;
         idleFlag = false;
         timeInit();

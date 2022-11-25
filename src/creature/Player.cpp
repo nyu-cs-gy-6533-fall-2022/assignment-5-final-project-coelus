@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SoundSystem *sndSys, Shader *s, double &time)
+Player::Player(SoundSystem *sndSys, vector<Shader*> &s, double &time)
 	: Creature(sndSys, s, time)
 {
 

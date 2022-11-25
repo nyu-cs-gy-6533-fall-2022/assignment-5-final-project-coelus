@@ -1,11 +1,11 @@
 #include "Stage.h"
 
-Stage::Stage(string filename, SoundSystem *sndSys, Player *pl, Shader *s, double &time)
-    : player(pl), shader(s), soundSys(sndSys), deltaTime(time)
+Stage::Stage(string filename, SoundSystem *sndSys, Player *pl, vector<Shader*> &s, double &time)
+    : player(pl), shaders(s), soundSys(sndSys), deltaTime(time)
 {
     bg = new Sprite();
     fg = new Sprite();
-    debug = new Debug(shader);
+    debug = new Debug(shaders);
     loadData(filename);
 }
 Stage::~Stage()
@@ -50,7 +50,7 @@ void Stage::loadData(string filename)
         Creature *c;
         if (monster["name"] == "snail")
         {
-            c = new Snail(soundSys, shader, deltaTime);
+            c = new Snail(soundSys, shaders, deltaTime);
         }
         c->SetInitPos(vec2(monster["x"], monster["y"]));
         monsters.push_back(c);
@@ -145,13 +145,13 @@ void Stage::updateCollision()
 
 void Stage::drawBG()
 {
-    shader->SetMat("modelMatrix", bg->Tx.Get());
+    shaders[0]->SetMat("modelMatrix", bg->Tx.Get());
     bg->Draw();
 }
 
 void Stage::drawFG()
 {
-    shader->SetMat("modelMatrix", fg->Tx.Get());
+    shaders[0]->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
     debug->DrawDebug();
 }

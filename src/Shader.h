@@ -20,7 +20,7 @@ public:
 	~Shader();
 
 	void Use();
-
+	void SetFloat(const char* name, float val);
 	void SetMat(const char* name, mat4 mat);
 	void SetVec4(const char* name, vec4 vec);
 

@@ -12,7 +12,7 @@ void Debug::DrawDebug()
 {
     for (auto rect : debugRect)
     {
-        shader->SetMat("modelMatrix", rect->Tx.Get());
+        shaders[0]->SetMat("modelMatrix", rect->Tx.Get());
         rect->Draw();
     }
 }
