@@ -52,14 +52,17 @@ void Stage::loadData(string filename)
         {
             c = new Snail(soundSys, shader, deltaTime);
         }
-
-        c->SetPos(vec2(monster["x"], monster["y"]));
+        c->SetInitPos(vec2(monster["x"], monster["y"]));
         monsters.push_back(c);
     }
 }
 void Stage::SetPlayerEntry(int index)
 {
     player->SetPos(entries[index].GetSpawnPos());
+    for (auto m : monsters)
+    {
+        m->Reset();
+    }
 }
 void Stage::Update()
 {

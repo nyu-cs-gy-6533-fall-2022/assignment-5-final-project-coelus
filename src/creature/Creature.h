@@ -76,6 +76,12 @@ public:
     Transform GetTx() { return *pTx; };
     vec2 GetPos() { return position; };
     void SetPos(vec2 pos) { position = pos; }
+    void SetInitPos(vec2 pos)
+    {
+        initPosition = pos;
+        position = pos;
+    }
+    virtual void Reset(){}
     vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
     vec4 GetCol() { return vec4(position, rigidbody.x, rigidbody.y); }
     vector<HitboxData> GetHitbox() { return hitboxs; }
@@ -112,7 +118,7 @@ protected:
     int hp;
     float runSpeed, jumpSpeed;
     double &deltaTime;
-    vec2 position, velocity, force, rigidbody;
+    vec2 initPosition, position, velocity, force, rigidbody;
     bool isGround, isTop, isFront;
     bool willFall = false;
     bool canJumpAttack;

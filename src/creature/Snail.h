@@ -14,9 +14,17 @@ public:
         fsm->Set(SnailIdle);
         ctrlX = 1;
         loadData();
-        attackTime = 2;
-        waitTime = 3;
+        timeInit();
         idleFlag = false;
+    }
+    void Reset()
+    {
+        hp = 200;
+        isDamaged = false;
+        idleFlag = false;
+        timeInit();
+        position = initPosition;
+        fsm->Set(SnailIdle);
     }
     void Update(Control ctrl)
     {
@@ -30,8 +38,8 @@ public:
         if (idleFlag && !isDamaged)
         {
             idleFlag = false;
+            timeInit();
             attackTime = 0;
-            waitTime = 3;
         }
 
         if (!isGround)
@@ -57,8 +65,7 @@ public:
         {
             if (waitTime <= 0)
             {
-                attackTime = 2;
-                waitTime = 3;
+                timeInit();
             }
             waitTime -= deltaTime;
         }
@@ -78,6 +85,11 @@ private:
     bool idleFlag;
     float waitTime;
     float attackTime;
+    void timeInit()
+    {
+        attackTime = 2 + rand() % 1;
+        waitTime = 3 + rand() % 1;
+    }
     void loadData()
     {
         json js = Loader::Load("snail.json", vector<Sprite *>{sprite});

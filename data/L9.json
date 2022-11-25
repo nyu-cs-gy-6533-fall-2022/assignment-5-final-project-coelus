@@ -1,18 +1,32 @@
 {
     "type": 1,
-    "monsters":[{
-        "name":"snail",
-        "x": 950,
-        "y": 3204
-    },{
-        "name":"snail",
-        "x": 1450,
-        "y": 3204
-    },{
-        "name":"snail",
-        "x": 1950,
-        "y": 3204
-    }],
+    "monsters": [
+        {
+            "name": "snail",
+            "x": 450,
+            "y": 3150
+        },
+        {
+            "name": "snail",
+            "x": 850,
+            "y": 3150
+        },
+        {
+            "name": "snail",
+            "x": 1250,
+            "y": 3150
+        },
+        {
+            "name": "snail",
+            "x": 1650,
+            "y": 3150
+        },
+        {
+            "name": "snail",
+            "x": 2050,
+            "y": 3150
+        }
+    ],
     "entry": [
         {
             "spawnX": 0,
