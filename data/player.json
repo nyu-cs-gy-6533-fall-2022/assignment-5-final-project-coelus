@@ -104,7 +104,7 @@
             "width": 512,
             "height": 512,
             "frameCount": 6,
-            "secPerFrame": 0.04,
+            "secPerFrame": 0.06,
             "isLoop": false,
             "filename": "main/damaged.png"
         }

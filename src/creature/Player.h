@@ -12,8 +12,6 @@ public:
 	void Update(Control ctrl);
 
 private:
-	bool invincibleFlag;
-	int invincibleTime;
 	void loadData();
 };
 #endif

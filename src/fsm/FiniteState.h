@@ -143,7 +143,7 @@ class FSPlayerRun : public FiniteState
 public:
     FSPlayerRun(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Fall, Jump, Attack1});
+        possibleState.Add(vector<ActionState>{Idle, Fall, Jump, Attack1, Damaged});
     };
 
     void Enter()
@@ -519,14 +519,14 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, deltaTime );
+        addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
     };
     void Update()
     {
         if (time <= 0)
         {
-            time = 15;
-            addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, deltaTime );
+            time = 30;
+            addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         else
         {
@@ -537,10 +537,11 @@ public:
         moveX();
     };
     void Exit(){
+        hitboxs.clear();
     };
 
 private:
-    int time = 15;
+    int time = 30;
 };
 
 class FSSnailFall : public FiniteState

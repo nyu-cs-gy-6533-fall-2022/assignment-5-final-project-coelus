@@ -15,8 +15,6 @@ Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	fsm->Add<FSPlayerDamaged>(Damaged);
 
 	fsm->Set(Idle);
-	invincibleTime = 0;
-	invincibleFlag = false;
 	loadData();
 }
 void Player::loadData()
@@ -32,15 +30,10 @@ void Player::loadData()
 void Player::Update(Control ctrl)
 {
 	fsmInput.Init();
-	if (invincibleFlag && !isDamaged)
+
+	if (isDamaged)
 	{
-		invincibleTime = 100;
-		invincibleFlag = false;
-	}
-	invincibleTime--;
-	if (invincibleTime <= 0 && isDamaged)
-	{
-		invincibleFlag = true;
+		
 		fsmInput.Add(Damaged);
 	}
 	if (ctrl.right)

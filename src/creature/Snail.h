@@ -1,10 +1,11 @@
 #pragma once
 #include "Creature.h"
-
+#include <cstdlib>
+#include <ctime>
 class Snail : public Creature
 {
 public:
-    Snail(SoundSystem *sndSys, Shader *s, double &time) : Creature(sndSys, s, time)
+    Snail(SoundSystem *sndSys, Shader *s, double &t) : Creature(sndSys, s, t)
     {
         fsm->Add<FSSnailIdle>(SnailIdle);
         fsm->Add<FSSnailAttack>(SnailAttack);
@@ -12,6 +13,7 @@ public:
         fsm->Add<FSSnailDamaged>(SnailDamaged);
         fsm->Add<FSDied>(Died);
         fsm->Set(SnailIdle);
+        srand(time(0));
         ctrlX = 1;
         loadData();
         timeInit();
@@ -28,7 +30,7 @@ public:
     }
     void Update(Control ctrl)
     {
-
+        updateHitBox();
         fsmInput.Init();
         if (hp <= 0)
         {
@@ -75,7 +77,6 @@ public:
             fsmInput.Add(SnailDamaged);
         }
 
-        updateHitBox();
         stateUpdate();
         fsm->Update();
         movement();
@@ -87,8 +88,8 @@ private:
     float attackTime;
     void timeInit()
     {
-        attackTime = 2 + rand() % 1;
-        waitTime = 3 + rand() % 1;
+        attackTime = 1 + rand() % 3;
+        waitTime = 1 + rand() % 3;
     }
     void loadData()
     {
