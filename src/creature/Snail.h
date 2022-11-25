@@ -21,7 +21,7 @@ public:
     }
     void Reset()
     {
-        dissolveTime = 1.5f;
+        dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
         idleFlag = false;

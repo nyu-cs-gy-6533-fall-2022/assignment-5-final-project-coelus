@@ -56,7 +56,7 @@
             "pivotY": 345,
             "width": 512,
             "height": 512,
-            "frameCount": 6,
+            "frameCount": 1,
             "secPerFrame": 0.04,
             "isLoop": true,
             "filename": "snail/snail-move.png"

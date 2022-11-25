@@ -35,7 +35,7 @@ public:
           position(vec2(0, 0)),
           velocity(vec2(0, 0)),
           ctrlX(0),
-          initHp(20),
+          initHp(200),
           hp(initHp)
     {
         sprite = new AnimSprite();
@@ -113,10 +113,10 @@ public:
             shaders[1]->Use();
             shaders[1]->SetMat("modelMatrix", pTx->Get());
             shaders[1]->SetFloat("dissolveTime", dissolveTime);
-            dissolveTime -= deltaTime;
-            if (dissolveTime < 0)
+            dissolveTime += deltaTime;
+            if (dissolveTime > 1)
             {
-                dissolveTime = 0;
+                dissolveTime = 1;
             }
         }
         else
@@ -149,7 +149,7 @@ protected:
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
 
-    float dissolveTime = 1.5f;
+    float dissolveTime = 0;
 
     vector<HitboxData> hitboxs;
 
