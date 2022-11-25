@@ -10,7 +10,7 @@ struct FSMData
     Debug *debug;
     float &runSpeed, &jumpSpeed;
     Transform *pTx;
-    vec2 &position, &velocity, &force;
+    vec2 &position, &velocity, &force, &damagedForce;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;

@@ -42,7 +42,7 @@ public:
             FSMData{soundSys, sprite, debug,
                     runSpeed, jumpSpeed,
                     pTx,
-                    position, velocity, force,
+                    position, velocity, force, damagedForce,
                     deltaTime,
                     isGround, isTop,
                     canJumpAttack,
@@ -59,6 +59,8 @@ public:
         delete fsm;
     }
     virtual void Update(Control ctrl){};
+    void SetDirX(int dir) { pTx->dirX = dir; }
+    void SetDamagedForce(vec2 force) { damagedForce = force; }
     void SetDamage() { isDamaged = true; }
 
     Transform GetTx() { return *pTx; };
@@ -100,7 +102,7 @@ protected:
 
     float runSpeed, jumpSpeed;
     double &deltaTime;
-    vec2 position, velocity, force, rigidbody;
+    vec2 position, velocity, force, rigidbody, damagedForce;
     bool isGround, isTop, isFront;
     bool willFall = false;
     bool canJumpAttack;

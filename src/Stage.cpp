@@ -97,13 +97,16 @@ void Stage::updateTrigger()
         NextStage.nextStage = entries[resIndex].nextStage;
         NextStage.nextEntry = entries[resIndex].nextEntry;
     }
-
+    // hitbox to monsters
     for (auto monster : monsters)
     {
         vec2 pos = monster->GetPos();
-
+        resIndex = -1;
         if (Collision::IsCollided(monster->GetCol(), player->GetHitbox(), resIndex))
         {
+            int dir = player->GetPos().x > monster->GetPos().x ? 1 : -1;
+            monster->SetDirX(dir);
+            monster->SetDamagedForce(vec2(-dir * 100, -50));
             monster->SetDamage();
         }
     }

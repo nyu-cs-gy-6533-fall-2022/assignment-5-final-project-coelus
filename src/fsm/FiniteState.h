@@ -19,6 +19,7 @@ public:
           position(data.position),
           velocity(data.velocity),
           force(data.force),
+          damagedForce(data.damagedForce),
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
@@ -54,7 +55,7 @@ protected:
     Debug *debug;
     float &runSpeed, &jumpSpeed;
     Transform *pTx;
-    vec2 &position, &velocity, &force;
+    vec2 &position, &velocity, &force, &damagedForce;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack, &isDamaged;
@@ -72,6 +73,16 @@ protected:
         if ((ctrlX == 1 & dirX < 0) ||
             (ctrlX == -1 & dirX > 0))
             dirX *= -1;
+    }
+
+    void deceleration()
+    {
+        int sign = velocity.x >= 0 ? 1 : -1;
+        velocity.x -= sign * 10 * deltaTime;
+        if (velocity.x * sign < 0)
+        {
+            velocity.x = 0;
+        }
     }
     void stopX()
     {
@@ -534,17 +545,13 @@ public:
         }
         if (!sprite->IsFrameGreater(1))
         {
-            force.x = 70 * deltaTime;
-            force.y = -50 * deltaTime;
+            force.x = damagedForce.x * deltaTime;
+            force.y = damagedForce.y * deltaTime;
         }
         else
         {
             force.x = 0;
-            velocity.x -= 10 * deltaTime;
-            if (velocity.x < 0)
-            {
-                velocity.x = 0;
-            }
+            deceleration();
         }
     };
     void Exit()
