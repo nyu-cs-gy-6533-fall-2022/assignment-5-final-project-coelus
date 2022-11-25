@@ -103,14 +103,22 @@ void Stage::updateTrigger()
     // hitbox to monsters
     for (auto monster : monsters)
     {
-        vec2 pos = monster->GetPos();
         resIndex = -1;
         vector<HitboxData> hitboxs = player->GetHitbox();
         if (Collision::IsCollided(monster->GetCol(), hitboxs, resIndex))
         {
-            HitboxData hitbox = hitboxs[resIndex];
+            monster->SetDamage(player, hitboxs[resIndex]);
+        }
+    }
 
-            monster->SetDamage(player,hitbox);
+    // hitbox to player
+    for (auto monster : monsters)
+    {
+        resIndex = -1;
+        vector<HitboxData> hitboxs = monster->GetHitbox();
+        if (Collision::IsCollided(player->GetCol(), hitboxs, resIndex))
+        {
+            player->SetDamage(monster, hitboxs[resIndex]);
         }
     }
 }

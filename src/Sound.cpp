@@ -12,6 +12,7 @@ SoundSystem::SoundSystem()
     createSound(SFXPlayerStep, "sfx/step.mp3");
     createSound(SFXPlayerAttack, "sfx/swordattack.mp3");
     createSound(SFXPlayerHit, "sfx/swordhit.mp3");
+    createSound(SFXSnailHit, "sfx/snailhit.mp3");
 }
 SoundSystem::~SoundSystem()
 {

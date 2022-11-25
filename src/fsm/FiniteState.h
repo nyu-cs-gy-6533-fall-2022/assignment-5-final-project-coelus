@@ -125,7 +125,7 @@ class FSPlayerIdle : public FiniteState
 public:
     FSPlayerIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1});
+        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1, Damaged});
     };
 
     void Enter()
@@ -162,13 +162,13 @@ public:
     void Exit(){};
 };
 
-class PlayerJump : public FiniteState
+class FSPlayerJump : public FiniteState
 {
 public:
-    PlayerJump(FSMData data) : FiniteState(data)
+    FSPlayerJump(FSMData data) : FiniteState(data)
     {
-        interruptState.Add(vector<ActionState>{JumpAttack});
-        possibleState.Add(vector<ActionState>{Fall});
+        interruptState.Add(vector<ActionState>{JumpAttack, Damaged});
+        possibleState.Add(vector<ActionState>{Fall, Damaged});
     };
     int GetPossibleState()
     {
@@ -199,8 +199,8 @@ class FSPlayerFall : public FiniteState
 public:
     FSPlayerFall(FSMData data) : FiniteState(data)
     {
-        interruptState.Add(vector<ActionState>{JumpAttack});
-        possibleState.Add(vector<ActionState>{Idle, Run, Jump});
+        interruptState.Add(vector<ActionState>{JumpAttack, Damaged});
+        possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged});
     };
 
     int GetPossibleState()
@@ -245,8 +245,8 @@ class FSPlayerAttack1 : public FiniteState
 public:
     FSPlayerAttack1(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack2});
-        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack2});
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack2, Damaged});
+        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack2, Damaged});
     };
     int GetPossibleState()
     {
@@ -291,13 +291,13 @@ private:
     float attackForce = 30;
 };
 
-class PlayerAttack2 : public FiniteState
+class FSPlayerAttack2 : public FiniteState
 {
 public:
-    PlayerAttack2(FSMData data) : FiniteState(data)
+    FSPlayerAttack2(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack3});
-        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack3});
+        possibleState.Add(vector<ActionState>{Idle, Run, Fall, Jump, Attack3, Damaged});
+        interruptState.Add(vector<ActionState>{Run, Fall, Jump, Attack3, Damaged});
     };
     int GetPossibleState()
     {
@@ -342,17 +342,18 @@ private:
     float attackForce = 40;
 };
 
-class PlayerAttack3 : public FiniteState
+class FSPlayerAttack3 : public FiniteState
 {
 public:
-    PlayerAttack3(FSMData data) : FiniteState(data)
+    FSPlayerAttack3(FSMData data) : FiniteState(data)
     {
+        interruptState.Add(vector<ActionState>{Damaged});
         possibleState.Add(vector<ActionState>{Idle, Jump, Run, Fall, Attack1});
     };
     int GetPossibleState()
     {
         if (!sprite->IsEnd())
-            return 0;
+            return interruptState.input;
         return possibleState.input;
     }
     void Enter()
@@ -387,17 +388,18 @@ private:
     float attackForce = 60;
 };
 
-class PlayerJumpAttack : public FiniteState
+class FSPlayerJumpAttack : public FiniteState
 {
 public:
-    PlayerJumpAttack(FSMData data) : FiniteState(data)
+    FSPlayerJumpAttack(FSMData data) : FiniteState(data)
     {
+        interruptState.Add(vector<ActionState>{Damaged});
         possibleState.Add(vector<ActionState>{Fall, Idle, Run});
     };
     int GetPossibleState()
     {
         if (!sprite->IsEnd())
-            return 0;
+            return interruptState.input;
         return possibleState.input;
     }
     void Enter()
@@ -428,6 +430,60 @@ public:
 
 private:
     float attackForce = 20;
+};
+
+class FSPlayerDamaged : public FiniteState
+{
+public:
+    FSPlayerDamaged(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{Idle, Fall});
+    };
+
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+
+    void Enter()
+    {
+
+        FiniteState::Enter();
+        isDamaged = false;
+        velocity = vec2(0);
+        hp -= damage.losthp;
+        dirX = damage.dirX;
+        soundSys->Play(SFXSnailHit);
+    };
+    void Update()
+    {
+
+        if (isGround)
+        {
+            stopY();
+        }
+        else
+        {
+            falling();
+        }
+        if (!sprite->IsFrameGreater(1))
+        {
+            force.x = damage.force.x * deltaTime;
+            force.y = damage.force.y * deltaTime;
+        }
+        else
+        {
+            force.x = 0;
+            deceleration();
+        }
+    };
+    void Exit()
+    {
+
+        isDamaged = false;
+    };
 };
 
 class FSSnailIdle : public FiniteState
@@ -463,13 +519,28 @@ public:
     void Enter()
     {
         FiniteState::Enter();
+        addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, deltaTime );
     };
     void Update()
     {
+        if (time <= 0)
+        {
+            time = 15;
+            addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, deltaTime );
+        }
+        else
+        {
+            time--;
+        }
+
         setDirX();
         moveX();
     };
-    void Exit(){};
+    void Exit(){
+    };
+
+private:
+    int time = 15;
 };
 
 class FSSnailFall : public FiniteState
@@ -559,8 +630,6 @@ public:
 
         isDamaged = false;
     };
-
-private:
 };
 
 class FSDied : public FiniteState

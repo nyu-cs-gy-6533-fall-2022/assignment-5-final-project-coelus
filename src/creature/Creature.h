@@ -70,7 +70,10 @@ public:
         damage.dirX = dir;
         damage.force = vec2(-dir * hitbox.force.x, hitbox.force.y);
         damage.losthp = hitbox.damage;
-        isDamaged = true;
+        if (fsm->GetState() != Damaged && fsm->GetState() != SnailDamaged)
+        {
+            isDamaged = true;
+        }
     }
 
     Transform GetTx() { return *pTx; };
@@ -81,7 +84,7 @@ public:
         initPosition = pos;
         position = pos;
     }
-    virtual void Reset(){}
+    virtual void Reset() {}
     vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
     vec4 GetCol() { return vec4(position, rigidbody.x, rigidbody.y); }
     vector<HitboxData> GetHitbox() { return hitboxs; }

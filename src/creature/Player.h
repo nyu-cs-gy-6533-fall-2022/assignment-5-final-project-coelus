@@ -2,7 +2,6 @@
 #pragma once
 #include "Creature.h"
 
-
 #ifndef _PLAYER_
 #define _PLAYER_
 
@@ -13,8 +12,8 @@ public:
 	void Update(Control ctrl);
 
 private:
-	
-	
+	bool invincibleFlag;
+	int invincibleTime;
 	void loadData();
 };
 #endif

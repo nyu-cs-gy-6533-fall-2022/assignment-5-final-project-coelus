@@ -28,6 +28,7 @@ enum ActionState
 	Attack3,
 	Fall,
 	JumpAttack,
+	Damaged,
 
 	SnailIdle,
 	SnailAttack,

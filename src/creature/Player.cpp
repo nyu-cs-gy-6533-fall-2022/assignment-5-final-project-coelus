@@ -3,18 +3,20 @@
 Player::Player(SoundSystem *sndSys, Shader *s, double &time)
 	: Creature(sndSys, s, time)
 {
-	
+
 	fsm->Add<FSPlayerIdle>(Idle);
 	fsm->Add<FSPlayerRun>(Run);
-	fsm->Add<PlayerJump>(Jump);
+	fsm->Add<FSPlayerJump>(Jump);
 	fsm->Add<FSPlayerFall>(Fall);
 	fsm->Add<FSPlayerAttack1>(Attack1);
-	fsm->Add<PlayerAttack2>(Attack2);
-	fsm->Add<PlayerAttack3>(Attack3);
-	fsm->Add<PlayerJumpAttack>(JumpAttack);
+	fsm->Add<FSPlayerAttack2>(Attack2);
+	fsm->Add<FSPlayerAttack3>(Attack3);
+	fsm->Add<FSPlayerJumpAttack>(JumpAttack);
+	fsm->Add<FSPlayerDamaged>(Damaged);
 
 	fsm->Set(Idle);
-
+	invincibleTime = 0;
+	invincibleFlag = false;
 	loadData();
 }
 void Player::loadData()
@@ -30,6 +32,17 @@ void Player::loadData()
 void Player::Update(Control ctrl)
 {
 	fsmInput.Init();
+	if (invincibleFlag && !isDamaged)
+	{
+		invincibleTime = 100;
+		invincibleFlag = false;
+	}
+	invincibleTime--;
+	if (invincibleTime <= 0 && isDamaged)
+	{
+		invincibleFlag = true;
+		fsmInput.Add(Damaged);
+	}
 	if (ctrl.right)
 	{
 		ctrlX = 1;
@@ -98,5 +111,4 @@ void Player::Update(Control ctrl)
 	stateUpdate();
 	fsm->Update();
 	movement();
-	
 }
