@@ -33,13 +33,29 @@ struct Transform
 		position = vec2(rect.x, rect.y);
 		scale = vec2(rect.z, rect.w);
 	}
-	mat4 Get()
+
+	float GetX(float range, float w)
+	{
+		float halfW = w / 2;
+		float x = position.x - halfW + rigidBody.x + range;
+		if (dirX == -1)
+		{
+			x = position.x - halfW - range;
+		}
+		return x;
+	}
+	float GetSpriteX()
 	{
 		float x = position.x - pivot.x;
 		if (dirX == -1)
 		{
 			x = position.x + pivot.x + rigidBody.x;
 		}
+		return x;
+	}
+	mat4 Get()
+	{
+		float x = GetSpriteX();
 		float y = position.y - pivot.y;
 		return translate(mat4(1.0f), vec3(x, y, 1.0f)) *
 			   rotate(mat4(1.0f), angle, vec3(0.0f, 0.0f, 1.0f)) *

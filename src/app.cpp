@@ -55,6 +55,7 @@ void App::init()
     camera = new Camera(stageSys, player, mWidth, mHeight);
 
     prevTime = glfwGetTime();
+    isReady = true;
 }
 void App::loadIcon()
 {
@@ -101,8 +102,8 @@ void App::update()
 {
     getDeltaTime();
     resize();
-    stageSys->Update();
     playerUpdate();
+    stageSys->Update();
 }
 void App::draw()
 {
@@ -116,6 +117,8 @@ void App::draw()
 
 void App::MainLoop()
 {
+    if (!isReady)
+        return;
     while (!glfwWindowShouldClose(pWindow))
     {
         update();

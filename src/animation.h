@@ -31,7 +31,8 @@ enum ActionState
 
 	SnailIdle,
 	SnailAttack,
-	SnailFall
+	SnailFall,
+	SnailDamaged
 
 };
 

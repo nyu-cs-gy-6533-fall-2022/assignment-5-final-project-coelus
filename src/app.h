@@ -16,8 +16,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-
-
 using namespace std;
 using namespace glm;
 
@@ -26,12 +24,13 @@ class App
 public:
     App(int width, int height);
     ~App();
-    
+
     void MainLoop();
 
 private:
     int mWidth, mHeight;
-    double prevTime=0, deltaTime=0;
+    double prevTime, deltaTime = 0;
+    bool isReady = false;
     GLFWwindow *pWindow;
 
     StageSystem *stageSys;

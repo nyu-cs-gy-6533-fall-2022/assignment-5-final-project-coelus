@@ -7,15 +7,20 @@ struct FSMData
 {
     SoundSystem *soundSys;
     AnimSprite *sprite;
+    Debug *debug;
     float &runSpeed, &jumpSpeed;
-    int &dirX;
+    Transform *pTx;
     vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
     bool &canJumpAttack;
+    bool &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
+    vector<vec4> &hitboxs;
+    vector<float> &hitboxtime;
+    
 };
 
 struct FSMInput

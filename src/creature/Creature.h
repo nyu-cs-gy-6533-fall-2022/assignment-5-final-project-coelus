@@ -9,10 +9,10 @@
 #include "Global.h"
 #include "Sound.h"
 #include "DefferedKey.h"
-
 #include "fsm/FSM.h"
 
 #include <algorithm>
+
 using namespace glm;
 
 #ifndef _Creature_
@@ -22,6 +22,7 @@ struct Control
     bool right, left, up, down;
     bool jump, attack, drag;
 };
+
 class Creature
 {
 public:
@@ -29,8 +30,8 @@ public:
         : soundSys(sndSys),
           shader(s),
           deltaTime(time),
-          position(vec2(0,0)),
-          velocity(vec2(0,0)),
+          position(vec2(0, 0)),
+          velocity(vec2(0, 0)),
           ctrlX(0)
     {
         sprite = new AnimSprite();
@@ -38,16 +39,18 @@ public:
         pTx = &sprite->Tx;
         pTx->dirX = -1;
         fsm = new FSM(
-            FSMData{soundSys, sprite,
+            FSMData{soundSys, sprite, debug,
                     runSpeed, jumpSpeed,
-                    pTx->dirX,
+                    pTx,
                     position, velocity, force,
                     deltaTime,
                     isGround, isTop,
                     canJumpAttack,
+                    isDamaged,
                     ctrlX,
                     dAttack, dChain, dJump,
-                    downDistance});
+                    downDistance,
+                    hitboxs, hitboxtime});
     }
     ~Creature()
     {
@@ -56,12 +59,14 @@ public:
         delete fsm;
     }
     virtual void Update(Control ctrl){};
+    void SetDamage() { isDamaged = true; }
 
     Transform GetTx() { return *pTx; };
     vec2 GetPos() { return position; };
     void SetPos(vec2 pos) { position = pos; }
     vec2 GetCenterPos() { return position + vec2(rigidbody.x / 2.f, rigidbody.y / 2.f); };
     vec4 GetCol() { return vec4(position, rigidbody.x, rigidbody.y); }
+    vector<vec4> GetHitbox() { return hitboxs; }
     void SetColStatus(CollisionStatus status)
     {
         isGround = status.isColDown;
@@ -72,26 +77,6 @@ public:
     void SetPreditColStatus(CollisionStatus status)
     {
         willFall = !status.isColDown;
-    }
-    void StateUpdate()
-    {
-        ActionState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
-        if (nextState != EmptyState && nextState != fsm->GetState())
-        {
-            fsm->Exit();
-            sprite->Set(nextState);
-            fsm->Set(nextState);
-            fsm->Enter();
-        }
-    }
-
-    void Movement()
-    {
-        velocity.x += force.x;
-        velocity.y += force.y;
-        velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
-        position.x += velocity.x;
-        position.y += velocity.y;
     }
 
     void Draw()
@@ -119,8 +104,45 @@ protected:
     bool isGround, isTop, isFront;
     bool willFall = false;
     bool canJumpAttack;
+    bool isDamaged = false;
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
+
+    vector<vec4> hitboxs;
+    vector<float> hitboxtime;
+
+    void updateHitBox()
+    {
+        for (int i = hitboxtime.size() - 1; i >= 0; i--)
+        {
+            if (hitboxtime[i] <= 0)
+            {
+                hitboxs.erase(hitboxs.begin() + i);
+                hitboxtime.erase(hitboxtime.begin() + i);
+            }
+            hitboxtime[i] -= deltaTime;
+        }
+    }
+    void stateUpdate()
+    {
+        ActionState nextState = fsmInput.GetNextState(fsm->GetPossibleState());
+        if (nextState != EmptyState && nextState != fsm->GetState())
+        {
+            fsm->Exit();
+            sprite->Set(nextState);
+            fsm->Set(nextState);
+            fsm->Enter();
+        }
+    }
+
+    void movement()
+    {
+        velocity.x += force.x;
+        velocity.y += force.y;
+        velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
+        position.x += velocity.x;
+        position.y += velocity.y;
+    }
 };
 #endif

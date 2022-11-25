@@ -13,6 +13,11 @@ Stage::~Stage()
     delete bg;
     delete fg;
     delete debug;
+    /*
+    for (int i = 0; i < monsters.size(); i++)
+    {
+        delete monsters[i];
+    }*/
 }
 void Stage::loadData(string filename)
 {
@@ -61,7 +66,6 @@ void Stage::Update()
     updateMonsters();
     updateTrigger();
     updateCollision();
-    
 }
 void Stage::Draw()
 {
@@ -92,6 +96,16 @@ void Stage::updateTrigger()
         NextStage.isReady = true;
         NextStage.nextStage = entries[resIndex].nextStage;
         NextStage.nextEntry = entries[resIndex].nextEntry;
+    }
+
+    for (auto monster : monsters)
+    {
+        vec2 pos = monster->GetPos();
+
+        if (Collision::IsCollided(monster->GetCol(), player->GetHitbox(), resIndex))
+        {
+            monster->SetDamage();
+        }
     }
 }
 

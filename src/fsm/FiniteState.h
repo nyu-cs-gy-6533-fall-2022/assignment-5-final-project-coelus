@@ -11,9 +11,11 @@ public:
     FiniteState(FSMData data)
         : soundSys(data.soundSys),
           sprite(data.sprite),
+          debug(data.debug),
           runSpeed(data.runSpeed),
           jumpSpeed(data.jumpSpeed),
-          dirX(data.dirX),
+          pTx(data.pTx),
+          dirX(pTx->dirX),
           position(data.position),
           velocity(data.velocity),
           force(data.force),
@@ -21,11 +23,14 @@ public:
           isGround(data.isGround),
           isTop(data.isTop),
           canJumpAttack(data.canJumpAttack),
+          isDamaged(data.isDamaged),
           ctrlX(data.ctrlX),
           dAttack(data.dAttack),
           dChain(data.dChain),
           dJump(data.dJump),
-          downDistance(data.downDistance)
+          downDistance(data.downDistance),
+          hitboxs(data.hitboxs),
+          hitboxtime(data.hitboxtime)
 
     {
     }
@@ -46,15 +51,19 @@ public:
 protected:
     SoundSystem *soundSys;
     AnimSprite *sprite;
+    Debug *debug;
     float &runSpeed, &jumpSpeed;
-    int &dirX;
+    Transform *pTx;
     vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop;
-    bool &canJumpAttack;
+    bool &canJumpAttack, &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
+    vector<vec4> &hitboxs;
+    vector<float> &hitboxtime;
+    int &dirX;
 
     FSMInput possibleState, interruptState;
 
@@ -91,6 +100,12 @@ protected:
             }
             force.y = 9.8f * deltaTime * Global::GravityRatio;
         }
+    }
+    void addHitBox(vec4 hitbox, float time = 0.18f)
+    {
+        debug->AddDebug(hitbox);
+        hitboxs.push_back(hitbox);
+        hitboxtime.push_back(time);
     }
 };
 
@@ -252,6 +267,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
+            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -301,6 +317,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
+            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -346,6 +363,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
+            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240));
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -387,6 +405,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
+            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300));
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -405,7 +424,7 @@ class FSSnailIdle : public FiniteState
 public:
     FSSnailIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall});
+        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged});
     };
 
     void Enter()
@@ -427,7 +446,7 @@ class FSSnailAttack : public FiniteState
 public:
     FSSnailAttack(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged});
     };
 
     void Enter()
@@ -447,13 +466,14 @@ class FSSnailFall : public FiniteState
 public:
     FSSnailFall(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailAttack});
+        interruptState.Add(vector<ActionState>{SnailDamaged});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailAttack, SnailDamaged});
     };
 
     int GetPossibleState()
     {
         if (!isGround)
-            return 0;
+            return interruptState.input;
         return possibleState.input;
     }
 
@@ -473,6 +493,64 @@ public:
         {
             stopY();
         }
+    };
+
+private:
+};
+class FSSnailDamaged : public FiniteState
+{
+public:
+    FSSnailDamaged(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall});
+    };
+
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+
+    void Enter()
+    {
+
+        FiniteState::Enter();
+        velocity.x = 0;
+        velocity.y = 0;
+
+        soundSys->Play(SFXPlayerHit);
+    };
+    void Update()
+    {
+
+        if (isGround)
+        {
+            stopY();
+        }
+        else
+        {
+            falling();
+        }
+        if (!sprite->IsFrameGreater(1))
+        {
+            force.x = 70 * deltaTime;
+            force.y = -50 * deltaTime;
+        }
+        else
+        {
+            force.x = 0;
+            velocity.x -= 10 * deltaTime;
+            if (velocity.x < 0)
+            {
+                velocity.x = 0;
+            }
+        }
+    };
+    void Exit()
+    {
+
+        isDamaged = false;
     };
 
 private:

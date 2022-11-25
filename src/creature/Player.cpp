@@ -94,7 +94,9 @@ void Player::Update(Control ctrl)
 	{
 		fsmInput.Add(Jump);
 	}
-	StateUpdate();
+	updateHitBox();
+	stateUpdate();
 	fsm->Update();
-	Movement();
+	movement();
+	
 }

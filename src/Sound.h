@@ -12,7 +12,8 @@ enum SoundType
     SFXPlayerJump,
     SFXPlayerStep,
     SFXPlayerLanding,
-    SFXPlayerAttack
+    SFXPlayerAttack,
+    SFXPlayerHit
 };
 class SoundSystem
 {
