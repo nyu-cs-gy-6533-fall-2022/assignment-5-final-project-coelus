@@ -22,6 +22,7 @@ void Player::loadData()
 	json js = Loader::Load("player.json", vector<Sprite *>{sprite});
 	runSpeed = js["runSpeed"];
 	jumpSpeed = js["jumpSpeed"];
+	setInitHp(js["hp"]);
 
 	auto rb = js["rigidbody"];
 	rigidbody = vec2(rb["w"], rb["h"]);

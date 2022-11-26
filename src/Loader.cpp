@@ -33,9 +33,9 @@ void Loader::loadCreature(const vector<Sprite *> sprite, json j)
         {
             secLastFrame = anim["secLastFrame"];
         }
-
+        string state = anim["state"];
         sprite[0]->Add(AnimationData{
-            anim["state"],
+            ActionStateText[state],
             anim["pivotX"],
             anim["pivotY"],
             anim["width"],

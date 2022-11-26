@@ -99,6 +99,7 @@ private:
         json js = Loader::Load("snail.json", vector<Sprite *>{sprite});
         runSpeed = js["runSpeed"];
         auto rb = js["rigidbody"];
+        setInitHp(js["hp"]);
         rigidbody = vec2(rb["w"], rb["h"]);
         debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
     };

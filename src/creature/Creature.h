@@ -34,9 +34,7 @@ public:
           deltaTime(time),
           position(vec2(0, 0)),
           velocity(vec2(0, 0)),
-          ctrlX(0),
-          initHp(200),
-          hp(initHp)
+          ctrlX(0)
     {
         sprite = new AnimSprite();
         debug = new Debug(shaders);
@@ -59,15 +57,16 @@ public:
     }
     ~Creature()
     {
-            delete sprite;
-            delete debug;
-            delete fsm;
+        delete sprite;
+        delete debug;
+        delete fsm;
     }
     virtual void Update(Control ctrl){};
     void SetDirX(int dir) { pTx->dirX = dir; }
     void SetDamage(Creature *attacker, HitboxData hitbox)
     {
         int dir = attacker->GetPos().x > position.x ? 1 : -1;
+        ctrlX = dir;
         damage.dirX = dir;
         damage.force = vec2(-dir * hitbox.force.x, hitbox.force.y);
         damage.losthp = hitbox.damage;
@@ -154,6 +153,12 @@ protected:
     float dissolveTime = 0;
 
     vector<HitboxData> hitboxs;
+
+    void setInitHp(int val)
+    {
+        initHp = val;
+        hp = initHp;
+    }
 
     void updateHitBox()
     {

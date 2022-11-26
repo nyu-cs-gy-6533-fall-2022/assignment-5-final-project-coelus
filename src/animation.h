@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "BufferObject.h"
 #include "Transform.h"
+#include "Action.h"
 
 #include <glm/glm.hpp>
 
@@ -17,26 +18,6 @@
 
 using namespace glm;
 
-enum ActionState
-{
-	EmptyState,
-	Idle,
-	Run,
-	Jump,
-	Attack1,
-	Attack2,
-	Attack3,
-	Fall,
-	JumpAttack,
-	Damaged,
-
-	SnailIdle,
-	SnailAttack,
-	SnailFall,
-	SnailDamaged,
-	Died
-
-};
 
 struct AnimationData
 {

@@ -7,20 +7,21 @@ class Rat : public Creature
 public:
     Rat(SoundSystem *sndSys, vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
     {
-        fsm->Add<FSSnailIdle>(SnailIdle);
-        fsm->Add<FSSnailAttack>(SnailAttack);
-        fsm->Add<FSSnailFall>(SnailFall);
-        fsm->Add<FSSnailDamaged>(SnailDamaged);
+        fsm->Add<FSRatIdle>(RatIdle);
+        fsm->Add<FSRatRun>(RatRun);
+        fsm->Add<FSRatRollStart>(RatRollStart);
+        fsm->Add<FSRatRollLoop>(RatRollLoop);
+        fsm->Add<FSRatRollStop>(RatRollStop);
+        fsm->Add<FSRatFall>(RatFall);
+        fsm->Add<FSRatDamaged>(RatDamaged);
         fsm->Add<FSDied>(Died);
-        fsm->Set(SnailIdle);
+        fsm->Set(RatIdle);
 
         srand(time(0));
         ctrlX = 1;
         loadData();
         timeInit();
         idleFlag = false;
-        initHp = 500;
-        hp = initHp;
     }
     void Reset()
     {
@@ -30,9 +31,9 @@ public:
         idleFlag = false;
         timeInit();
         position = initPosition;
-        fsm->Set(SnailIdle);
+        fsm->Set(RatIdle);
     }
-    void Update(Control ctrl)
+   void Update(Control ctrl)
     {
 
         updateHitBox();
@@ -51,7 +52,7 @@ public:
 
         if (!isGround)
         {
-            fsmInput.Add(SnailFall);
+            fsmInput.Add(RatFall);
         }
         else if (attackTime > 0)
         {
@@ -61,12 +62,12 @@ public:
                 ctrlX *= -1;
             }
 
-            fsmInput.Add(SnailAttack);
+            fsmInput.Add(RatRun);
             attackTime -= deltaTime;
         }
         else
         {
-            fsmInput.Add(SnailIdle);
+            fsmInput.Add(RatIdle);
         }
         if (attackTime <= 0)
         {
@@ -79,7 +80,7 @@ public:
         if (isDamaged)
         {
             idleFlag = true;
-            fsmInput.Add(SnailDamaged);
+            fsmInput.Add(RatDamaged);
         }
 
         stateUpdate();
@@ -101,6 +102,7 @@ private:
         json js = Loader::Load("rat.json", vector<Sprite *>{sprite});
         runSpeed = js["runSpeed"];
         auto rb = js["rigidbody"];
+        setInitHp(js["hp"]);
         rigidbody = vec2(rb["w"], rb["h"]);
         debug->AddDebug(vec4(0, 0, rigidbody.x, rigidbody.y));
     };

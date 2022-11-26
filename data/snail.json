@@ -1,5 +1,6 @@
 {
     "type": 0,
+    "hp":200,
     "runSpeed": 300,
     "rigidbody": {
         "w": 200,
@@ -7,7 +8,7 @@
     },
     "animation": [
         {
-            "state": 10,
+            "state": "SnailIdle",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,
@@ -18,7 +19,7 @@
             "filename": "snail/snail-move.png"
         },
         {
-            "state": 11,
+            "state": "SnailAttack",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,
@@ -29,7 +30,7 @@
             "filename": "snail/snail-attack.png"
         },
         {
-            "state": 12,
+            "state": "SnailFall",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,
@@ -40,7 +41,7 @@
             "filename": "snail/snail-move.png"
         },
         {
-            "state": 13,
+            "state": "SnailDamaged",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,
@@ -51,7 +52,7 @@
             "filename": "snail/snail-move.png"
         },
         {
-            "state": 14,
+            "state": "Died",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,

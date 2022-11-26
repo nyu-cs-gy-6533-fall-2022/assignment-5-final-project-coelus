@@ -1,13 +1,14 @@
 {
     "type": 0,
-    "runSpeed": 1400,
+    "hp":500,
+    "runSpeed": 200,
     "rigidbody": {
         "w": 275,
         "h": 135
     },
     "animation": [
         {
-            "state": 10,
+            "state": "RatIdle",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,
@@ -15,10 +16,21 @@
             "frameCount": 4,
             "secPerFrame": 0.5,
             "isLoop": true,
+            "filename": "rat/rat1_idle.png"
+        },
+        {
+            "state": "RatRun",
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 4,
+            "secPerFrame": 0.2,
+            "isLoop": true,
             "filename": "rat/rat1_walk.png"
         },
         {
-            "state": 11,
+            "state": "RatRollStart",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,
@@ -29,7 +41,7 @@
             "filename": "rat/rat1_circle.png"
         },
         {
-            "state": 12,
+            "state": "RatRollLoop",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,
@@ -40,7 +52,29 @@
             "filename": "rat/rat1_circle.png"
         },
         {
-            "state": 13,
+            "state": "RatRollStop",
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.1,
+            "isLoop": true,
+            "filename": "rat/rat1_circle.png"
+        },
+        {
+            "state": "RatFall",
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 1,
+            "secPerFrame": 0.05,
+            "isLoop": true,
+            "filename": "rat/rat1_fall.png"
+        },
+        {
+            "state": "RatDamaged",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,
@@ -51,7 +85,7 @@
             "filename": "rat/rat1_hurt.png"
         },
         {
-            "state": 14,
+            "state": "Died",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,

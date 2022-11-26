@@ -640,6 +640,219 @@ public:
     };
 };
 
+
+
+class FSRatIdle : public FiniteState
+{
+public:
+    FSRatIdle(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, Died});
+    };
+
+    void Enter()
+    {
+        FiniteState::Enter();
+        force = vec2(0);
+        velocity = vec2(0);
+    };
+    void Update(){
+
+    };
+    void Exit()
+    {
+        force = vec2(0);
+        velocity = vec2(0);
+    };
+};
+
+class FSRatRun : public FiniteState
+{
+public:
+    FSRatRun(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+    };
+
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
+    void Update()
+    {
+        setDirX();
+        moveX();
+    };
+    void Exit()
+    {
+    };
+
+private:
+};
+
+class FSRatFall : public FiniteState
+{
+public:
+    FSRatFall(FSMData data) : FiniteState(data)
+    {
+        interruptState.Add(vector<ActionState>{RatDamaged});
+        possibleState.Add(vector<ActionState>{RatIdle, RatRun, RatDamaged});
+    };
+
+    int GetPossibleState()
+    {
+        if (!isGround)
+            return interruptState.input;
+        return possibleState.input;
+    }
+
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
+    void Update()
+    {
+        setDirX();
+        falling();
+    };
+    void Exit()
+    {
+
+        if (isGround)
+        {
+            stopY();
+        }
+    };
+
+private:
+};
+class FSRatDamaged : public FiniteState
+{
+public:
+    FSRatDamaged(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall});
+    };
+
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+
+    void Enter()
+    {
+
+        FiniteState::Enter();
+        velocity = vec2(0);
+        hp -= damage.losthp;
+        dirX = damage.dirX;
+        soundSys->Play(damage.sound);
+    };
+    void Update()
+    {
+
+        if (isGround)
+        {
+            stopY();
+        }
+        else
+        {
+            falling();
+        }
+        if (!sprite->IsFrameGreater(1))
+        {
+            force.x = damage.force.x * deltaTime;
+            force.y = damage.force.y * deltaTime;
+        }
+        else
+        {
+            force.x = 0;
+            deceleration();
+        }
+    };
+    void Exit()
+    {
+
+        isDamaged = false;
+    };
+};
+
+
+class FSRatRollStart : public FiniteState
+{
+public:
+    FSRatRollStart(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+    };
+
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
+    void Update()
+    {
+        setDirX();
+        moveX();
+    };
+    void Exit()
+    {
+    };
+
+private:
+};
+
+class FSRatRollLoop : public FiniteState
+{
+public:
+    FSRatRollLoop(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+    };
+
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
+    void Update()
+    {
+        setDirX();
+        moveX();
+    };
+    void Exit()
+    {
+    };
+
+private:
+};
+class FSRatRollStop : public FiniteState
+{
+public:
+    FSRatRollStop(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+    };
+
+    void Enter()
+    {
+        FiniteState::Enter();
+    };
+    void Update()
+    {
+        setDirX();
+        moveX();
+    };
+    void Exit()
+    {
+    };
+
+private:
+};
+
+
+
 class FSDied : public FiniteState
 {
 public:
