@@ -2,22 +2,22 @@
     "type": 1,
     "lights": [
         {
-            "type": "downLight",
-            "x": 450,
-            "y": 256
+            "type": "lightLeft",
+            "x": 768,
+            "y": 930
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 1000,
             "y": 2815
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 2640,
             "y": 2815
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 3800,
             "y": 2815
         }

@@ -84,10 +84,10 @@ public:
 	{
 		glUniform4fv(glGetUniformLocation(id, name), 1, value_ptr(vec));
 	};
-	void SetVec4(const char *name, vector<vec4> vec)
+	void SetVec4(const char *name, const vector<vec4> &vec)
 	{
-
-		glUniform4fv(glGetUniformLocation(id, name), vec.size(), (float *)&vec[0]);
+		
+		glUniform4fv(glGetUniformLocation(id, name), vec.size(), value_ptr(vec[0]));
 	};
 
 private:

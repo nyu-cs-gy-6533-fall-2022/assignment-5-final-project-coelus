@@ -14,6 +14,8 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+#include <GLFW/glfw3.h>
+
 #ifndef _STAGE_
 #define _STAGE_
 
@@ -64,6 +66,7 @@ private:
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
+	vector<vec4> lightData;
 	vector<Light *> lights;
 	vector<Creature *> monsters;
 	vector<Shader*> &shaders;

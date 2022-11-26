@@ -60,6 +60,7 @@ void Stage::loadData(string filename)
     {
         Light *l = new Light(shaders, light["type"], vec2(light["x"], light["y"]));
         lights.push_back(l);
+        lightData.push_back(l->GetLightData());
     }
 }
 void Stage::SetPlayerEntry(int index)
@@ -156,13 +157,9 @@ void Stage::useLightShader()
     shaders[2]->Use();
     shaders[2]->SetMat4("modelMatrix", bg->Tx.Get());
     shaders[2]->SetVec2("resolution", bg->Tx.scale);
-    shaders[2]->SetInt("lightLen", lights.size());
-    vector<vec4> lightData;
-    for (auto light : lights)
-    {
-        lightData.push_back(light->GetLightData());
-    }
+    shaders[2]->SetInt("lightLen", lightData.size());
     shaders[2]->SetVec4("lights", lightData);
+    shaders[2]->SetFloat("time", glfwGetTime());
 }
 void Stage::drawBG()
 {

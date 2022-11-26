@@ -2,39 +2,44 @@
     "type": 1,
     "lights": [
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 700,
             "y": 640
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 1400,
             "y": 1790
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 700,
             "y": 2560
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 1400,
             "y": 3320
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 700,
             "y": 4100
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 1400,
             "y": 4860
         },
         {
-            "type": "downLight",
+            "type": "lightDown",
             "x": 700,
             "y": 5630
+        },
+        {
+            "type": "lightRight",
+            "x": 1154,
+            "y": 6724
         }
     ],
     "monsters": [
