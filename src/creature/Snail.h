@@ -19,7 +19,7 @@ public:
         loadData();
         timeInit();
         idleFlag = false;
-        readyTime = 0.5f;
+        readyTime = 3.f;
         sprite->Set(SnailIdle);
     }
     void Reset()

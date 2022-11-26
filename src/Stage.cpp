@@ -56,11 +56,11 @@ void Stage::loadData(string filename)
         monsters.push_back(c);
     }
 
-    for (auto light : js["lights"])
+    for (auto lightdata : js["lights"])
     {
-        Light *l = new Light(shaders, light["type"], vec2(light["x"], light["y"]));
-        lights.push_back(l);
-        lightData.push_back(l->GetLightData());
+        Light *light = new Light(shaders, lightdata["type"], vec2(lightdata["x"], lightdata["y"]));
+        lights.push_back(light);
+        lightData.push_back(light->GetLightData());
     }
 }
 void Stage::SetPlayerEntry(int index)
