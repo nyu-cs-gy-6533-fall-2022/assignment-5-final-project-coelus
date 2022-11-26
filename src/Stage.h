@@ -9,6 +9,7 @@
 #include "Debug.h"
 #include "Sound.h"
 #include "Hitbox.h"
+#include "Light.h"
 
 #include <json.hpp>
 using json = nlohmann::json;
@@ -63,6 +64,7 @@ private:
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
+	vector<Light *> lights;
 	vector<Creature *> monsters;
 	vector<Shader*> &shaders;
 	SoundSystem *soundSys;
@@ -73,8 +75,10 @@ private:
 	vector<Entry> entries;
 
 	void loadData(string filename);
+	void useLightShader();
 	void drawFG();
 	void drawBG();
+	void drawLights();
 	void drawMonsters();
 	void updateMonsters();
 	void updateTrigger();

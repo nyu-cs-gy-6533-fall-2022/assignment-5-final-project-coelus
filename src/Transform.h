@@ -44,6 +44,7 @@ struct Transform
 		}
 		return x;
 	}
+	
 	float GetSpriteX()
 	{
 		float x = position.x - pivot.x;
@@ -53,6 +54,8 @@ struct Transform
 		}
 		return x;
 	}
+	
+	
 	mat4 Get()
 	{
 		float x = GetSpriteX();

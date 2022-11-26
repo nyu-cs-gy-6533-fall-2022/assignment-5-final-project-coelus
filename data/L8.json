@@ -1,7 +1,43 @@
 {
     "type": 1,
+    "lights": [
+        {
+            "type": "downLight",
+            "x": 700,
+            "y": 640
+        },
+        {
+            "type": "downLight",
+            "x": 1400,
+            "y": 1790
+        },
+        {
+            "type": "downLight",
+            "x": 700,
+            "y": 2560
+        },
+        {
+            "type": "downLight",
+            "x": 1400,
+            "y": 3320
+        },
+        {
+            "type": "downLight",
+            "x": 700,
+            "y": 4100
+        },
+        {
+            "type": "downLight",
+            "x": 1400,
+            "y": 4860
+        },
+        {
+            "type": "downLight",
+            "x": 700,
+            "y": 5630
+        }
+    ],
     "monsters": [
-   
         {
             "name": "snail",
             "x": 440,

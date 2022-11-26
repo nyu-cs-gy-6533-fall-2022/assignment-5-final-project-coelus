@@ -1,6 +1,6 @@
 #include "Stage.h"
 
-Stage::Stage(string filename, SoundSystem *sndSys, Player *pl, vector<Shader*> &s, double &time)
+Stage::Stage(string filename, SoundSystem *sndSys, Player *pl, vector<Shader *> &s, double &time)
     : player(pl), shaders(s), soundSys(sndSys), deltaTime(time)
 {
     bg = new Sprite();
@@ -13,11 +13,11 @@ Stage::~Stage()
     delete bg;
     delete fg;
     delete debug;
-    /*
-    for (int i = 0; i < monsters.size(); i++)
+
+    for (int i = 0; i < lights.size(); i++)
     {
-        delete monsters[i];
-    }*/
+        delete lights[i];
+    }
 }
 void Stage::loadData(string filename)
 {
@@ -55,6 +55,12 @@ void Stage::loadData(string filename)
         c->SetInitPos(vec2(monster["x"], monster["y"]));
         monsters.push_back(c);
     }
+
+    for (auto light : js["lights"])
+    {
+        Light *l = new Light(shaders, light["type"], vec2(light["x"], light["y"]));
+        lights.push_back(l);
+    }
 }
 void Stage::SetPlayerEntry(int index)
 {
@@ -72,8 +78,10 @@ void Stage::Update()
 }
 void Stage::Draw()
 {
+    useLightShader();
     drawBG();
     drawFG();
+    drawLights();
     drawMonsters();
 }
 vec2 Stage::GetBoundary()
@@ -143,20 +151,41 @@ void Stage::updateCollision()
     }
 }
 
+void Stage::useLightShader()
+{
+    shaders[2]->Use();
+    shaders[2]->SetMat4("modelMatrix", bg->Tx.Get());
+    shaders[2]->SetVec2("resolution", bg->Tx.scale);
+    shaders[2]->SetInt("lightLen", lights.size());
+    vector<vec4> lightData;
+    for (auto light : lights)
+    {
+        lightData.push_back(light->GetLightData());
+    }
+    shaders[2]->SetVec4("lights", lightData);
+}
 void Stage::drawBG()
 {
-    shaders[0]->SetMat("modelMatrix", bg->Tx.Get());
     bg->Draw();
 }
 
 void Stage::drawFG()
 {
-    shaders[0]->SetMat("modelMatrix", fg->Tx.Get());
     fg->Draw();
     debug->DrawDebug();
 }
+void Stage::drawLights()
+{
+
+    for (auto light : lights)
+    {
+        light->Draw();
+    }
+}
+
 void Stage::drawMonsters()
 {
+
     for (auto m : monsters)
     {
         m->Draw();

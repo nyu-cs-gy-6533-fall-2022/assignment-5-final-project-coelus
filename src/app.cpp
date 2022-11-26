@@ -54,6 +54,7 @@ void App::init()
     soundSys = new SoundSystem();
     shaders.push_back(new Shader("sprite.vert", "sprite.frag"));
     shaders.push_back(new Shader("dissolve.vert", "dissolve.frag"));
+    shaders.push_back(new Shader("bg.vert", "bg.frag"));
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
@@ -107,10 +108,12 @@ void App::draw()
 {
     glClearColor(0, 0, 0, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    shaders[1]->Use();
-    shaders[1]->SetMat("projMatrix", camera->Projection());
     shaders[0]->Use();
-    shaders[0]->SetMat("projMatrix", camera->Projection());
+    shaders[0]->SetMat4("projMatrix", camera->Projection());
+    shaders[1]->Use();
+    shaders[1]->SetMat4("projMatrix", camera->Projection());
+    shaders[2]->Use();
+    shaders[2]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
     player->Draw();
 }

@@ -103,6 +103,7 @@ public:
 
     void Draw()
     {
+        shaders[0]->Use();
         debug->SetDebugTx(0, GetCol());
         debug->DrawDebug();
 
@@ -111,7 +112,7 @@ public:
         {
 
             shaders[1]->Use();
-            shaders[1]->SetMat("modelMatrix", pTx->Get());
+            shaders[1]->SetMat4("modelMatrix", pTx->Get());
             shaders[1]->SetFloat("dissolveTime", dissolveTime);
             dissolveTime += deltaTime;
             if (dissolveTime > 1)
@@ -122,7 +123,7 @@ public:
         else
         {
             shaders[0]->Use();
-            shaders[0]->SetMat("modelMatrix", pTx->Get());
+            shaders[0]->SetMat4("modelMatrix", pTx->Get());
         }
 
         sprite->Draw(deltaTime);

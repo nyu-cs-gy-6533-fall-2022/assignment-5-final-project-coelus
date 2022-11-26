@@ -13,7 +13,7 @@ public:
         fsm->Add<FSSnailDamaged>(SnailDamaged);
         fsm->Add<FSDied>(Died);
         fsm->Set(SnailIdle);
-        
+
         srand(time(0));
         ctrlX = 1;
         loadData();
@@ -36,7 +36,8 @@ public:
     {
         if (readyTime > 0)
         {
-            velocity=vec2(0);
+            position = initPosition;
+            velocity = vec2(0);
             readyTime -= deltaTime;
             return;
         }
