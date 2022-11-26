@@ -18,6 +18,12 @@ Stage::~Stage()
     {
         delete lights[i];
     }
+    /*
+    for (int i = 0; i < monsters.size(); i++)
+    {
+        delete monsters[i];
+    }
+    */
 }
 void Stage::loadData(string filename)
 {

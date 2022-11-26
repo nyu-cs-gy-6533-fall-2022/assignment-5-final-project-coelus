@@ -26,7 +26,7 @@
             "frameCount": 6,
             "secPerFrame": 0.05,
             "isLoop": true,
-            "filename": "snail/snail-move.png"
+            "filename": "snail/snail-attack.png"
         },
         {
             "state": 12,

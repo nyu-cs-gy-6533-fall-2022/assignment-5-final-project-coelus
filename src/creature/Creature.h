@@ -59,9 +59,9 @@ public:
     }
     ~Creature()
     {
-        delete sprite;
-        delete debug;
-        delete fsm;
+            delete sprite;
+            delete debug;
+            delete fsm;
     }
     virtual void Update(Control ctrl){};
     void SetDirX(int dir) { pTx->dirX = dir; }
@@ -71,6 +71,7 @@ public:
         damage.dirX = dir;
         damage.force = vec2(-dir * hitbox.force.x, hitbox.force.y);
         damage.losthp = hitbox.damage;
+        damage.sound = hitbox.sound;
         if (fsm->GetState() != Damaged && fsm->GetState() != SnailDamaged)
         {
             isDamaged = true;

@@ -113,10 +113,10 @@ protected:
             force.y = 9.8f * deltaTime * Global::GravityRatio;
         }
     }
-    void addHitBox(vec4 hitbox, vec2 force, int damage, float time = 0.18f)
+    void addHitBox(SoundType sound, vec4 hitbox, vec2 force, int damage, float time = 0.18f)
     {
         debug->AddDebug(hitbox);
-        hitboxs.push_back(HitboxData{hitbox, force, damage, time});
+        hitboxs.push_back(HitboxData{hitbox, force, damage, time, sound});
     }
 };
 
@@ -135,7 +135,11 @@ public:
         velocity = vec2(0);
     };
     void Update(){};
-    void Exit(){};
+    void Exit()
+    {
+        force = vec2(0);
+        velocity = vec2(0);
+    };
 };
 
 class FSPlayerRun : public FiniteState
@@ -278,7 +282,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -328,7 +332,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -375,7 +379,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -418,7 +422,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -455,7 +459,7 @@ public:
         velocity = vec2(0);
         hp -= damage.losthp;
         dirX = damage.dirX;
-        soundSys->Play(SFXSnailHit);
+        soundSys->Play(damage.sound);
     };
     void Update()
     {
@@ -500,12 +504,14 @@ public:
         force = vec2(0);
         velocity = vec2(0);
     };
-    void Update()
+    void Update(){
+
+    };
+    void Exit()
     {
         force = vec2(0);
         velocity = vec2(0);
     };
-    void Exit(){};
 };
 
 class FSSnailAttack : public FiniteState
@@ -519,14 +525,14 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+        addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
     };
     void Update()
     {
         if (time <= 0)
         {
             time = 30;
-            addHitBox(vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         else
         {
@@ -536,7 +542,8 @@ public:
         setDirX();
         moveX();
     };
-    void Exit(){
+    void Exit()
+    {
         hitboxs.clear();
     };
 
@@ -602,7 +609,7 @@ public:
         velocity = vec2(0);
         hp -= damage.losthp;
         dirX = damage.dirX;
-        soundSys->Play(SFXPlayerHit);
+        soundSys->Play(damage.sound);
     };
     void Update()
     {
