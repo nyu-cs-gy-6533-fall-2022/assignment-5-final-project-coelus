@@ -29,7 +29,7 @@ public:
 
 private:
     int mWidth, mHeight;
-    double prevTime, deltaTime = 0;
+    double deltaTime = 0.f;
     bool isReady = false;
     GLFWwindow *pWindow;
 
@@ -45,6 +45,5 @@ private:
     void draw();
     void update();
     void playerUpdate();
-    void getDeltaTime();
     void loadIcon();
 };

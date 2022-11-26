@@ -58,7 +58,7 @@ void App::init()
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
 
-    prevTime = glfwGetTime();
+   
     isReady = true;
 }
 void App::loadIcon()
@@ -82,12 +82,7 @@ void App::resize()
         glViewport(0, 0, width, height);
     }
 }
-void App::getDeltaTime()
-{
-    double currentTime = glfwGetTime();
-    deltaTime = currentTime - prevTime;
-    prevTime = currentTime;
-}
+
 
 void App::playerUpdate()
 {
@@ -104,7 +99,6 @@ void App::playerUpdate()
 
 void App::update()
 {
-    getDeltaTime();
     resize();
     playerUpdate();
     stageSys->Update();
@@ -127,9 +121,11 @@ void App::MainLoop()
         return;
     while (!glfwWindowShouldClose(pWindow))
     {
+        double startTime = glfwGetTime();
         update();
         draw();
         glfwSwapBuffers(pWindow);
         glfwPollEvents();
+        deltaTime = glfwGetTime() - startTime;
     }
 }

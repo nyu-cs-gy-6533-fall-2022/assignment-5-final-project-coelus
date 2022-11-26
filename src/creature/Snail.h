@@ -13,11 +13,14 @@ public:
         fsm->Add<FSSnailDamaged>(SnailDamaged);
         fsm->Add<FSDied>(Died);
         fsm->Set(SnailIdle);
+        
         srand(time(0));
         ctrlX = 1;
         loadData();
         timeInit();
         idleFlag = false;
+        readyTime = 0.5f;
+        sprite->Set(SnailIdle);
     }
     void Reset()
     {
@@ -31,6 +34,13 @@ public:
     }
     void Update(Control ctrl)
     {
+        if (readyTime > 0)
+        {
+            velocity=vec2(0);
+            readyTime -= deltaTime;
+            return;
+        }
+
         updateHitBox();
         fsmInput.Init();
         if (hp <= 0)
@@ -87,6 +97,7 @@ private:
     bool idleFlag;
     float waitTime;
     float attackTime;
+    float readyTime;
     void timeInit()
     {
         attackTime = 1 + rand() % 3;
