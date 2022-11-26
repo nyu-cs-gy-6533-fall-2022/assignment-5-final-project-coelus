@@ -63,6 +63,7 @@ void Animation::Play(BufferObject &buffer, double dt)
 
 void Animation::UpdateSprite(BufferObject &buffer)
 {
+	
 	vec4 frame = frames[frameIndex];
 	frame.x /= texture->GetWidth();
 	frame.y /= texture->GetHeight();

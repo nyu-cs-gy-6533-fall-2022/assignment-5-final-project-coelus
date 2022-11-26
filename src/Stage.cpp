@@ -58,6 +58,10 @@ void Stage::loadData(string filename)
         {
             c = new Snail(soundSys, shaders, deltaTime);
         }
+        else if (monster["name"] == "rat")
+        {
+            c = new Rat(soundSys, shaders, deltaTime);
+        }
         c->SetInitPos(vec2(monster["x"], monster["y"]));
         monsters.push_back(c);
     }

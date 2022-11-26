@@ -1,0 +1,65 @@
+{
+    "type": 0,
+    "runSpeed": 1400,
+    "rigidbody": {
+        "w": 275,
+        "h": 135
+    },
+    "animation": [
+        {
+            "state": 10,
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 4,
+            "secPerFrame": 0.5,
+            "isLoop": true,
+            "filename": "rat/rat1_walk.png"
+        },
+        {
+            "state": 11,
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 19,
+            "secPerFrame": 0.03,
+            "isLoop": true,
+            "filename": "rat/rat1_circle.png"
+        },
+        {
+            "state": 12,
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.1,
+            "isLoop": true,
+            "filename": "rat/rat1_circle.png"
+        },
+        {
+            "state": 13,
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.04,
+            "isLoop": false,
+            "filename": "rat/rat1_hurt.png"
+        },
+        {
+            "state": 14,
+            "pivotX": 156,
+            "pivotY": 345,
+            "width": 600,
+            "height": 512,
+            "frameCount": 1,
+            "secPerFrame": 0.04,
+            "isLoop": true,
+            "filename": "rat/rat1_die.png"
+        }
+    ]
+}

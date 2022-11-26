@@ -2,6 +2,7 @@
 #pragma once
 #include "creature/Player.h"
 #include "creature/Snail.h"
+#include "creature/Rat.h"
 #include "Loader.h"
 #include "Sprite.h"
 #include "Shader.h"
