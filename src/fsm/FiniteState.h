@@ -36,7 +36,9 @@ public:
           hitboxs(data.hitboxs),
           hp(data.hp),
           damage(data.damage),
-          attackEnd(data.attackEnd)
+          attackEnd(data.attackEnd),
+          isChainThrow(data.isChainThrow),
+          isChainHit(data.isChainHit)
 
     {
     }
@@ -72,6 +74,7 @@ protected:
     int &hp;
     DamageData &damage;
     bool &attackEnd;
+    bool *isChainThrow,*isChainHit;
 
     FSMInput possibleState, interruptState;
 
@@ -476,11 +479,14 @@ public:
         FiniteState::Enter();
         stopX();
         throwChainCD.Reset();
+        *isChainHit = false;
+        *isChainThrow = false;
     };
     void Update()
     {
         if (sprite->IsFrame(3))
         {
+            *isChainThrow = true;
             soundSys->Play(SFXChainThrow);
             sprite->AddFrame();
             sprite->PauseFrame();
@@ -496,12 +502,16 @@ public:
     };
     void Exit()
     {
+        *isChainHit = false;
+        *isChainThrow = false;
         sprite->ResumeFrame();
     };
 
 private:
     CountDown throwChainCD;
 };
+
+
 
 class FSPlayerDamaged : public FiniteState
 {

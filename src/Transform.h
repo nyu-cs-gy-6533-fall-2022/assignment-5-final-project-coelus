@@ -40,6 +40,7 @@ struct Transform
 
 		return x;
 	}
+	
 
 	float GetSpriteX()
 	{

@@ -93,9 +93,12 @@ void Stage::Draw()
 {
     useLightShader();
     drawBG();
+    player->DrawChain();
+    useLightShader();
     drawFG();
     drawLights();
     drawMonsters();
+    player->Draw();
 }
 vec2 Stage::GetBoundary()
 {
@@ -113,7 +116,6 @@ void Stage::updateMonsters()
 void Stage::updateTrigger()
 {
     // entry detect
-
     int resIndex = -1;
     if (Collision::IsCollided(player->GetCol(), entriesvec4, resIndex))
     {
@@ -141,6 +143,11 @@ void Stage::updateTrigger()
         {
             player->SetDamage(monster, hitboxs[resIndex]);
         }
+    }
+
+    //player chain
+    if(Collision::IsCollided(player->GetChainCol(), collisions, resIndex)){
+        player->SetChainHit();
     }
 }
 

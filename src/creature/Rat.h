@@ -5,6 +5,7 @@ class Rat : public Creature
 public:
     Rat(SoundSystem *sndSys, vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
     {
+        InitFSM();
         fsm->Add<FSRatIdle>(RatIdle);
         fsm->Add<FSRatRun>(RatRun);
         fsm->Add<FSRatRollStart>(RatRollStart);

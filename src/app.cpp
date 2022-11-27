@@ -117,7 +117,7 @@ void App::draw()
     shaders[2]->Use();
     shaders[2]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
-    player->Draw();
+    
 }
 
 void App::MainLoop()

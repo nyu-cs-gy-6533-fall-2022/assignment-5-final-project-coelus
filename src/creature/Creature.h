@@ -41,6 +41,9 @@ public:
         debug = new Debug(shaders);
         pTx = &sprite->Tx;
         pTx->dirX = -1;
+    }
+    void InitFSM()
+    {
         fsm = new FSM(
             FSMData{soundSys, sprite, debug,
                     runSpeed, jumpSpeed,
@@ -55,7 +58,8 @@ public:
                     downDistance,
                     hitboxs,
                     hp, damage,
-                    attackEnd});
+                    attackEnd,
+                    isChainThrow, isChainHit});
     }
     ~Creature()
     {
@@ -103,7 +107,7 @@ public:
         willFall = !status.isColDown;
     }
 
-    void Draw()
+    virtual void Draw()
     {
         shaders[0]->Use();
         debug->SetDebugTx(0, GetCol());
@@ -152,6 +156,7 @@ protected:
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
     bool attackEnd = true;
+    bool *isChainThrow, *isChainHit;
 
     float dissolveTime = 0;
 

@@ -41,5 +41,9 @@ void main() {
   }
   totalBrightness = clamp(totalBrightness, 0.7, gain);
 
-  resColor = pixelColor * totalBrightness;
+  resColor=pixelColor * totalBrightness;
+  if(resColor.a>0){
+    resColor.a=1;
+  }
+ 
 }

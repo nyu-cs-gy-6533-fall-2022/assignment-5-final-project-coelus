@@ -23,6 +23,7 @@ struct FSMData
     int &hp;
     DamageData &damage;
     bool &attackEnd;
+    bool *isChainThrow, *isChainHit;
 };
 
 struct FSMInput
