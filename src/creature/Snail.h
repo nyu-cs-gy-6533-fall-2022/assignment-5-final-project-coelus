@@ -19,7 +19,7 @@ public:
     }
     void Reset()
     {
-        ctrlX = 1;
+        setRandCtrlX();
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;

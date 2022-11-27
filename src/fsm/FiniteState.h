@@ -683,21 +683,34 @@ class FSRatRun : public FiniteState
 public:
     FSRatRun(FSMData data) : FiniteState(data)
     {
+        loopCD.Init(1.5f, deltaTime, 2);
+        interruptState.Add(vector<ActionState>{RatDamaged, RatFall});
         possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
     };
-
+    int GetPossibleState()
+    {
+        if (loopCD.IsRun())
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();
+        loopCD.Reset();
     };
     void Update()
     {
+        loopCD.Update();
         setDirX();
         moveX();
     };
-    void Exit(){};
+    void Exit()
+    {
+        shouldIdle = true;
+    };
 
 private:
+    CountDown loopCD;
 };
 
 class FSRatFall : public FiniteState

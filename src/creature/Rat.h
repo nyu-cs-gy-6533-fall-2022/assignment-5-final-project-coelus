@@ -13,28 +13,31 @@ public:
         fsm->Add<FSRatFall>(RatFall);
         fsm->Add<FSRatDamaged>(RatDamaged);
         fsm->Add<FSDied>(Died);
-        fsm->Set(RatIdle);
 
-        ctrlX = 1;
+      
         loadData();
-        runCD.Init(2.f, deltaTime, 2);
-        waitCD.Init(1.f, deltaTime, 1);
+        waitCD.Init(1.f, deltaTime, 2);
+        Reset();
     }
     void Reset()
     {
+        setRandCtrlX();
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
         shouldIdle = false;
-        initCD();
+        waitCD.Reset();
         position = initPosition;
+        sprite->Set(RatIdle);
         fsm->Set(RatIdle);
+        fsm->Enter();
     }
     void Update(Control ctrl)
     {
 
         updateHitBox();
         fsmInput.Init();
+        fsmInput.Add(RatIdle);
         if (hp <= 0)
         {
             fsmInput.Add(Died);
@@ -42,36 +45,27 @@ public:
         // sould Idle flag
         if (shouldIdle)
         {
-            shouldIdle = false;
-            waitCD.Reset();
-            runCD.Close();
+            if (waitCD.IsEnd())
+            {
+                shouldIdle = false;
+                waitCD.Reset();
+                setRandCtrlX();
+            }
+            waitCD.Update();
         }
-
-        if (!isGround)
+        else
         {
-            fsmInput.Add(RatFall);
-        }
-        else if (runCD.IsRun())
-        {
-
             if (isFront || willFall)
             {
                 ctrlX *= -1;
             }
 
             fsmInput.Add(RatRun);
-            runCD.Update();
         }
-        // idle wait
-        else if (runCD.IsEnd())
+
+        if (!isGround)
         {
-            if (waitCD.IsEnd())
-            {
-                initCD();
-                setRandCtrlX();
-            }
-            waitCD.Update();
-            fsmInput.Add(RatIdle);
+            fsmInput.Add(RatFall);
         }
 
         if (isDamaged)
@@ -85,14 +79,9 @@ public:
     }
 
 private:
-    CountDown runCD;
     CountDown waitCD;
 
-    void initCD()
-    {
-        runCD.Reset();
-        waitCD.Reset();
-    }
+
     void loadData()
     {
         json js = Loader::Load("rat.json", vector<Sprite *>{sprite});

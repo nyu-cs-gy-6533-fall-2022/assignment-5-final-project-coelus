@@ -12,7 +12,7 @@ struct CountDown
     double *deltaTime;
     void Init(float val, double &dt, int err = 2)
     {
-        srand(time(0));
+
         remainTime = val;
         deltaTime = &dt;
         randErr = err;
@@ -35,7 +35,7 @@ struct CountDown
         float err = 0;
         if (randErr > 0)
         {
-            err = rand() % randErr;
+            err = ((double)rand() / RAND_MAX) * randErr;
         }
         t = remainTime + err;
     }

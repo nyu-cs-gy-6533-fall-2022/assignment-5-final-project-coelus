@@ -56,7 +56,7 @@ public:
                     hitboxs,
                     hp, damage,
                     shouldIdle});
-        srand(time(0));
+        
     }
     ~Creature()
     {
@@ -160,7 +160,7 @@ protected:
 
     void setRandCtrlX()
     {
-        ctrlX = (rand() % 1) >= 0.5 ? 1 : -1;
+        ctrlX = (rand() % 2) == 0 ? 1 : -1;
     }
     void setInitHp(int val)
     {

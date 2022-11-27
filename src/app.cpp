@@ -30,6 +30,7 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     InputSystem::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
     glfwSetKeyCallback(pWindow, InputSystem::KeyCallback);
 
+    srand(time(0));
     init();
 }
 

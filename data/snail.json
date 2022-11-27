@@ -4,7 +4,7 @@
     "runSpeed": 300,
     "rigidbody": {
         "w": 200,
-        "h": 152
+        "h": 148
     },
     "animation": [
         {
