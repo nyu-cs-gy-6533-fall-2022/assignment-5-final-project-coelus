@@ -12,9 +12,7 @@ public:
         fsm->Add<FSSnailDamaged>(SnailDamaged);
         fsm->Add<FSDied>(Died);
 
-
         loadData();
-        waitCD.Init(1.2f, deltaTime, 2);
         Reset();
     }
     void Reset()
@@ -23,8 +21,6 @@ public:
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
-        shouldIdle = true;
-        waitCD.Reset();
         position = initPosition;
         sprite->Set(SnailIdle);
         fsm->Set(SnailIdle);
@@ -35,31 +31,13 @@ public:
 
         updateHitBox();
         fsmInput.Init();
-        fsmInput.Add(SnailIdle);
+
         if (hp <= 0)
         {
             fsmInput.Add(Died);
         }
-        // sould Idle flag
-        if (shouldIdle)
-        {
-            if (waitCD.IsEnd())
-            {
-                shouldIdle = false;
-                waitCD.Reset();
-                setRandCtrlX();
-            }
-            waitCD.Update();
-        }
-        else
-        {
-            if (isFront || willFall)
-            {
-                ctrlX *= -1;
-            }
-
-            fsmInput.Add(SnailAttack);
-        }
+        fsmInput.Add(SnailIdle);
+        fsmInput.Add(SnailAttack);
 
         if (!isGround)
         {
@@ -77,8 +55,6 @@ public:
     }
 
 private:
-    CountDown waitCD;
-
     void loadData()
     {
         json js = Loader::Load("snail.json", vector<Sprite *>{sprite});

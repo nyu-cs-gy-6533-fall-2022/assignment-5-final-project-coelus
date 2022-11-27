@@ -24,6 +24,8 @@ public:
           deltaTime(data.deltaTime),
           isGround(data.isGround),
           isTop(data.isTop),
+          isFront(data.isFront),
+          willFall(data.willFall),
           canJumpAttack(data.canJumpAttack),
           isDamaged(data.isDamaged),
           ctrlX(data.ctrlX),
@@ -60,7 +62,7 @@ protected:
     Transform *pTx;
     vec2 &position, &velocity, &force;
     double &deltaTime;
-    bool &isGround, &isTop;
+    bool &isGround, &isTop, &isFront, &willFall;
     bool &canJumpAttack, &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
@@ -79,7 +81,18 @@ protected:
             (ctrlX == -1 & dirX > 0))
             dirX *= -1;
     }
-
+    void setRandCtrlX()
+    {
+        ctrlX = (rand() % 2) == 0 ? 1 : -1;
+    }
+    // prevent fall down the edge
+    void updateCtrlX()
+    {
+        if (isFront || willFall)
+        {
+            ctrlX *= -1;
+        }
+    }
     void deceleration()
     {
         int sign = velocity.x >= 0 ? 1 : -1;
@@ -106,6 +119,7 @@ protected:
             velocity.x = runSpeed * dirX * deltaTime;
         }
     }
+
     void falling()
     {
         if (!isGround)
@@ -499,23 +513,40 @@ class FSSnailIdle : public FiniteState
 public:
     FSSnailIdle(FSMData data) : FiniteState(data)
     {
+        loopCD.Init(1.2f, deltaTime, 2);
+        interruptState.Add(vector<ActionState>{SnailDamaged, SnailFall, Died});
         possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged, Died});
     };
-
+    int GetPossibleState()
+    {
+        if (loopCD.IsRun())
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();
         force = vec2(0);
         velocity = vec2(0);
+        loopCD.Reset();
     };
-    void Update(){
-
+    void Update()
+    {
+        loopCD.Update();
     };
     void Exit()
     {
+        if (loopCD.IsEnd())
+        {
+            setRandCtrlX();
+        }
+
         force = vec2(0);
         velocity = vec2(0);
     };
+
+private:
+    CountDown loopCD;
 };
 
 class FSSnailAttack : public FiniteState
@@ -538,26 +569,26 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+        addHitBox(SFXSnailHit, vec4(pTx->GetX(-40, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         hitboxCD.Reset();
         loopCD.Reset();
     };
     void Update()
     {
+        updateCtrlX();
+        setDirX();
+        moveX();
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX(-40, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
-        setDirX();
-        moveX();
     };
     void Exit()
     {
         hitboxs.clear();
-        shouldIdle = true;
     };
 
 private:
@@ -571,7 +602,7 @@ public:
     FSSnailFall(FSMData data) : FiniteState(data)
     {
         interruptState.Add(vector<ActionState>{SnailDamaged});
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailAttack, SnailDamaged});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailDamaged, Died});
     };
 
     int GetPossibleState()
@@ -649,7 +680,6 @@ public:
     };
     void Exit()
     {
-        shouldIdle = true;
         isDamaged = false;
     };
 };
@@ -659,7 +689,7 @@ class FSRatIdle : public FiniteState
 public:
     FSRatIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, Died});
+        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, Died, RatRollStart});
     };
 
     void Enter()
@@ -685,7 +715,7 @@ public:
     {
         loopCD.Init(1.5f, deltaTime, 2);
         interruptState.Add(vector<ActionState>{RatDamaged, RatFall});
-        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died, RatRollStart});
     };
     int GetPossibleState()
     {
@@ -906,6 +936,7 @@ public:
         FiniteState::Enter();
         velocity = vec2(0);
         force = vec2(0);
+        soundSys->Play(SFXDisappear);
     };
     void Update(){};
     void Exit(){};

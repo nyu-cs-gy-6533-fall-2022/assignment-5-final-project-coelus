@@ -47,7 +47,7 @@ public:
                     pTx,
                     position, velocity, force,
                     deltaTime,
-                    isGround, isTop,
+                    isGround, isTop, isFront, willFall,
                     canJumpAttack,
                     isDamaged,
                     ctrlX,
@@ -56,7 +56,6 @@ public:
                     hitboxs,
                     hp, damage,
                     shouldIdle});
-        
     }
     ~Creature()
     {

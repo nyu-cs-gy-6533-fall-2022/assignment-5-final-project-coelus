@@ -13,7 +13,7 @@ struct FSMData
     Transform *pTx;
     vec2 &position, &velocity, &force;
     double &deltaTime;
-    bool &isGround, &isTop;
+    bool &isGround, &isTop, &isFront, &willFall;
     bool &canJumpAttack;
     bool &isDamaged;
     int &ctrlX;

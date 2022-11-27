@@ -14,6 +14,8 @@ SoundSystem::SoundSystem()
     createSound(SFXPlayerHit, "sfx/swordhit.mp3");
     createSound(SFXSnailHit, "sfx/snailhit.mp3");
     createSound(SFXRatHit, "sfx/rathit.mp3");
+    createSound(SFXDisappear, "sfx/disappear.mp3");
+    
 }
 SoundSystem::~SoundSystem()
 {

@@ -14,9 +14,9 @@ public:
         fsm->Add<FSRatDamaged>(RatDamaged);
         fsm->Add<FSDied>(Died);
 
-      
         loadData();
         waitCD.Init(1.f, deltaTime, 2);
+        attackWaitCD.Init(5.f, deltaTime, 1);
         Reset();
     }
     void Reset()
@@ -27,6 +27,7 @@ public:
         isDamaged = false;
         shouldIdle = false;
         waitCD.Reset();
+        attackWaitCD.Reset();
         position = initPosition;
         sprite->Set(RatIdle);
         fsm->Set(RatIdle);
@@ -42,7 +43,7 @@ public:
         {
             fsmInput.Add(Died);
         }
-        // sould Idle flag
+        // should Idle flag
         if (shouldIdle)
         {
             if (waitCD.IsEnd())
@@ -50,8 +51,19 @@ public:
                 shouldIdle = false;
                 waitCD.Reset();
                 setRandCtrlX();
+                if (attackWaitCD.IsEnd())
+                {
+                    attackWaitCD.Reset();
+                }
             }
             waitCD.Update();
+        }
+        else if (attackWaitCD.IsEnd())
+        {
+            /*
+            fsmInput.Add(RatRollStart);
+            fsmInput.Add(RatRollLoop);
+            fsmInput.Add(RatRollStop);*/
         }
         else
         {
@@ -59,9 +71,9 @@ public:
             {
                 ctrlX *= -1;
             }
-
             fsmInput.Add(RatRun);
         }
+        attackWaitCD.Update();
 
         if (!isGround)
         {
@@ -79,8 +91,7 @@ public:
     }
 
 private:
-    CountDown waitCD;
-
+    CountDown waitCD, attackWaitCD;
 
     void loadData()
     {
