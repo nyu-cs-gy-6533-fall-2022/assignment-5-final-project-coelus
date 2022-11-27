@@ -14,7 +14,7 @@
             "width": 600,
             "height": 512,
             "frameCount": 4,
-            "secPerFrame": 0.5,
+            "secPerFrame": 0.4,
             "isLoop": true,
             "filename": "rat/rat1_idle.png"
         },

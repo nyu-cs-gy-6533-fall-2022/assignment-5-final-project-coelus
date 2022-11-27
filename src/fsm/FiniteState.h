@@ -36,7 +36,7 @@ public:
           hitboxs(data.hitboxs),
           hp(data.hp),
           damage(data.damage),
-          shouldIdle(data.shouldIdle)
+          attackEnd(data.attackEnd)
 
     {
     }
@@ -71,7 +71,7 @@ protected:
     int &dirX;
     int &hp;
     DamageData &damage;
-    bool &shouldIdle;
+    bool &attackEnd;
 
     FSMInput possibleState, interruptState;
 
@@ -689,23 +689,39 @@ class FSRatIdle : public FiniteState
 public:
     FSRatIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, Died, RatRollStart});
+        loopCD.Init(1.2f, deltaTime, 1);
+        interruptState.Add(vector<ActionState>{RatDamaged, RatFall, Died});
+        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, RatRollStart, Died});
     };
-
+    int GetPossibleState()
+    {
+        if (loopCD.IsRun())
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();
         force = vec2(0);
         velocity = vec2(0);
+        loopCD.Reset();
     };
-    void Update(){
-
+    void Update()
+    {
+        loopCD.Update();
     };
     void Exit()
     {
+        if (loopCD.IsEnd())
+        {
+            setRandCtrlX();
+        }
         force = vec2(0);
         velocity = vec2(0);
     };
+
+private:
+    CountDown loopCD;
 };
 
 class FSRatRun : public FiniteState
@@ -736,7 +752,6 @@ public:
     };
     void Exit()
     {
-        shouldIdle = true;
     };
 
 private:
@@ -749,7 +764,7 @@ public:
     FSRatFall(FSMData data) : FiniteState(data)
     {
         interruptState.Add(vector<ActionState>{RatDamaged});
-        possibleState.Add(vector<ActionState>{RatIdle, RatRun, RatDamaged});
+        possibleState.Add(vector<ActionState>{RatIdle, RatDamaged, Died});
     };
 
     int GetPossibleState()
@@ -827,7 +842,6 @@ public:
     };
     void Exit()
     {
-        shouldIdle = true;
         isDamaged = false;
     };
 };

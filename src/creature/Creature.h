@@ -55,7 +55,7 @@ public:
                     downDistance,
                     hitboxs,
                     hp, damage,
-                    shouldIdle});
+                    attackEnd});
     }
     ~Creature()
     {
@@ -151,7 +151,7 @@ protected:
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
-    bool shouldIdle = true;
+    bool attackEnd = true;
 
     float dissolveTime = 0;
 

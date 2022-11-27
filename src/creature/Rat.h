@@ -15,8 +15,7 @@ public:
         fsm->Add<FSDied>(Died);
 
         loadData();
-        waitCD.Init(1.f, deltaTime, 2);
-        attackWaitCD.Init(5.f, deltaTime, 1);
+        attackCD.Init(5.f, deltaTime, 1);
         Reset();
     }
     void Reset()
@@ -25,9 +24,8 @@ public:
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
-        shouldIdle = false;
-        waitCD.Reset();
-        attackWaitCD.Reset();
+        attackEnd = false;
+        attackCD.Reset();
         position = initPosition;
         sprite->Set(RatIdle);
         fsm->Set(RatIdle);
@@ -38,42 +36,13 @@ public:
 
         updateHitBox();
         fsmInput.Init();
-        fsmInput.Add(RatIdle);
+
         if (hp <= 0)
         {
             fsmInput.Add(Died);
         }
-        // should Idle flag
-        if (shouldIdle)
-        {
-            if (waitCD.IsEnd())
-            {
-                shouldIdle = false;
-                waitCD.Reset();
-                setRandCtrlX();
-                if (attackWaitCD.IsEnd())
-                {
-                    attackWaitCD.Reset();
-                }
-            }
-            waitCD.Update();
-        }
-        else if (attackWaitCD.IsEnd())
-        {
-            /*
-            fsmInput.Add(RatRollStart);
-            fsmInput.Add(RatRollLoop);
-            fsmInput.Add(RatRollStop);*/
-        }
-        else
-        {
-            if (isFront || willFall)
-            {
-                ctrlX *= -1;
-            }
-            fsmInput.Add(RatRun);
-        }
-        attackWaitCD.Update();
+        fsmInput.Add(RatIdle);
+        fsmInput.Add(RatRun);
 
         if (!isGround)
         {
@@ -91,7 +60,7 @@ public:
     }
 
 private:
-    CountDown waitCD, attackWaitCD;
+    CountDown attackCD;
 
     void loadData()
     {

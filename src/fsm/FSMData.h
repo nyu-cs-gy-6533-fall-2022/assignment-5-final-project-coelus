@@ -22,7 +22,7 @@ struct FSMData
     vector<HitboxData> &hitboxs;
     int &hp;
     DamageData &damage;
-    bool &shouldIdle;
+    bool &attackEnd;
 };
 
 struct FSMInput
