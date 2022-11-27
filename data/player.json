@@ -2,7 +2,7 @@
     "type": 0,
     "hp":500,
     "runSpeed": 700,
-    "jumpSpeed": 1100,
+    "jumpSpeed": 1200,
     "rigidbody": {
         "w": 50,
         "h": 205
@@ -48,7 +48,7 @@
             "width": 1024,
             "height": 512,
             "frameCount": 9,
-            "secPerFrame": 0.045,
+            "secPerFrame": 0.04,
             "secLastFrame": 0.25,
             "isLoop": false,
             "filename": "main/attack1.png"
@@ -60,7 +60,7 @@
             "width": 1024,
             "height": 512,
             "frameCount": 8,
-            "secPerFrame": 0.045,
+            "secPerFrame": 0.04,
             "secLastFrame": 0.25,
             "isLoop": false,
             "filename": "main/attack2.png"
@@ -94,7 +94,7 @@
             "width": 1024,
             "height": 512,
             "frameCount": 7,
-            "secPerFrame": 0.045,
+            "secPerFrame": 0.04,
             "isLoop": false,
             "filename": "main/jumpAttack.png"
         },
