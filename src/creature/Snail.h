@@ -1,7 +1,6 @@
 #pragma once
 #include "Creature.h"
 
-
 class Snail : public Creature
 {
 public:
@@ -12,29 +11,31 @@ public:
         fsm->Add<FSSnailFall>(SnailFall);
         fsm->Add<FSSnailDamaged>(SnailDamaged);
         fsm->Add<FSDied>(Died);
-        fsm->Set(SnailIdle);
 
-        ctrlX = 1;
+
         loadData();
-
-        attackCD.Init(2.f, deltaTime, 4);
-        waitCD.Init(2.f, deltaTime, 1);
+        waitCD.Init(1.2f, deltaTime, 2);
+        Reset();
     }
     void Reset()
     {
+        ctrlX = 1;
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
-        shouldIdle = false;
-        initCD();
+        shouldIdle = true;
+        waitCD.Reset();
         position = initPosition;
+        sprite->Set(SnailIdle);
         fsm->Set(SnailIdle);
+        fsm->Enter();
     }
     void Update(Control ctrl)
     {
 
         updateHitBox();
         fsmInput.Init();
+        fsmInput.Add(SnailIdle);
         if (hp <= 0)
         {
             fsmInput.Add(Died);
@@ -42,36 +43,27 @@ public:
         // sould Idle flag
         if (shouldIdle)
         {
-            shouldIdle = false;
-            waitCD.Reset();
-            attackCD.Close();
+            if (waitCD.IsEnd())
+            {
+                shouldIdle = false;
+                waitCD.Reset();
+                setRandCtrlX();
+            }
+            waitCD.Update();
         }
-
-        if (!isGround)
+        else
         {
-            fsmInput.Add(SnailFall);
-        }
-        else if (attackCD.IsRun())
-        {
-
             if (isFront || willFall)
             {
                 ctrlX *= -1;
             }
 
             fsmInput.Add(SnailAttack);
-            attackCD.Update();
         }
-        // idle wait
-        else if (attackCD.IsEnd())
+
+        if (!isGround)
         {
-            if (waitCD.IsEnd())
-            {
-                initCD();
-                setRandCtrlX();
-            }
-            waitCD.Update();
-            fsmInput.Add(SnailIdle);
+            fsmInput.Add(SnailFall);
         }
 
         if (isDamaged)
@@ -85,14 +77,8 @@ public:
     }
 
 private:
-    CountDown attackCD;
     CountDown waitCD;
 
-    void initCD()
-    {
-        attackCD.Reset();
-        waitCD.Reset();
-    }
     void loadData()
     {
         json js = Loader::Load("snail.json", vector<Sprite *>{sprite});

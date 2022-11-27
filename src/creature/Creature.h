@@ -152,7 +152,7 @@ protected:
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
-    bool shouldIdle = false;
+    bool shouldIdle = true;
 
     float dissolveTime = 0;
 

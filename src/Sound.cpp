@@ -13,6 +13,7 @@ SoundSystem::SoundSystem()
     createSound(SFXPlayerAttack, "sfx/swordattack.mp3");
     createSound(SFXPlayerHit, "sfx/swordhit.mp3");
     createSound(SFXSnailHit, "sfx/snailhit.mp3");
+    createSound(SFXRatHit, "sfx/rathit.mp3");
 }
 SoundSystem::~SoundSystem()
 {

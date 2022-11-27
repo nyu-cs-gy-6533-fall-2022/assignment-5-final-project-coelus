@@ -2,6 +2,8 @@
 #include "Animation.h"
 #include "DefferedKey.h"
 #include "FSMData.h"
+#include "CountDown.h"
+
 #include <glm/glm.hpp>
 using namespace glm;
 
@@ -521,36 +523,46 @@ class FSSnailAttack : public FiniteState
 public:
     FSSnailAttack(FSMData data) : FiniteState(data)
     {
+        hitboxCD.Init(0.01f, deltaTime, 0);
+        loopCD.Init(2.f, deltaTime, 2);
+        interruptState.Add(vector<ActionState>{SnailDamaged, SnailFall});
         possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged, Died});
     };
+    int GetPossibleState()
+    {
+        if (loopCD.IsRun())
+            return interruptState.input;
+        return possibleState.input;
+    }
 
     void Enter()
     {
         FiniteState::Enter();
         addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+        hitboxCD.Reset();
+        loopCD.Reset();
     };
     void Update()
     {
-        if (time <= 0)
+        if (hitboxCD.IsEnd())
         {
-            time = 30;
+            hitboxCD.Reset();
             addHitBox(SFXSnailHit, vec4(pTx->GetX(-30, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
-        else
-        {
-            time--;
-        }
-
+        hitboxCD.Update();
+        loopCD.Update();
         setDirX();
         moveX();
     };
     void Exit()
     {
         hitboxs.clear();
+        shouldIdle = true;
     };
 
 private:
-    int time = 30;
+    CountDown loopCD;
+    CountDown hitboxCD;
 };
 
 class FSSnailFall : public FiniteState
@@ -782,9 +794,15 @@ class FSRatRollStart : public FiniteState
 public:
     FSRatRollStart(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+        interruptState.Add(vector<ActionState>{RatFall, RatDamaged});
+        possibleState.Add(vector<ActionState>{RatRollLoop, RatFall, RatDamaged});
     };
-
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();
@@ -804,19 +822,31 @@ class FSRatRollLoop : public FiniteState
 public:
     FSRatRollLoop(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+        interruptState.Add(vector<ActionState>{RatFall, RatDamaged});
+        possibleState.Add(vector<ActionState>{RatRollStop, RatFall, RatDamaged});
     };
 
+    int GetPossibleState()
+    {
+        if (rollTime < 0)
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();
+        rollTime = 5.0f;
     };
     void Update()
     {
         setDirX();
         moveX();
+        rollTime -= deltaTime;
     };
     void Exit(){};
+
+private:
+    float rollTime;
 
 private:
 };
@@ -825,9 +855,15 @@ class FSRatRollStop : public FiniteState
 public:
     FSRatRollStop(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died});
+        interruptState.Add(vector<ActionState>{RatFall, RatDamaged});
+        possibleState.Add(vector<ActionState>{RatIdle, RatRun, RatFall, RatDamaged});
     };
-
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return interruptState.input;
+        return possibleState.input;
+    }
     void Enter()
     {
         FiniteState::Enter();

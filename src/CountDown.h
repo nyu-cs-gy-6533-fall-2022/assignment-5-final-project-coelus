@@ -32,7 +32,12 @@ struct CountDown
     }
     void Reset()
     {
-        t = remainTime + rand() % randErr;
+        float err = 0;
+        if (randErr > 0)
+        {
+            err = rand() % randErr;
+        }
+        t = remainTime + err;
     }
     void Update()
     {
