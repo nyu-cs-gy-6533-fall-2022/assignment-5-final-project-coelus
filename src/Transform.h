@@ -33,18 +33,14 @@ struct Transform
 		position = vec2(rect.x, rect.y);
 		scale = vec2(rect.z, rect.w);
 	}
-
-	float GetX(float range, float w)
+	// get x from center x
+	float GetX(vec2 mainPos, float frontX, float w)
 	{
-		float halfW = w / 2;
-		float x = position.x - halfW + rigidBody.x + range;
-		if (dirX == -1)
-		{
-			x = position.x - halfW - range;
-		}
+		float x = position.x - w / 2 + rigidBody.x / 2 + frontX * dirX;
+
 		return x;
 	}
-	
+
 	float GetSpriteX()
 	{
 		float x = position.x - pivot.x;
@@ -54,8 +50,7 @@ struct Transform
 		}
 		return x;
 	}
-	
-	
+
 	mat4 Get()
 	{
 		float x = GetSpriteX();

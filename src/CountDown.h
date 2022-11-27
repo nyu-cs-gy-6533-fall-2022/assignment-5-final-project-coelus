@@ -7,6 +7,7 @@
 struct CountDown
 {
     int randErr = 0;
+    float currentRemainTime;
     float remainTime;
     float t = 0;
     double *deltaTime;
@@ -17,6 +18,15 @@ struct CountDown
         deltaTime = &dt;
         randErr = err;
         Reset();
+    }
+
+    float GetSpentTime()
+    {
+        return currentRemainTime - t;
+    }
+    bool IsLessHalf()
+    {
+        return t > currentRemainTime / 2;
     }
     bool IsEnd()
     {
@@ -37,7 +47,8 @@ struct CountDown
         {
             err = ((double)rand() / RAND_MAX) * randErr;
         }
-        t = remainTime + err;
+        currentRemainTime = remainTime + err;
+        t = currentRemainTime;
     }
     void Update()
     {

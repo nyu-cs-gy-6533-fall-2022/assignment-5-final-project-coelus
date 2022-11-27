@@ -93,10 +93,10 @@ protected:
             ctrlX *= -1;
         }
     }
-    void deceleration()
+    void deceleration(float amount = 10.f)
     {
         int sign = velocity.x >= 0 ? 1 : -1;
-        velocity.x -= sign * 10 * deltaTime;
+        velocity.x -= sign * amount * deltaTime;
         if (velocity.x * sign < 0)
         {
             velocity.x = 0;
@@ -300,7 +300,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 150, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -350,7 +350,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 230, 360), position.y - 40, 350, 280), vec2(150, -70), 30);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -397,7 +397,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -440,7 +440,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 120, 300), position.y, 300, 300), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -569,7 +569,7 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(SFXSnailHit, vec4(pTx->GetX( 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+        addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         hitboxCD.Reset();
         loopCD.Reset();
     };
@@ -581,7 +581,7 @@ public:
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXSnailHit, vec4(pTx->GetX( 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
@@ -752,7 +752,10 @@ public:
         moveX();
         loopCD.Update();
     };
-    void Exit(){};
+    void Exit()
+    {
+        stopX();
+    };
 
 private:
     CountDown loopCD;
@@ -893,7 +896,7 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(SFXRatHit, vec4(pTx->GetX( 0, 200), position.y - 50, 200, 200), vec2(200, -90), 50, 0.001);
+        addHitBox(SFXRatHit, vec4(pTx->GetX(position, 0, 200), position.y - 50, 200, 200), vec2(150, -150), 50, 0.001);
         hitboxCD.Reset();
         loopCD.Reset();
     };
@@ -901,16 +904,33 @@ public:
     {
         updateCtrlX();
         setDirX();
-        // moveX();
+        if (loopCD.IsLessHalf())
+        {
+            force.x = dirX * 10 * deltaTime;
+        }
+        else
+        {
+            force.x = 0;
+            deceleration(5);
+        }
+        if (velocity.x < 0 && dirX == 1 || velocity.x > 0 && dirX == -1)
+        {
+            force.x *= -1;
+            velocity.x *= -1;
+        }
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXRatHit, vec4(pTx->GetX( 0, 200), position.y - 50, 200, 200), vec2(200, -90), 50, 0.001);
+            addHitBox(SFXRatHit, vec4(pTx->GetX(position, 0, 200), position.y - 50, 200, 200), vec2(150, -150), 50, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
     };
-    void Exit() { hitboxs.clear(); };
+    void Exit()
+    {
+        stopX();
+        hitboxs.clear();
+    };
 
 private:
     CountDown loopCD;
@@ -935,8 +955,6 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        velocity = vec2(0);
-        force = vec2(0);
     };
     void Update()
     {

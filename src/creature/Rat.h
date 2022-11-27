@@ -15,7 +15,7 @@ public:
         fsm->Add<FSDied>(Died);
 
         loadData();
-        attackCD.Init(5.f, deltaTime, 1);
+        attackCD.Init(4.f, deltaTime, 1);
         Reset();
     }
     void Reset()
