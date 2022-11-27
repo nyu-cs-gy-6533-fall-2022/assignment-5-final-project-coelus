@@ -10,7 +10,8 @@ Animation::Animation(AnimationData data)
 	  secPerFrame(data.secPerFrame),
 	  secLastFrame(data.secLastFrame),
 	  isLoop(data.isLoop),
-	  isEnd(false)
+	  isEnd(false),
+	  isPause(false)
 {
 	tx.Set(vec2(0, 0), vec2(data.pivotX, data.pivotY), vec2(data.width, data.height));
 	texture = new Texture(data.filename);
@@ -27,12 +28,15 @@ Animation::~Animation()
 }
 void Animation::Reset()
 {
+	isPause = false;
 	frameTime = 0;
 	frameIndex = 0;
 	isEnd = false;
 }
 void Animation::Play(BufferObject &buffer, double dt)
 {
+	if (isPause)
+		return;
 	deltaTime = dt;
 	frameTime += deltaTime;
 
@@ -63,7 +67,7 @@ void Animation::Play(BufferObject &buffer, double dt)
 
 void Animation::UpdateSprite(BufferObject &buffer)
 {
-	
+
 	vec4 frame = frames[frameIndex];
 	frame.x /= texture->GetWidth();
 	frame.y /= texture->GetHeight();

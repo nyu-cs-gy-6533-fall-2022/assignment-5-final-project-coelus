@@ -47,8 +47,13 @@ public:
 	bool IsFrameGreater(int index) { return anim[action]->IsFrameGreater(index); }
 	bool CanInterrupt() { return anim[action]->CanInterrupt(); }
 	bool IsEnd() { return anim[action]->IsEnd(); }
+	void PauseFrame() { anim[action]->PauseFrame(); }
+	void ResumeFrame() { anim[action]->ResumeFrame(); }
+	void AddFrame() { anim[action]->AddFrame(); }
+	
 
 private:
+	
 	ActionState action = Idle;
 	unordered_map<ActionState, Animation *> anim;
 };

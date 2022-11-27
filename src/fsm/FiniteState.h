@@ -143,7 +143,7 @@ class FSPlayerIdle : public FiniteState
 public:
     FSPlayerIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1, Damaged});
+        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1, Damaged, ChainU});
     };
 
     void Enter()
@@ -165,7 +165,7 @@ class FSPlayerRun : public FiniteState
 public:
     FSPlayerRun(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Idle, Fall, Jump, Attack1, Damaged});
+        possibleState.Add(vector<ActionState>{Idle, Fall, Jump, Attack1, Damaged, ChainU});
     };
 
     void Enter()
@@ -452,6 +452,55 @@ public:
 
 private:
     float attackForce = 20;
+};
+
+class FSPlayerChainU : public FiniteState
+{
+public:
+    FSPlayerChainU(FSMData data) : FiniteState(data)
+    {
+        throwChainCD.Init(0.5f, deltaTime, 0);
+        interruptState.Add(vector<ActionState>{Damaged});
+        possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged});
+    };
+
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return interruptState.input;
+        return possibleState.input;
+    }
+
+    void Enter()
+    {
+        FiniteState::Enter();
+        stopX();
+        throwChainCD.Reset();
+    };
+    void Update()
+    {
+        if (sprite->IsFrame(3))
+        {
+            soundSys->Play(SFXChainThrow);
+            sprite->AddFrame();
+            sprite->PauseFrame();
+        }
+        else if (throwChainCD.IsRun())
+        {
+            throwChainCD.Update();
+        }
+        else
+        {
+            sprite->ResumeFrame();
+        }
+    };
+    void Exit()
+    {
+        sprite->ResumeFrame();
+    };
+
+private:
+    CountDown throwChainCD;
 };
 
 class FSPlayerDamaged : public FiniteState

@@ -23,7 +23,7 @@ using namespace glm;
 struct Control
 {
     bool right, left, up, down;
-    bool jump, attack, drag;
+    bool jump, attack, chain;
 };
 
 class Creature

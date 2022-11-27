@@ -12,7 +12,10 @@ Player::Player(SoundSystem *sndSys, vector<Shader *> &s, double &time)
 	fsm->Add<FSPlayerAttack2>(Attack2);
 	fsm->Add<FSPlayerAttack3>(Attack3);
 	fsm->Add<FSPlayerJumpAttack>(JumpAttack);
+	fsm->Add<FSPlayerChainU>(ChainU);
 	fsm->Add<FSPlayerDamaged>(Damaged);
+	
+	
 
 	loadData();
 
@@ -81,6 +84,11 @@ void Player::Update(Control ctrl)
 		{
 			fsmInput.Add(JumpAttack);
 		}
+	}
+
+	if (ctrl.chain)
+	{
+		fsmInput.Add(ChainU);
 	}
 
 	dAttack.Press(ctrl.attack);

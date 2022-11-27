@@ -18,7 +18,6 @@
 
 using namespace glm;
 
-
 struct AnimationData
 {
 	ActionState state;
@@ -35,10 +34,14 @@ public:
 	void Reset();
 	void Play(BufferObject &buffer, double deltatime);
 	void UpdateSprite(BufferObject &buffer);
+	void AddFrame() { frameTime += deltaTime; };
 	bool IsFrame(int index) { return frameTime < deltaTime && index == frameIndex; }
 	bool IsFrameGreater(int index) { return frameIndex >= index; }
 	bool CanInterrupt() { return frameTime >= secPerFrame && frameIndex == frameCount - 1; }
 	bool IsEnd() { return isEnd; }
+	void PauseFrame() { isPause = true; }
+	void ResumeFrame() { isPause = false; }
+
 	Transform GetTx(vec2 pos, vec2 rigidBody)
 	{
 		tx.rigidBody = rigidBody;
@@ -52,7 +55,7 @@ private:
 	const double secPerFrame, secLastFrame;
 	double deltaTime, frameTime;
 	int frameIndex, frameCount;
-	bool isLoop, isEnd;
+	bool isLoop, isEnd, isPause;
 	Transform tx;
 
 	vector<vec4> frames;

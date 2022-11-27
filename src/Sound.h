@@ -16,7 +16,9 @@ enum SoundType
     SFXPlayerHit,
     SFXSnailHit,
     SFXRatHit,
-    SFXDisappear
+    SFXDisappear,
+    SFXChainHitWall,
+    SFXChainThrow
 };
 class SoundSystem
 {

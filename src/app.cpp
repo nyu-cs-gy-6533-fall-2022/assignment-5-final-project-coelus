@@ -93,10 +93,11 @@ void App::playerUpdate()
     bool up = glfwGetKey(pWindow, GLFW_KEY_UP);
     bool down = glfwGetKey(pWindow, GLFW_KEY_DOWN);
     bool jump = InputSystem::Get(GLFW_KEY_Z);
+    bool chain = InputSystem::Get(GLFW_KEY_X);
     bool attack = InputSystem::Get(GLFW_KEY_C);
     InputSystem::Reset();
 
-    player->Update(Control{right, left, up, down, jump, attack, false});
+    player->Update(Control{right, left, up, down, jump, attack, chain});
 }
 
 void App::update()
