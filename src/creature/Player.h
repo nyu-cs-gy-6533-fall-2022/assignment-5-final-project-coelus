@@ -69,6 +69,7 @@ public:
 
 				fsmInput.Add(Jump);
 			}
+			canChain = true;
 			canJumpAttack = true;
 		}
 		if (ctrl.attack)
@@ -85,7 +86,7 @@ public:
 			}
 		}
 
-		if (ctrl.chain)
+		if (ctrl.chain && canChain)
 		{
 			fsmInput.Add(ChainU);
 		}

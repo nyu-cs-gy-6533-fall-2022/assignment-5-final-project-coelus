@@ -27,6 +27,7 @@ public:
           isFront(data.isFront),
           willFall(data.willFall),
           canJumpAttack(data.canJumpAttack),
+          canChain(data.canChain),
           isDamaged(data.isDamaged),
           ctrlX(data.ctrlX),
           dAttack(data.dAttack),
@@ -65,7 +66,7 @@ protected:
     vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop, &isFront, &willFall;
-    bool &canJumpAttack, &isDamaged;
+    bool &canJumpAttack, &canChain, &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
@@ -192,7 +193,7 @@ class FSPlayerJump : public FiniteState
 public:
     FSPlayerJump(FSMData data) : FiniteState(data)
     {
-        interruptState.Add(vector<ActionState>{JumpAttack, Damaged});
+        interruptState.Add(vector<ActionState>{JumpAttack, Damaged, ChainU});
         possibleState.Add(vector<ActionState>{Fall, Damaged});
     };
     int GetPossibleState()
@@ -225,7 +226,7 @@ class FSPlayerFall : public FiniteState
 public:
     FSPlayerFall(FSMData data) : FiniteState(data)
     {
-        interruptState.Add(vector<ActionState>{JumpAttack, Damaged});
+        interruptState.Add(vector<ActionState>{JumpAttack, Damaged, ChainU});
         possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged});
     };
 
@@ -479,9 +480,11 @@ public:
     {
         FiniteState::Enter();
         stopX();
+        stopY();
         throwChainCD.Reset();
         *isChainHit = false;
         *isChainThrow = false;
+        canChain = false;
     };
     void Update()
     {
@@ -503,7 +506,7 @@ public:
     };
     void Exit()
     {
-        if (!sprite->IsEnd()&&!*isChainHit)
+        if (!sprite->IsEnd() && !*isChainHit)
         {
             *isChainThrow = false;
             *isChainHit = false;
@@ -543,9 +546,9 @@ public:
         {
             velocity.y = -2000 * deltaTime;
             canFly = false;
+            falling();
         }
 
-        falling();
         loopCD.Update();
     };
     void Exit()

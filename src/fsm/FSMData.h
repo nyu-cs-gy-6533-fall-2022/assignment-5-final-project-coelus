@@ -14,7 +14,7 @@ struct FSMData
     vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop, &isFront, &willFall;
-    bool &canJumpAttack;
+    bool &canJumpAttack,&canChain;
     bool &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;

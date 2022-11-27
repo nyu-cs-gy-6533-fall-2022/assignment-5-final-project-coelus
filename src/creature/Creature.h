@@ -51,7 +51,7 @@ public:
                     position, velocity, force,
                     deltaTime,
                     isGround, isTop, isFront, willFall,
-                    canJumpAttack,
+                    canJumpAttack,canChain,
                     isDamaged,
                     ctrlX,
                     dAttack, dChain, dJump,
@@ -149,7 +149,7 @@ protected:
     vec2 initPosition, position, velocity, force, rigidbody;
     bool isGround, isTop, isFront;
     bool willFall = false;
-    bool canJumpAttack;
+    bool canJumpAttack,canChain;
     DamageData damage;
     bool isDamaged = false;
     float downDistance;

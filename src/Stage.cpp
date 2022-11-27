@@ -145,8 +145,9 @@ void Stage::updateTrigger()
         }
     }
 
-    //player chain
-    if(Collision::IsCollided(player->GetChainCol(), collisions, resIndex)){
+    // player chain
+    if (Collision::IsCollided(player->GetChainCol(), collisions, resIndex))
+    {
         player->SetChainHit();
     }
 }
