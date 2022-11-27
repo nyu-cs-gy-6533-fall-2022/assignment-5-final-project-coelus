@@ -31,7 +31,8 @@ public:
           downDistance(data.downDistance),
           hitboxs(data.hitboxs),
           hp(data.hp),
-          damage(data.damage)
+          damage(data.damage),
+          shouldIdle(data.shouldIdle)
 
     {
     }
@@ -66,6 +67,7 @@ protected:
     int &dirX;
     int &hp;
     DamageData &damage;
+    bool &shouldIdle;
 
     FSMInput possibleState, interruptState;
 
@@ -635,12 +637,10 @@ public:
     };
     void Exit()
     {
-
+        shouldIdle = true;
         isDamaged = false;
     };
 };
-
-
 
 class FSRatIdle : public FiniteState
 {
@@ -683,9 +683,7 @@ public:
         setDirX();
         moveX();
     };
-    void Exit()
-    {
-    };
+    void Exit(){};
 
 private:
 };
@@ -774,11 +772,10 @@ public:
     };
     void Exit()
     {
-
+        shouldIdle = true;
         isDamaged = false;
     };
 };
-
 
 class FSRatRollStart : public FiniteState
 {
@@ -797,9 +794,7 @@ public:
         setDirX();
         moveX();
     };
-    void Exit()
-    {
-    };
+    void Exit(){};
 
 private:
 };
@@ -821,9 +816,7 @@ public:
         setDirX();
         moveX();
     };
-    void Exit()
-    {
-    };
+    void Exit(){};
 
 private:
 };
@@ -844,14 +837,10 @@ public:
         setDirX();
         moveX();
     };
-    void Exit()
-    {
-    };
+    void Exit(){};
 
 private:
 };
-
-
 
 class FSDied : public FiniteState
 {

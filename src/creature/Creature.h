@@ -11,6 +11,7 @@
 #include "DefferedKey.h"
 #include "fsm/FSM.h"
 #include "Hitbox.h"
+#include "CountDown.h"
 
 #include <algorithm>
 
@@ -28,10 +29,10 @@ struct Control
 class Creature
 {
 public:
-    Creature(SoundSystem *sndSys, vector<Shader *> &s, double &time)
+    Creature(SoundSystem *sndSys, vector<Shader *> &s, double &t)
         : soundSys(sndSys),
           shaders(s),
-          deltaTime(time),
+          deltaTime(t),
           position(vec2(0, 0)),
           velocity(vec2(0, 0)),
           ctrlX(0)
@@ -53,7 +54,9 @@ public:
                     dAttack, dChain, dJump,
                     downDistance,
                     hitboxs,
-                    hp, damage});
+                    hp, damage,
+                    shouldIdle});
+        srand(time(0));
     }
     ~Creature()
     {
@@ -149,11 +152,16 @@ protected:
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
+    bool shouldIdle = false;
 
     float dissolveTime = 0;
 
     vector<HitboxData> hitboxs;
 
+    void setRandCtrlX()
+    {
+        ctrlX = (rand() % 1) >= 0.5 ? 1 : -1;
+    }
     void setInitHp(int val)
     {
         initHp = val;

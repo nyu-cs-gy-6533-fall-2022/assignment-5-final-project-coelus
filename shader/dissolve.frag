@@ -31,7 +31,7 @@ float noiser(vec3 p) {
 void main() {
 
   float gain = 50;
-  float noise = noiser(vec3(gain * vertUV.x, 6 * gain * vertUV.y, 0));
+  float noise = noiser(vec3(gain * vertUV.x, gain * vertUV.y, 0));
   float t = dissolveTime;
   vec4 fromColor = texture(sprite, vertUV);
   vec4 toColor = vec4(fromColor.rgb, 0);

@@ -60,7 +60,7 @@
             "frameCount": 1,
             "secPerFrame": 0.04,
             "isLoop": true,
-            "filename": "snail/snail-move.png"
+            "filename": "snail/snail-died.png"
         }
     ]
 }

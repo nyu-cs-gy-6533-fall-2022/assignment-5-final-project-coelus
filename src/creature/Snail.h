@@ -1,7 +1,7 @@
 #pragma once
 #include "Creature.h"
-#include <cstdlib>
-#include <ctime>
+
+
 class Snail : public Creature
 {
 public:
@@ -14,19 +14,19 @@ public:
         fsm->Add<FSDied>(Died);
         fsm->Set(SnailIdle);
 
-        srand(time(0));
         ctrlX = 1;
         loadData();
-        timeInit();
-        idleFlag = false;
+
+        attackCD.Init(2.f, deltaTime, 4);
+        waitCD.Init(2.f, deltaTime, 1);
     }
     void Reset()
     {
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
-        idleFlag = false;
-        timeInit();
+        shouldIdle = false;
+        initCD();
         position = initPosition;
         fsm->Set(SnailIdle);
     }
@@ -39,19 +39,19 @@ public:
         {
             fsmInput.Add(Died);
         }
-        // after been attack do idle
-        if (idleFlag && !isDamaged)
+        // sould Idle flag
+        if (shouldIdle)
         {
-            idleFlag = false;
-            timeInit();
-            attackTime = 0;
+            shouldIdle = false;
+            waitCD.Reset();
+            attackCD.Close();
         }
 
         if (!isGround)
         {
             fsmInput.Add(SnailFall);
         }
-        else if (attackTime > 0)
+        else if (attackCD.IsRun())
         {
 
             if (isFront || willFall)
@@ -60,23 +60,22 @@ public:
             }
 
             fsmInput.Add(SnailAttack);
-            attackTime -= deltaTime;
+            attackCD.Update();
         }
-        else
+        // idle wait
+        else if (attackCD.IsEnd())
         {
+            if (waitCD.IsEnd())
+            {
+                initCD();
+                setRandCtrlX();
+            }
+            waitCD.Update();
             fsmInput.Add(SnailIdle);
         }
-        if (attackTime <= 0)
-        {
-            if (waitTime <= 0)
-            {
-                timeInit();
-            }
-            waitTime -= deltaTime;
-        }
+
         if (isDamaged)
         {
-            idleFlag = true;
             fsmInput.Add(SnailDamaged);
         }
 
@@ -86,13 +85,13 @@ public:
     }
 
 private:
-    bool idleFlag;
-    float waitTime;
-    float attackTime;
-    void timeInit()
+    CountDown attackCD;
+    CountDown waitCD;
+
+    void initCD()
     {
-        attackTime = 1 + rand() % 3;
-        waitTime = 1 + rand() % 3;
+        attackCD.Reset();
+        waitCD.Reset();
     }
     void loadData()
     {

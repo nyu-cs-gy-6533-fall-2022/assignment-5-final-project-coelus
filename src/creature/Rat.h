@@ -1,7 +1,5 @@
 #pragma once
 #include "Creature.h"
-#include <cstdlib>
-#include <ctime>
 class Rat : public Creature
 {
 public:
@@ -17,23 +15,22 @@ public:
         fsm->Add<FSDied>(Died);
         fsm->Set(RatIdle);
 
-        srand(time(0));
         ctrlX = 1;
         loadData();
-        timeInit();
-        idleFlag = false;
+        runCD.Init(2.f, deltaTime, 2);
+        waitCD.Init(1.f, deltaTime, 1);
     }
     void Reset()
     {
         dissolveTime = 0;
         hp = initHp;
         isDamaged = false;
-        idleFlag = false;
-        timeInit();
+        shouldIdle = false;
+        initCD();
         position = initPosition;
         fsm->Set(RatIdle);
     }
-   void Update(Control ctrl)
+    void Update(Control ctrl)
     {
 
         updateHitBox();
@@ -42,19 +39,19 @@ public:
         {
             fsmInput.Add(Died);
         }
-        // after been attack do idle
-        if (idleFlag && !isDamaged)
+        // sould Idle flag
+        if (shouldIdle)
         {
-            idleFlag = false;
-            timeInit();
-            attackTime = 0;
+            shouldIdle = false;
+            waitCD.Reset();
+            runCD.Close();
         }
 
         if (!isGround)
         {
             fsmInput.Add(RatFall);
         }
-        else if (attackTime > 0)
+        else if (runCD.IsRun())
         {
 
             if (isFront || willFall)
@@ -63,23 +60,22 @@ public:
             }
 
             fsmInput.Add(RatRun);
-            attackTime -= deltaTime;
+            runCD.Update();
         }
-        else
+        // idle wait
+        else if (runCD.IsEnd())
         {
+            if (waitCD.IsEnd())
+            {
+                initCD();
+                setRandCtrlX();
+            }
+            waitCD.Update();
             fsmInput.Add(RatIdle);
         }
-        if (attackTime <= 0)
-        {
-            if (waitTime <= 0)
-            {
-                timeInit();
-            }
-            waitTime -= deltaTime;
-        }
+
         if (isDamaged)
         {
-            idleFlag = true;
             fsmInput.Add(RatDamaged);
         }
 
@@ -89,13 +85,13 @@ public:
     }
 
 private:
-    bool idleFlag;
-    float waitTime;
-    float attackTime;
-    void timeInit()
+    CountDown runCD;
+    CountDown waitCD;
+
+    void initCD()
     {
-        attackTime = 1 + rand() % 3;
-        waitTime = 1 + rand() % 3;
+        runCD.Reset();
+        waitCD.Reset();
     }
     void loadData()
     {
