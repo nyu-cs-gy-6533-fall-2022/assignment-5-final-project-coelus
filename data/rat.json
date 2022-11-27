@@ -35,10 +35,10 @@
             "pivotY": 345,
             "width": 600,
             "height": 512,
-            "frameCount": 19,
-            "secPerFrame": 0.03,
-            "isLoop": true,
-            "filename": "rat/rat1_circle.png"
+            "frameCount": 7,
+            "secPerFrame": 0.04,
+            "isLoop": false,
+            "filename": "rat/rat1_rollstart.png"
         },
         {
             "state": "RatRollLoop",
@@ -46,10 +46,10 @@
             "pivotY": 345,
             "width": 600,
             "height": 512,
-            "frameCount": 6,
-            "secPerFrame": 0.1,
+            "frameCount": 9,
+            "secPerFrame": 0.04,
             "isLoop": true,
-            "filename": "rat/rat1_circle.png"
+            "filename": "rat/rat1_rollloop.png"
         },
         {
             "state": "RatRollStop",
@@ -57,10 +57,10 @@
             "pivotY": 345,
             "width": 600,
             "height": 512,
-            "frameCount": 6,
-            "secPerFrame": 0.1,
-            "isLoop": true,
-            "filename": "rat/rat1_circle.png"
+            "frameCount": 3,
+            "secPerFrame": 0.04,
+            "isLoop": false,
+            "filename": "rat/rat1_rollstop.png"
         },
         {
             "state": "RatFall",

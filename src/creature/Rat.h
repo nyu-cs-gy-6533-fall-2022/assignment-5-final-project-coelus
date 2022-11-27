@@ -43,6 +43,21 @@ public:
         }
         fsmInput.Add(RatIdle);
         fsmInput.Add(RatRun);
+        if (attackCD.IsEnd())
+        {
+            fsmInput.Add(RatRollStart);
+            fsmInput.Add(RatRollLoop);
+            fsmInput.Add(RatRollStop);
+        }else{
+            attackCD.Update();
+        }
+        
+        if (attackEnd)
+        {
+            attackCD.Reset();
+            attackEnd = false;
+        }
+        
 
         if (!isGround)
         {

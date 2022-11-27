@@ -300,7 +300,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(120, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 150, 300), position.y - 40, 300, 240), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -350,7 +350,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 200, 300), position.y - 40, 350, 240), vec2(150, -70), 30);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -397,7 +397,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -440,7 +440,7 @@ public:
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(120, 300), position.y, 300, 300), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX( 120, 300), position.y, 300, 300), vec2(130, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -569,7 +569,7 @@ public:
     void Enter()
     {
         FiniteState::Enter();
-        addHitBox(SFXSnailHit, vec4(pTx->GetX(-40, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+        addHitBox(SFXSnailHit, vec4(pTx->GetX( 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         hitboxCD.Reset();
         loopCD.Reset();
     };
@@ -581,7 +581,7 @@ public:
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXSnailHit, vec4(pTx->GetX(-40, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX( 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
@@ -746,13 +746,13 @@ public:
     };
     void Update()
     {
-        loopCD.Update();
+
+        updateCtrlX();
         setDirX();
         moveX();
+        loopCD.Update();
     };
-    void Exit()
-    {
-    };
+    void Exit(){};
 
 private:
     CountDown loopCD;
@@ -867,7 +867,6 @@ public:
     void Update()
     {
         setDirX();
-        moveX();
     };
     void Exit(){};
 
@@ -879,31 +878,43 @@ class FSRatRollLoop : public FiniteState
 public:
     FSRatRollLoop(FSMData data) : FiniteState(data)
     {
+        hitboxCD.Init(0.01f, deltaTime, 0);
+        loopCD.Init(2.f, deltaTime, 2);
         interruptState.Add(vector<ActionState>{RatFall, RatDamaged});
         possibleState.Add(vector<ActionState>{RatRollStop, RatFall, RatDamaged});
     };
 
     int GetPossibleState()
     {
-        if (rollTime < 0)
+        if (loopCD.IsRun())
             return interruptState.input;
         return possibleState.input;
     }
     void Enter()
     {
         FiniteState::Enter();
-        rollTime = 5.0f;
+        addHitBox(SFXRatHit, vec4(pTx->GetX( 0, 200), position.y - 50, 200, 200), vec2(200, -90), 50, 0.001);
+        hitboxCD.Reset();
+        loopCD.Reset();
     };
     void Update()
     {
+        updateCtrlX();
         setDirX();
-        moveX();
-        rollTime -= deltaTime;
+        // moveX();
+        if (hitboxCD.IsEnd())
+        {
+            hitboxCD.Reset();
+            addHitBox(SFXRatHit, vec4(pTx->GetX( 0, 200), position.y - 50, 200, 200), vec2(200, -90), 50, 0.001);
+        }
+        hitboxCD.Update();
+        loopCD.Update();
     };
-    void Exit(){};
+    void Exit() { hitboxs.clear(); };
 
 private:
-    float rollTime;
+    CountDown loopCD;
+    CountDown hitboxCD;
 
 private:
 };
@@ -924,13 +935,17 @@ public:
     void Enter()
     {
         FiniteState::Enter();
+        velocity = vec2(0);
+        force = vec2(0);
     };
     void Update()
     {
         setDirX();
-        moveX();
     };
-    void Exit(){};
+    void Exit()
+    {
+        attackEnd = true;
+    };
 
 private:
 };

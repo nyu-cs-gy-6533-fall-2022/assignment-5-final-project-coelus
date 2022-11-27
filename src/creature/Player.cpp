@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(SoundSystem *sndSys, vector<Shader*> &s, double &time)
+Player::Player(SoundSystem *sndSys, vector<Shader *> &s, double &time)
 	: Creature(sndSys, s, time)
 {
 
@@ -14,8 +14,11 @@ Player::Player(SoundSystem *sndSys, vector<Shader*> &s, double &time)
 	fsm->Add<FSPlayerJumpAttack>(JumpAttack);
 	fsm->Add<FSPlayerDamaged>(Damaged);
 
-	fsm->Set(Idle);
 	loadData();
+
+	sprite->Set(Idle);
+	fsm->Set(Idle);
+	fsm->Enter();
 }
 void Player::loadData()
 {
@@ -34,7 +37,7 @@ void Player::Update(Control ctrl)
 
 	if (isDamaged)
 	{
-		
+
 		fsmInput.Add(Damaged);
 	}
 	if (ctrl.right)

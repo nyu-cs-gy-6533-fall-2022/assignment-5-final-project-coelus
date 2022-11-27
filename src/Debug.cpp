@@ -10,6 +10,7 @@ void Debug::AddDebug(vec4 rect)
 }
 void Debug::DrawDebug()
 {
+    shaders[0]->Use();
     for (auto rect : debugRect)
     {
         shaders[0]->SetMat4("modelMatrix", rect->Tx.Get());
