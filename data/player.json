@@ -143,6 +143,17 @@
             "filename": "main/chain-ground-fd.png"
         },
         {
+            "state": "ChainFlyU",
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 512,
+            "height": 512,
+            "frameCount": 1,
+            "secPerFrame": 0.1,
+            "isLoop": true,
+            "filename": "main/chain-fly-u-.png"
+        },
+        {
             "state": "Damaged",
             "pivotX": 230,
             "pivotY": 292,

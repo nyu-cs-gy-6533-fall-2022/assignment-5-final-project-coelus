@@ -24,6 +24,7 @@ public:
 		fsm->Add<FSPlayerAttack3>(Attack3);
 		fsm->Add<FSPlayerJumpAttack>(JumpAttack);
 		fsm->Add<FSPlayerChainU>(ChainU);
+		fsm->Add<FSPlayerChainFlyU>(ChainFlyU);
 		fsm->Add<FSPlayerDamaged>(Damaged);
 
 		loadData();
@@ -56,9 +57,6 @@ public:
 			ctrlX = 0;
 			fsmInput.Add(Idle);
 		}
-		if(*isChainHit){
-			fsmInput.Add(Jump);
-        }
 
 		if (!isGround)
 		{
@@ -90,6 +88,10 @@ public:
 		if (ctrl.chain)
 		{
 			fsmInput.Add(ChainU);
+		}
+		if (*isChainHit)
+		{
+			fsmInput.Add(ChainFlyU);
 		}
 
 		dAttack.Press(ctrl.attack);
@@ -128,7 +130,8 @@ public:
 		chain->Draw();
 	}
 	vec4 GetChainCol() { return chain->GetCol(); }
-	void SetChainHit() {
+	void SetChainHit()
+	{
 		chain->SetHit();
 	}
 

@@ -74,7 +74,7 @@ protected:
     int &hp;
     DamageData &damage;
     bool &attackEnd;
-    bool *isChainThrow,*isChainHit;
+    bool *isChainThrow, *isChainHit;
 
     FSMInput possibleState, interruptState;
 
@@ -204,6 +204,7 @@ public:
     void Enter()
     {
         FiniteState::Enter();
+        force = vec2(0);
         velocity.y = -jumpSpeed * deltaTime;
         soundSys->Play(SFXPlayerJump);
     };
@@ -463,7 +464,7 @@ public:
     FSPlayerChainU(FSMData data) : FiniteState(data)
     {
         throwChainCD.Init(0.5f, deltaTime, 0);
-        interruptState.Add(vector<ActionState>{Damaged});
+        interruptState.Add(vector<ActionState>{Damaged, ChainFlyU});
         possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged});
     };
 
@@ -502,8 +503,12 @@ public:
     };
     void Exit()
     {
-        *isChainHit = false;
-        *isChainThrow = false;
+        if (!sprite->IsEnd()&&!*isChainHit)
+        {
+            *isChainThrow = false;
+            *isChainHit = false;
+        }
+
         sprite->ResumeFrame();
     };
 
@@ -511,7 +516,48 @@ private:
     CountDown throwChainCD;
 };
 
+class FSPlayerChainFlyU : public FiniteState
+{
+public:
+    FSPlayerChainFlyU(FSMData data) : FiniteState(data)
+    {
+        loopCD.Init(0.27f, deltaTime, 0);
+        interruptState.Add(vector<ActionState>{Damaged});
+        possibleState.Add(vector<ActionState>{Fall, Damaged, Idle, Run});
+    };
+    int GetPossibleState()
+    {
+        if (loopCD.IsRun())
+            return interruptState.input;
+        return possibleState.input;
+    }
+    void Enter()
+    {
+        FiniteState::Enter();
+        loopCD.Reset();
+        canFly = true;
+    };
+    void Update()
+    {
+        if (canFly && loopCD.GetSpentTime() > 0.12f)
+        {
+            velocity.y = -2000 * deltaTime;
+            canFly = false;
+        }
 
+        falling();
+        loopCD.Update();
+    };
+    void Exit()
+    {
+        *isChainThrow = false;
+        *isChainHit = false;
+    };
+
+private:
+    bool canFly = false;
+    CountDown loopCD;
+};
 
 class FSPlayerDamaged : public FiniteState
 {
