@@ -87,7 +87,7 @@ public:
 
 private:
     const double pi = atan(1) * 4;
-    const vector<vec2> err{vec2(11, -120)};
+    const vector<vec2> err{vec2(11.5, -120)};
     vec2 &playerPos, initPos, *pos;
     Transform *plTx;
     vector<Shader *> &shaders;
