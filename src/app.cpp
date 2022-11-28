@@ -40,7 +40,8 @@ App::~App()
     delete stageSys;
     delete soundSys;
 
-    for(auto s:shaders){
+    for (auto s : shaders)
+    {
         delete s;
     }
 
@@ -56,11 +57,11 @@ void App::init()
     shaders.push_back(new Shader("sprite.vert", "sprite.frag"));
     shaders.push_back(new Shader("dissolve.vert", "dissolve.frag"));
     shaders.push_back(new Shader("bg.vert", "bg.frag"));
+    shaders.push_back(new Shader("line.vert", "line.frag"));
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
 
-   
     isReady = true;
 }
 void App::loadIcon()
@@ -84,7 +85,6 @@ void App::resize()
         glViewport(0, 0, width, height);
     }
 }
-
 
 void App::playerUpdate()
 {
@@ -116,8 +116,9 @@ void App::draw()
     shaders[1]->SetMat4("projMatrix", camera->Projection());
     shaders[2]->Use();
     shaders[2]->SetMat4("projMatrix", camera->Projection());
+    shaders[3]->Use();
+    shaders[3]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
-    
 }
 
 void App::MainLoop()

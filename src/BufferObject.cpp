@@ -35,6 +35,7 @@ BufferObject::BufferObject()
 	glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, NULL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 BufferObject::~BufferObject()
