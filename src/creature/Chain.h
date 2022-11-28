@@ -75,8 +75,8 @@ public:
             shaders[0]->SetMat4("modelMatrix", sprite->Tx.Get());
             sprite->Draw();
 
-            vec2 startPos = initPos + vec2(11.5f, 75);
-            vec2 endPos = *pos + vec2(11.5f, 75);
+            vec2 startPos = initPos + vec2(11, 75);
+            vec2 endPos = *pos + vec2(11, 75);
             line->Draw(vector<vec2>{startPos, endPos});
         }
     }
