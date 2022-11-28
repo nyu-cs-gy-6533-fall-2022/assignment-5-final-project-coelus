@@ -1,0 +1,71 @@
+{
+    "type": 1,
+    "tubes": [
+        
+    ],
+    "lights": [
+      
+    ],
+    "monsters": [
+       
+        {
+            "name": "rat",
+            "x": 1920,
+            "y": 3400
+        }
+    ],
+    "entry": [
+        {
+            "spawnX": 3790,
+            "spawnY": 3170,
+            "x": 3840,
+            "y": 2560,
+            "w": 400,
+            "h": 767,
+            "nextStage": "L10",
+            "nextEntry": 1
+        }
+    ],
+    "collision": [
+        {
+            "x": 0,
+            "y": 0,
+            "w": 3840,
+            "h": 516
+        },
+        {
+            "x": 0,
+            "y": 0,
+            "w": 256,
+            "h": 3840
+        },
+        {
+            "x": 3580,
+            "y": 356,
+            "w": 258,
+            "h": 2200
+        },
+        {
+            "x": 3585,
+            "y": 3327,
+            "w": 254,
+            "h": 515
+        },
+        {
+            "x": 0,
+            "y": 3584,
+            "w": 3840,
+            "h": 258
+        }
+    ],
+    "background": {
+        "width": 3840,
+        "height": 3840,
+        "filename": "stage/A11-BackBG.jpg"
+    },
+    "frontground": {
+        "width": 3840,
+        "height": 3840,
+        "filename": "stage/A11-FrontBG.png"
+    }
+}

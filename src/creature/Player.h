@@ -28,6 +28,8 @@ public:
 		fsm->Add<FSPlayerDamaged>(Damaged);
 
 		loadData();
+		chainCD.Init(0.6f, deltaTime, 0);
+		chainCD.Close();
 
 		sprite->Set(Idle);
 		fsm->Set(Idle);
@@ -69,8 +71,8 @@ public:
 
 				fsmInput.Add(Jump);
 			}
-			canChain = true;
 			canJumpAttack = true;
+			chainCD.Close();
 		}
 		if (ctrl.attack)
 		{
@@ -85,11 +87,17 @@ public:
 				fsmInput.Add(JumpAttack);
 			}
 		}
-
-		if (ctrl.chain && canChain)
+		if (chainEnd)
+		{
+			chainEnd = false;
+			chainCD.Reset();
+		}
+		chainCD.Update();
+		if (ctrl.chain && chainCD.IsEnd())
 		{
 			fsmInput.Add(ChainU);
 		}
+		
 		if (*isChainHit)
 		{
 			fsmInput.Add(ChainFlyU);
@@ -138,6 +146,7 @@ public:
 
 private:
 	Chain *chain;
+	CountDown chainCD;
 	void loadData()
 	{
 		json js = Loader::Load("player.json", vector<Sprite *>{sprite});

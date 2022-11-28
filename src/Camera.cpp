@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(StageSystem *stSys, Player *pl, int w, int h)
-	: width(w*1.2f), height(h*1.2f), player(pl), stageSys(stSys)
+	: width(w * 1.2f), height(h * 1.2f), player(pl), stageSys(stSys)
 {
 	UpdateProjection();
 }
@@ -13,7 +13,7 @@ void Camera::UpdateProjection()
 	float plY = pos.y;
 
 	plX = clamp(plX, width / 2.f, boundary.x - width / 2);
-	plY = clamp(plY, height / 2.f , boundary.y - height / 2);
+	plY = clamp(plY, height / 2.f, boundary.y - height / 2);
 
 	float left = plX - width / 2;
 	float right = plX + width / 2;

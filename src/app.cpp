@@ -8,7 +8,7 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     // full screen
     glfwWindowHint(GLFW_MAXIMIZED, true);
 
-    pWindow = glfwCreateWindow(width, height, "Towncount", NULL, NULL);
+    pWindow = glfwCreateWindow(width, height, "Towncount Remake", NULL, NULL);
     if (!pWindow)
     {
         cout << "can't init glfw" << endl;

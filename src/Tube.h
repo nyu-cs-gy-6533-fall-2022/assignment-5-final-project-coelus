@@ -17,9 +17,13 @@ public:
         {
             sprite->Set("tube/tube-4.png", vec2(512, 128), pos);
         }
-        else if (type == "tube5")
+        else if (type == "tube6")
         {
             sprite->Set("tube/tube-6.png", vec2(768, 128), pos);
+        }
+        else if (type == "tube8")
+        {
+            sprite->Set("tube/tube-8.png", vec2(1024, 128), pos);
         }
     };
     ~Tube()

@@ -20,10 +20,6 @@ using namespace glm;
 #ifndef _Creature_
 #define _Creature_
 
-
-
-
-
 struct Control
 {
     bool right, left, up, down;
@@ -55,14 +51,14 @@ public:
                     position, velocity, force,
                     deltaTime,
                     isGround, isTop, isFront, willFall,
-                    canJumpAttack,canChain,
+                    canJumpAttack,
                     isDamaged,
                     ctrlX,
                     dAttack, dChain, dJump,
                     downDistance,
                     hitboxs,
                     hp, damage,
-                    attackEnd,
+                    attackEnd, chainEnd,
                     isChainThrow, isChainHit});
     }
     ~Creature()
@@ -153,13 +149,13 @@ protected:
     vec2 initPosition, position, velocity, force, rigidbody;
     bool isGround, isTop, isFront;
     bool willFall = false;
-    bool canJumpAttack,canChain;
+    bool canJumpAttack;
     DamageData damage;
     bool isDamaged = false;
     float downDistance;
     int ctrlX;
     DefferedKey dAttack, dChain, dJump;
-    bool attackEnd = true;
+    bool attackEnd = true, chainEnd = false;
     bool *isChainThrow, *isChainHit;
 
     float dissolveTime = 0;

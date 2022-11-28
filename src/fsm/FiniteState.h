@@ -27,7 +27,6 @@ public:
           isFront(data.isFront),
           willFall(data.willFall),
           canJumpAttack(data.canJumpAttack),
-          canChain(data.canChain),
           isDamaged(data.isDamaged),
           ctrlX(data.ctrlX),
           dAttack(data.dAttack),
@@ -38,6 +37,7 @@ public:
           hp(data.hp),
           damage(data.damage),
           attackEnd(data.attackEnd),
+          chainEnd(data.chainEnd),
           isChainThrow(data.isChainThrow),
           isChainHit(data.isChainHit)
 
@@ -66,7 +66,7 @@ protected:
     vec2 &position, &velocity, &force;
     double &deltaTime;
     bool &isGround, &isTop, &isFront, &willFall;
-    bool &canJumpAttack, &canChain, &isDamaged;
+    bool &canJumpAttack, &isDamaged;
     int &ctrlX;
     DefferedKey &dAttack, &dChain, &dJump;
     float &downDistance;
@@ -74,7 +74,7 @@ protected:
     int &dirX;
     int &hp;
     DamageData &damage;
-    bool &attackEnd;
+    bool &attackEnd, &chainEnd;
     bool *isChainThrow, *isChainHit;
 
     FSMInput possibleState, interruptState;
@@ -281,7 +281,7 @@ public:
             return interruptState.input;
 
         else if (!sprite->IsEnd())
-            return 0;
+            return 1<<Damaged;
 
         return possibleState.input;
     }
@@ -331,7 +331,7 @@ public:
         if (sprite->CanInterrupt())
             return interruptState.input;
         else if (!sprite->IsEnd())
-            return 0;
+            return 1<<Damaged;
         return possibleState.input;
     }
     void Enter()
@@ -510,6 +510,10 @@ public:
             *isChainThrow = false;
             *isChainHit = false;
         }
+        if (!isGround && !*isChainHit)
+        {
+            chainEnd = true;
+        }
 
         sprite->ResumeFrame();
     };
@@ -557,7 +561,11 @@ public:
     };
     void Exit()
     {
-        canChain = false;
+        if (loopCD.IsEnd())
+        {
+            chainEnd = true;
+        }
+
         *isChainThrow = false;
         *isChainHit = false;
     };
