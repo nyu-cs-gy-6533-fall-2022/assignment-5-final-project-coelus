@@ -6,6 +6,7 @@ SoundSystem::SoundSystem()
     BASS_Init(-1, 44100, 0, NULL, NULL);
 
     createSound(BGMStage1, "bgm/stage1.mp3", true);
+    createSound(BGMStageNoise, "bgm/stagenoise.mp3", true);
     createSound(BGMBoss1, "bgm/boss.mp3", true);
     createSound(SFXPlayerJump, "sfx/jump.mp3");
     createSound(SFXPlayerLanding, "sfx/landing.mp3");
@@ -18,7 +19,6 @@ SoundSystem::SoundSystem()
     createSound(SFXChainHitWall, "sfx/chainhitwall.mp3");
     createSound(SFXChainHitTube, "sfx/chainhittube.mp3");
     createSound(SFXChainThrow, "sfx/chainthrow.mp3");
-    
 }
 SoundSystem::~SoundSystem()
 {
@@ -28,6 +28,15 @@ void SoundSystem::Play(SoundType type)
 {
     BASS_ChannelPlay(channels[type], true);
 }
+void SoundSystem::PlayBGM(SoundType type)
+{
+    if (type == bgm)
+        return;
+    Stop(bgm);
+    bgm = type;
+    BASS_ChannelPlay(channels[type], true);
+}
+
 void SoundSystem::Stop(SoundType type)
 {
     BASS_ChannelStop(channels[type]);

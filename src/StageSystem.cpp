@@ -12,12 +12,12 @@ StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, vector<Shader*> &shade
     startStage = js["startStage"];
     startEntry = js["startEntry"];
     SetPlayerEntry(startStage, startEntry);
-    soundSys->Play(BGMStage1);
 }
 
 void StageSystem::SetPlayerEntry(string name, int index)
 {
     currentStage = stages[name];
+    currentStage->PlayBGM();
     currentStage->SetPlayerEntry(index);
 }
 void StageSystem::Update()

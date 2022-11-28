@@ -60,6 +60,7 @@ public:
 	void Update();
 	void Draw();
 	void SetPlayerEntry(int index);
+	void PlayBGM();
 	vec2 GetBoundary();
 
 	NextStage NextStage;
@@ -76,6 +77,7 @@ private:
 	vector<Shader*> &shaders;
 	SoundSystem *soundSys;
 	double &deltaTime;
+	SoundType bgm;
 
 	vector<vec4> tubeTriggers;
 	vector<vec4> collisions;

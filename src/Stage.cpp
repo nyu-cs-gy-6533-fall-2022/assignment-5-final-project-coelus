@@ -43,6 +43,8 @@ void Stage::loadData(string filename)
         entriesvec4.push_back(entry.GetTrigger());
         debug->AddDebug(entry.GetTrigger());
     }
+
+    bgm = js["bgm"];
     for (auto col : js["collision"])
     {
         Sprite *s = new Sprite();
@@ -108,6 +110,11 @@ void Stage::Draw()
 vec2 Stage::GetBoundary()
 {
     return bg->Tx.scale;
+}
+
+void Stage::PlayBGM()
+{
+    soundSys->PlayBGM(bgm);
 }
 
 void Stage::updateMonsters()

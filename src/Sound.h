@@ -5,15 +5,16 @@
 
 using namespace std;
 
-
 enum MaterialType
 {
-    MatWall,MatTube
+    MatWall,
+    MatTube
 };
 
 enum SoundType
 {
     BGMStage1,
+    BGMStageNoise,
     BGMBoss1,
     SFXPlayerJump,
     SFXPlayerStep,
@@ -25,7 +26,8 @@ enum SoundType
     SFXDisappear,
     SFXChainHitWall,
     SFXChainHitTube,
-    SFXChainThrow
+    SFXChainThrow,
+    SoundNone
 };
 class SoundSystem
 {
@@ -35,10 +37,11 @@ public:
     ~SoundSystem();
 
     void Play(SoundType type);
-
+    void PlayBGM(SoundType type);
     void Stop(SoundType type);
 
 private:
+    SoundType bgm = SoundNone;
     unordered_map<SoundType, HSTREAM> channels;
     void createSound(SoundType type, const string filename, bool isLoop = false);
 };
