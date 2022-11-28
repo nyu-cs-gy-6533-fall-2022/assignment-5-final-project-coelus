@@ -5,6 +5,12 @@
 
 using namespace std;
 
+
+enum MaterialType
+{
+    MatWall,MatTube
+};
+
 enum SoundType
 {
     BGMStage1,
@@ -18,6 +24,7 @@ enum SoundType
     SFXRatHit,
     SFXDisappear,
     SFXChainHitWall,
+    SFXChainHitTube,
     SFXChainThrow
 };
 class SoundSystem

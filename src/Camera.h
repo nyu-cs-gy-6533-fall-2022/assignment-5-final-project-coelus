@@ -14,7 +14,7 @@ public:
 	void UpdateProjection();
 
 private:
-	int width, height;
+	float width, height;
 	Player *player;
 	StageSystem *stageSys;
 	mat4 projection;

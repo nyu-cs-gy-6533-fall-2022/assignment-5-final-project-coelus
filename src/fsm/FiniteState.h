@@ -484,7 +484,6 @@ public:
         throwChainCD.Reset();
         *isChainHit = false;
         *isChainThrow = false;
-        canChain = false;
     };
     void Update()
     {
@@ -539,13 +538,18 @@ public:
         FiniteState::Enter();
         loopCD.Reset();
         canFly = true;
+        stopY();
     };
     void Update()
     {
-        if (canFly && loopCD.GetSpentTime() > 0.12f)
+
+        if (loopCD.GetSpentTime() > 0.12f)
         {
-            velocity.y = -2000 * deltaTime;
-            canFly = false;
+            if (canFly)
+            {
+                velocity.y = -2200 * deltaTime;
+                canFly = false;
+            }
             falling();
         }
 
@@ -553,6 +557,7 @@ public:
     };
     void Exit()
     {
+        canChain = false;
         *isChainThrow = false;
         *isChainHit = false;
     };

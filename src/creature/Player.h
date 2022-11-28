@@ -131,9 +131,9 @@ public:
 		chain->Draw();
 	}
 	vec4 GetChainCol() { return chain->GetCol(); }
-	void SetChainHit()
+	void SetChainHit(MaterialType mat)
 	{
-		chain->SetHit();
+		chain->SetHit(mat);
 	}
 
 private:

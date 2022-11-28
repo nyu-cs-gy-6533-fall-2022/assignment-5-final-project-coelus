@@ -19,13 +19,10 @@ Stage::~Stage()
         delete lights[i];
     }
 
-    /*
-    for (int i = 0; i < monsters.size(); i++)
+    for (int i = 0; i < tubes.size(); i++)
     {
-        delete monsters[i];
+        delete tubes[i];
     }
-    monsters.clear();
-    */
 }
 void Stage::loadData(string filename)
 {
@@ -74,6 +71,13 @@ void Stage::loadData(string filename)
         lights.push_back(light);
         lightData.push_back(light->GetLightData());
     }
+
+    for (auto tubedata : js["tubes"])
+    {
+        Tube *tube = new Tube(shaders, tubedata["type"], vec2(tubedata["x"], tubedata["y"]));
+        tubes.push_back(tube);
+        tubeTriggers.push_back(tube->GetCol());
+    }
 }
 void Stage::SetPlayerEntry(int index)
 {
@@ -98,6 +102,7 @@ void Stage::Draw()
     drawFG();
     drawLights();
     drawMonsters();
+    drawTubes();
     player->Draw();
 }
 vec2 Stage::GetBoundary()
@@ -145,10 +150,15 @@ void Stage::updateTrigger()
         }
     }
 
-    // player chain
+    // player chain wall
     if (Collision::IsCollided(player->GetChainCol(), collisions, resIndex))
     {
-        player->SetChainHit();
+        player->SetChainHit(MatWall);
+    }
+    // player chain tube
+    if (Collision::IsCollided(player->GetChainCol(), tubeTriggers, resIndex))
+    {
+        player->SetChainHit(MatTube);
     }
 }
 
@@ -197,6 +207,14 @@ void Stage::drawLights()
     for (auto light : lights)
     {
         light->Draw();
+    }
+}
+void Stage::drawTubes()
+{
+
+    for (auto tube : tubes)
+    {
+        tube->Draw();
     }
 }
 

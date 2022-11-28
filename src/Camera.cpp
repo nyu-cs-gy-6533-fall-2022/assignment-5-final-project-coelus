@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(StageSystem *stSys, Player *pl, int w, int h)
-	: width(w), height(h), player(pl), stageSys(stSys)
+	: width(w*1.2f), height(h*1.2f), player(pl), stageSys(stSys)
 {
 	UpdateProjection();
 }

@@ -11,6 +11,8 @@
 #include "Sound.h"
 #include "Hitbox.h"
 #include "Light.h"
+#include "Tube.h"
+
 
 #include <json.hpp>
 using json = nlohmann::json;
@@ -69,11 +71,13 @@ private:
 	Player *player;
 	vector<vec4> lightData;
 	vector<Light *> lights;
+	vector<Tube *> tubes;
 	vector<Creature *> monsters;
 	vector<Shader*> &shaders;
 	SoundSystem *soundSys;
 	double &deltaTime;
 
+	vector<vec4> tubeTriggers;
 	vector<vec4> collisions;
 	vector<vec4> entriesvec4;
 	vector<Entry> entries;
@@ -83,6 +87,7 @@ private:
 	void drawFG();
 	void drawBG();
 	void drawLights();
+	void drawTubes();
 	void drawMonsters();
 	void updateMonsters();
 	void updateTrigger();

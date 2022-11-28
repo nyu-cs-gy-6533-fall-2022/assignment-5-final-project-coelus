@@ -29,13 +29,23 @@ public:
         oscillate();
         SetPos(0);
     }
-    void SetHit()
+    void SetHit(MaterialType mat)
     {
         if (IsThrow && !IsHit)
         {
             pos->y += -30;
             IsHit = true;
-            soundSys->Play(SFXChainHitWall);
+            switch (mat)
+            {
+            case MatWall:
+                soundSys->Play(SFXChainHitWall);
+                break;
+            case MatTube:
+                soundSys->Play(SFXChainHitTube);
+                break;
+            default:
+                break;
+            }
         }
     }
     void SetPos(int index)

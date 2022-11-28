@@ -20,6 +20,10 @@ using namespace glm;
 #ifndef _Creature_
 #define _Creature_
 
+
+
+
+
 struct Control
 {
     bool right, left, up, down;
