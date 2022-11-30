@@ -1,9 +1,9 @@
 
-## TownCount Remake
+# TownCount Remake
 Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters.
 ![](figure/init.jpg)
 
-## Implemented Systems
+# Implemented Systems
 1. 2D animation system that supports loops and different frame rates.
 2. Data loader that reads JSON files and generates stage and creature classes.
 3. A Collision Detection system that can return which side is collided.
@@ -21,37 +21,37 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
 
-Idle
+## Idle
 
 <p align="center">
 <img  height="300" src="figure/idle.gif">
 </p>
 
-Run
+## Run
 
 <p align="center">
 <img height="300" src="figure/run.gif">
 </p>
 
-3 Combo Attack
+## 3 Combo Attack
 
 <p align="center">
 <img height="300" src="figure/attack.gif">
 </p>
 
-Jump
+## Jump
 
 <p align="center">
 <img  height="300" src="figure/jump.gif">
 </p>
 
-Jump Attack
+## Jump Attack
 
 <p align="center">
 <img  height="300" src="figure/jumpattack.gif">
 </p>
 
-Damaged
+## Damaged
 
 <p align="center">
 <img  height="300" src="figure/damage.gif">
