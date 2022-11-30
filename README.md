@@ -57,5 +57,50 @@ I make a Finite-State Machine for controlling player animations and states.
 <img  height="300" src="figure/damage.gif">
 </p>
 
+# 2. Collision Applies to Game Mechanics
+It can detect whether multiple rectangles are collied, and return which side has collided: left, right, top, or bottom.
+It applies to player movements and, creature hitboxes, the trigger box to the next stage, and the unique ability that the chain interacts with the tube and wall.
+
+## Stage Explore
+<p align="center">
+<img  height="300" src="figure/explore.gif">
+</p>
+
+
+## Attack Monsters
+<p align="center">
+<img  height="300" src="figure/combat.gif">
+</p>
+
+## Chain
+<p align="center">
+<img  height="300" src="figure/chain.gif">
+</p>
+
+# 3. 2D Light and Shadow
+I only mange to make one type of light, which is direct light and it changes over time.
+
+## Direct Light Over Time
+<p align="center">
+<img  height="300" src="figure/light.gif">
+</p>
+
+# 4. 2D Shaders
+There are many shaders in this game, like drawing sprites and lines, light shader, and one can dissolve the sprites over time.  
+
+## Dissolve Shader
+<p align="center">
+<img  height="300" src="figure/dissolve.gif">
+</p>
+
+# Extra tasks
+The unique ability can interact with tubes and walls, which allows the player to explore the stage, without this, we won't able to go back to the beginning point. The most important machinic in the Metroidvania games is the player can go back and forth the area.
+
+## Chain
+<p align="center">
+<img  height="300" src="figure/chain.gif">
+</p>
+
+
 
 
