@@ -6,7 +6,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 # Implemented Systems
 1. 2D animation system that supports loops and different frame rates.
 2. Data loader that reads JSON files and generates stage and creature classes.
-3. A Collision Detection system that can return which side is collided.
+3. A Collision Detection system that returns which side is collided, and resolves collided object's position.
 4. Sprite renderer using Texture Mapping with OpenGL, which splits each frame into sprites for animations (changing UV buffer).
 5. Stage manager that the player can interact with different connected stages.
 6. Finite-State Machine for controlling player states, which also can easily extend new states.
@@ -17,6 +17,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 11. Direct light change over time in the background.
 12. Dissolve shader applies when the enemy has died, and it dissolves over time.
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
+14. Physics system for acceleration and deceleration
 
 # Libraries 
 Only use OpenGL for the Graphic programming(glm,
