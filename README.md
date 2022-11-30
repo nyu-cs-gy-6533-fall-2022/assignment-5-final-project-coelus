@@ -18,6 +18,14 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 12. Dissolve shader applies when the enemy has died, and it dissolves over time.
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
 
+# Libraries 
+Only use OpenGL for the Graphic programming(glm,
+glfw, and glew libraries), the rest of the game is made from scratch.
+Extra libraries: 
+1. The stb library to load png and jpg files. [https://github.com/nothings/stb](https://github.com/nothings/stb)
+2. The json library to load JSON files. [https://github.com/nlohmann/json](https://github.com/nlohmann/json) 
+3. The sound library bass.h.
+
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
 
