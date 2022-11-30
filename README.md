@@ -69,7 +69,7 @@ I make a Finite-State Machine for controlling player animations and states.
 It can detect whether multiple rectangles are collied, and return which side has collided: left, right, top, or bottom.
 It applies to player movements and, creature hitboxes, the trigger box to the next stage, and the unique ability that the chain interacts with the tube and wall.
 
-## Stage Explore
+## Exploration
 <p align="center">
 <img  height="300" src="figure/explore.gif">
 </p>
