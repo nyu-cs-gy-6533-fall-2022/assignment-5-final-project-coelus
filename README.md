@@ -21,12 +21,41 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
 
-<img align="right"  height="300" src="figure/idle.gif">
-<img align="right"  height="300" src="figure/run.gif">
-<img align="right"  height="300" src="figure/attack.gif">
-<img align="right"  height="300" src="figure/jump.gif">
-<img align="right"  height="300" src="figure/jumpattack.gif">
-<img align="right"  height="300" src="figure/damage.gif">
+Idle
+
+<p align="center">
+<img  height="300" src="figure/idle.gif">
+</p>
+
+Run
+
+<p align="center">
+<img height="300" src="figure/run.gif">
+</p>
+
+3 Combo Attack
+
+<p align="center">
+<img height="300" src="figure/attack.gif">
+</p>
+
+Jump
+
+<p align="center">
+<img  height="300" src="figure/jump.gif">
+</p>
+
+Jump Attack
+
+<p align="center">
+<img  height="300" src="figure/jumpattack.gif">
+</p>
+
+Damaged
+
+<p align="center">
+<img  height="300" src="figure/damage.gif">
+</p>
 
 
 
