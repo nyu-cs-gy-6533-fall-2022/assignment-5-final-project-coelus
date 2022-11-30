@@ -19,5 +19,12 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
 
 # 1.2D Sprites and Animations
-Idle
-![](figure/idle.gif)
+I make a Finite-State Machine for controlling player animations and states.
+
+<img style="float: left;" src="idle.gif">
+<img style="float: left;" src="run.gif">
+<img style="float: left;" src="attack.gif">
+<img style="float: left;" src="jump.gif">
+<img style="float: left;" src="jumpattack.gif">
+<img style="float: left;" src="damage.gif">
+
