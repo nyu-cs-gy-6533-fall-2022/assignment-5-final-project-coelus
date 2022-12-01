@@ -159,14 +159,14 @@ void App::drawAllObjects()
 void App::drawFullScreen()
 {
     
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    //glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     
     drawAllObjects();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
   
 
     //draw full screen quad
-  
+    /*
     shaders[4]->Use();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -174,6 +174,7 @@ void App::drawFullScreen()
     glBindTexture(GL_TEXTURE_2D, renderTexture);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
+    */
 }
 
 void App::MainLoop()
