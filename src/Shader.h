@@ -43,6 +43,7 @@ public:
 		glShaderSource(frag, 1, &fragShader, NULL);
 		glCompileShader(frag);
 		glAttachShader(id, frag);
+		glBindFragDataLocation(id, 0, "resColor");
 
 		glLinkProgram(id);
 

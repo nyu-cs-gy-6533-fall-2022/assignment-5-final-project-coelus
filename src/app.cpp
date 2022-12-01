@@ -2,6 +2,7 @@
 App::App(int width, int height) : mWidth(width), mHeight(height)
 {
     glfwInit();
+    glfwWindowHint(GLFW_SAMPLES, 8);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -26,11 +27,14 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glDisable(GL_DEPTH_TEST);
+    glViewport(0, 0, mWidth, mHeight);
 
     InputSystem::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
     glfwSetKeyCallback(pWindow, InputSystem::KeyCallback);
 
     srand(time(0));
+    
+    initFrameBuffer();
     init();
 }
 
@@ -58,11 +62,10 @@ void App::init()
     shaders.push_back(new Shader("dissolve.vert", "dissolve.frag"));
     shaders.push_back(new Shader("bg.vert", "bg.frag"));
     shaders.push_back(new Shader("line.vert", "line.frag"));
+    shaders.push_back(new Shader("quad.vert", "quad.frag"));
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
-
-    isReady = true;
 }
 void App::loadIcon()
 {
@@ -100,16 +103,49 @@ void App::playerUpdate()
     player->Update(Control{right, left, up, down, jump, attack, chain});
 }
 
+// frame buffer
+void App::initFrameBuffer()
+{
+    glGenTextures(1, &renderTexture);
+    glBindTexture(GL_TEXTURE_2D, renderTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+   
+
+    // frame buffer
+    glGenFramebuffers(1, &frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderTexture, 0);
+    
+
+    // depth
+    glGenRenderbuffers(1, &depthBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, mWidth, mHeight);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        cout << "Frame Buffer is not complete" << endl;
+        return;
+    }
+
+    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, drawBuffers);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 void App::update()
 {
     resize();
     playerUpdate();
     stageSys->Update();
 }
-void App::draw()
+void App::drawAllObjects()
 {
     glClearColor(0, 0, 0, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
     shaders[0]->Use();
     shaders[0]->SetMat4("projMatrix", camera->Projection());
     shaders[1]->Use();
@@ -120,16 +156,34 @@ void App::draw()
     shaders[3]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
 }
+void App::drawFullScreen()
+{
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    
+    drawAllObjects();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  
+
+    //draw full screen quad
+  
+    shaders[4]->Use();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, renderTexture);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 void App::MainLoop()
 {
-    if (!isReady)
-        return;
+
     while (!glfwWindowShouldClose(pWindow))
     {
         double startTime = glfwGetTime();
         update();
-        draw();
+        drawFullScreen();
         glfwSwapBuffers(pWindow);
         glfwPollEvents();
         deltaTime = glfwGetTime() - startTime;

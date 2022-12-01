@@ -30,7 +30,6 @@ public:
 private:
     int mWidth, mHeight;
     double deltaTime = 0.f;
-    bool isReady = false;
     GLFWwindow *pWindow;
 
     StageSystem *stageSys;
@@ -38,12 +37,14 @@ private:
     vector<Shader*> shaders;
     Camera *camera;
     SoundSystem *soundSys;
-    
+    GLuint frameBuffer,depthBuffer,renderTexture;
 
     void init();
     void resize();
-    void draw();
+    void drawFullScreen();
+    void drawAllObjects();
     void update();
     void playerUpdate();
     void loadIcon();
+    void initFrameBuffer();
 };
