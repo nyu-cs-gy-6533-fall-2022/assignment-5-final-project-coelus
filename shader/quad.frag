@@ -6,5 +6,5 @@ out vec4 resColor;
 uniform sampler2D textureData;
 
 void main(){
-    resColor = texture( textureData, UV);
+    resColor = texture( textureData, vec2(UV.x,1-UV.y));
 }

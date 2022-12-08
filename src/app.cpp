@@ -33,7 +33,7 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     glfwSetKeyCallback(pWindow, InputSystem::KeyCallback);
 
     srand(time(0));
-    
+
     initFrameBuffer();
     init();
 }
@@ -43,7 +43,7 @@ App::~App()
     delete player;
     delete stageSys;
     delete soundSys;
-
+    delete ui;
     for (auto s : shaders)
     {
         delete s;
@@ -66,6 +66,7 @@ void App::init()
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
+    ui = new UI(shaders);
 }
 void App::loadIcon()
 {
@@ -112,13 +113,11 @@ void App::initFrameBuffer()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
-   
 
     // frame buffer
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderTexture, 0);
-    
 
     // depth
     glGenRenderbuffers(1, &depthBuffer);
@@ -145,7 +144,7 @@ void App::update()
 void App::drawAllObjects()
 {
     glClearColor(0, 0, 0, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shaders[0]->Use();
     shaders[0]->SetMat4("projMatrix", camera->Projection());
     shaders[1]->Use();
@@ -155,17 +154,17 @@ void App::drawAllObjects()
     shaders[3]->Use();
     shaders[3]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
+    ui->Draw();
 }
 void App::drawFullScreen()
 {
-    
-    //glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    
-    drawAllObjects();
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  
 
-    //draw full screen quad
+    // glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+    drawAllObjects();
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // draw full screen quad
     /*
     shaders[4]->Use();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

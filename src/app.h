@@ -12,6 +12,7 @@
 #include "StageSystem.h"
 #include "InputSystem.h"
 #include "Sound.h"
+#include "UI.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -34,6 +35,7 @@ private:
 
     StageSystem *stageSys;
     Player *player;
+    UI *ui;
     vector<Shader*> shaders;
     Camera *camera;
     SoundSystem *soundSys;
