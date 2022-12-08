@@ -18,6 +18,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 12. Dissolve shader applies when the enemy has died, and it dissolves over time.
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
 14. Physics system for acceleration and deceleration
+15. Monsters' AI for attacking and moving.
 
 # Libraries 
 Only use OpenGL for the Graphic programming(glm,
