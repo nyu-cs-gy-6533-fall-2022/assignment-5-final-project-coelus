@@ -111,7 +111,7 @@ void App::initFrameBuffer()
     glBindTexture(GL_TEXTURE_2D, renderTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     // frame buffer
@@ -130,9 +130,6 @@ void App::initFrameBuffer()
         cout << "Frame Buffer is not complete" << endl;
         return;
     }
-
-    GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, drawBuffers);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 void App::update()
