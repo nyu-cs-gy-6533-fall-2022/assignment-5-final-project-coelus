@@ -25,16 +25,12 @@ App::App(int width, int height) : mWidth(width), mHeight(height)
     // for png
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     glDisable(GL_DEPTH_TEST);
-    glViewport(0, 0, mWidth, mHeight);
 
     InputSystem::Add(vector<int>{GLFW_KEY_Z, GLFW_KEY_X, GLFW_KEY_C});
     glfwSetKeyCallback(pWindow, InputSystem::KeyCallback);
 
     srand(time(0));
-
-    initFrameBuffer();
     init();
 }
 
@@ -62,11 +58,16 @@ void App::init()
     shaders.push_back(new Shader("dissolve.vert", "dissolve.frag"));
     shaders.push_back(new Shader("bg.vert", "bg.frag"));
     shaders.push_back(new Shader("line.vert", "line.frag"));
+    shaders.push_back(new Shader("ui.vert", "ui.frag"));
     shaders.push_back(new Shader("quad.vert", "quad.frag"));
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
     ui = new UI(shaders);
+
+    int width, height;
+    glfwGetWindowSize(pWindow, &width, &height);
+    initFrameBuffer(width, height);
 }
 void App::loadIcon()
 {
@@ -87,6 +88,7 @@ void App::resize()
         mWidth = width;
         mHeight = height;
         glViewport(0, 0, width, height);
+        initFrameBuffer(width, height);
     }
 }
 
@@ -105,13 +107,22 @@ void App::playerUpdate()
 }
 
 // frame buffer
-void App::initFrameBuffer()
+void App::initFrameBuffer(int width, int height)
 {
+
+    // index
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    vector<ivec3> index = {
+        ivec3(0, 1, 2),
+        ivec3(3, 4, 5)};
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ivec3) * index.size(), index.data(), GL_STATIC_DRAW);
+
     glGenTextures(1, &renderTexture);
     glBindTexture(GL_TEXTURE_2D, renderTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     // frame buffer
@@ -122,7 +133,7 @@ void App::initFrameBuffer()
     // depth
     glGenRenderbuffers(1, &depthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, mWidth, mHeight);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -134,14 +145,14 @@ void App::initFrameBuffer()
 }
 void App::update()
 {
-    resize();
+
     playerUpdate();
     stageSys->Update();
 }
 void App::drawAllObjects()
 {
     glClearColor(0, 0, 0, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     shaders[0]->Use();
     shaders[0]->SetMat4("projMatrix", camera->Projection());
     shaders[1]->Use();
@@ -155,22 +166,26 @@ void App::drawAllObjects()
 }
 void App::drawFullScreen()
 {
+    if (player->IsDamaged())
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+        drawAllObjects();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-    drawAllObjects();
-    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // draw full screen quad
-    /*
-    shaders[4]->Use();
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderTexture);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    */
+        // draw full screen quad
+        shaders[5]->Use();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, renderTexture);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    else
+    {
+        drawAllObjects();
+    }
 }
 
 void App::MainLoop()
@@ -178,7 +193,9 @@ void App::MainLoop()
 
     while (!glfwWindowShouldClose(pWindow))
     {
+
         double startTime = glfwGetTime();
+        resize();
         update();
         drawFullScreen();
         glfwSwapBuffers(pWindow);

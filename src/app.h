@@ -36,10 +36,10 @@ private:
     StageSystem *stageSys;
     Player *player;
     UI *ui;
-    vector<Shader*> shaders;
+    vector<Shader *> shaders;
     Camera *camera;
     SoundSystem *soundSys;
-    GLuint frameBuffer,depthBuffer,renderTexture;
+    GLuint indexBuffer, frameBuffer, depthBuffer, renderTexture;
 
     void init();
     void resize();
@@ -48,5 +48,5 @@ private:
     void update();
     void playerUpdate();
     void loadIcon();
-    void initFrameBuffer();
+    void initFrameBuffer(int width, int height);
 };
