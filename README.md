@@ -1,7 +1,10 @@
 
 # TownCount Remake
 Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters.
-![](figure/init.jpg)
+
+## Demo (click the image to watch the video)
+[![](https://img.youtube.com/vi/mUzOv_pf9y0/0.jpg)](https://www.youtube.com/watch?v=mUzOv_pf9y0)
+
 
 # Implemented Systems
 1. 2D animation system that supports loops and different frame rates.
@@ -27,6 +30,8 @@ Extra libraries:
 1. The stb library to load png and jpg files. [https://github.com/nothings/stb](https://github.com/nothings/stb)
 2. The json library to load JSON files. [https://github.com/nlohmann/json](https://github.com/nlohmann/json) 
 3. The sound library bass.h.
+
+It might only work on windows OS cause the bass library.
 
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
@@ -116,6 +121,13 @@ The unique ability can interact with tubes and walls, which allows the player to
 ## Chain
 <p align="center">
 <img  height="300" src="figure/chain.gif">
+</p>
+
+## Full screen shader
+When the player is damaged, it applies the whole screen blur effect, and decreases the effect over time. The Render-To-Texture method is used so it can apply the whole screen shader.
+
+<p align="center">
+<img  height="300" src="figure/blur.gif">
 </p>
 
 
