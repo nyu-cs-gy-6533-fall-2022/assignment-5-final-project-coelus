@@ -28,6 +28,8 @@ Extra libraries:
 2. The json library to load JSON files. [https://github.com/nlohmann/json](https://github.com/nlohmann/json) 
 3. The sound library bass.h.
 
+It might only work on windows OS cause the bass library.
+
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
 
@@ -116,6 +118,13 @@ The unique ability can interact with tubes and walls, which allows the player to
 ## Chain
 <p align="center">
 <img  height="300" src="figure/chain.gif">
+</p>
+
+## Full screen shader
+When the player is damaged, it applies the whole screen blur effect, and decreases the effect over time. The Render-To-Texture method is used so it can apply the whole screen shader.
+
+<p align="center">
+<img  height="300" src="figure/blur.gif">
 </p>
 
 
