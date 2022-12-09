@@ -12,7 +12,7 @@ void main() {
         1, 1, 1,
         1, 1, 1
     );
-    float err = time/400.0;
+    float err = time/450.0;
     vec2 errs[9] = vec2[](vec2(-err, err), vec2(0, err), vec2(err, err), vec2(-err, 0), vec2(0 , 0), vec2(err, 0), vec2(-err, -err), vec2(0, -err), vec2(err, -err));
 
 
