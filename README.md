@@ -19,7 +19,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
 14. Physics system for acceleration and deceleration
 15. Monsters' AI for attacking and moving.
-
+16. Render-To-Texture for full screen shader.
 # Libraries 
 Only use OpenGL for the Graphic programming(glm,
 glfw, and glew libraries), the rest of the game is made from scratch.
