@@ -1,7 +1,8 @@
 
 # TownCount Remake
 Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters.
-[![](https://img.youtube.com/vi/mUzOv_pf9y0/0.jpg)](https://www.youtube.com/watch?v=mUzOv_pf9y0))
+Demo (click the image to watch the video):
+[![](https://img.youtube.com/vi/mUzOv_pf9y0/0.jpg)](https://www.youtube.com/watch?v=mUzOv_pf9y0)
 
 
 # Implemented Systems
