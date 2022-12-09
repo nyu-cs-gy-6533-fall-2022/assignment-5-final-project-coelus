@@ -13,6 +13,7 @@
 #include "InputSystem.h"
 #include "Sound.h"
 #include "UI.h"
+#include "CountDown.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -40,6 +41,7 @@ private:
     Camera *camera;
     SoundSystem *soundSys;
     GLuint indexBuffer, frameBuffer, depthBuffer, renderTexture;
+    CountDown blurCD;
 
     void init();
     void resize();

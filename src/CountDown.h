@@ -54,4 +54,8 @@ struct CountDown
     {
         t -= *deltaTime;
     }
+    void Update(int amount)
+    {
+        t -= (*deltaTime)*amount;
+    }
 };

@@ -97,7 +97,7 @@ public:
 		{
 			fsmInput.Add(ChainU);
 		}
-		
+
 		if (*isChainHit)
 		{
 			fsmInput.Add(ChainFlyU);
@@ -142,6 +142,10 @@ public:
 	void SetChainHit(MaterialType mat)
 	{
 		chain->SetHit(mat);
+	}
+	bool IsScreenDamaged()
+	{
+		return fsm->GetState() == Damaged;
 	}
 
 private:

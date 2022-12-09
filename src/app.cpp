@@ -64,6 +64,7 @@ void App::init()
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
     ui = new UI(shaders);
+    blurCD.Init(2.f, deltaTime, 0);
 
     int width, height;
     glfwGetWindowSize(pWindow, &width, &height);
@@ -162,11 +163,11 @@ void App::drawAllObjects()
     shaders[3]->Use();
     shaders[3]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
-    ui->Draw();
+    
 }
 void App::drawFullScreen()
 {
-    if (player->IsDamaged())
+    if (player->IsScreenDamaged())
     {
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
         drawAllObjects();
@@ -174,6 +175,9 @@ void App::drawFullScreen()
 
         // draw full screen quad
         shaders[5]->Use();
+        shaders[5]->SetFloat("time", blurCD.t);
+        blurCD.Update(5);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -181,11 +185,14 @@ void App::drawFullScreen()
         glBindTexture(GL_TEXTURE_2D, renderTexture);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+        
     }
     else
     {
         drawAllObjects();
+        blurCD.Reset();
     }
+    ui->Draw();
 }
 
 void App::MainLoop()

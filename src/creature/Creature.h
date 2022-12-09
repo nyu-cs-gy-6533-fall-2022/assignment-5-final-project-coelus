@@ -134,9 +134,7 @@ public:
 
         sprite->Draw(deltaTime);
     }
-    bool IsDamaged(){
-        return isDamaged;
-    }
+ 
 
 protected:
     Transform *pTx;
