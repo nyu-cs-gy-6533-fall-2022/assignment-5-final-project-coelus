@@ -34,7 +34,7 @@ Extra libraries:
 Sound only work on windows OS cause the bass library.
 
 # 1.2D Sprites and Animations
-I apply the Finite-State Machine for controlling player animations and states.
+Use Finite-State Machine for controlling player/monster animations and states.
 
 ## Idle
 
