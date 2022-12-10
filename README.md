@@ -17,7 +17,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 8. Deferred Key system for adding tolerance to player inputs.
 9. Debug system for visualizing the collision range.
 10. Camera that chases the player and clamps the position depending on the stage size. 
-11. Direct light change over time in the background.
+11. Different types of lights change over time in the background (can mix point lights & direct lights).
 12. Dissolve shader applies when the enemy has died, and it dissolves over time.
 13. Unique ability: He can use his chain to drag himself closer to the terrain.
 14. Physics system for acceleration and deceleration
