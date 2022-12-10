@@ -12,7 +12,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 3. A Collision Detection system that returns which side is collided, and resolves collided object's position.
 4. Sprite renderer using Texture Mapping with OpenGL, which splits each frame into sprites for animations (changing UV buffer).
 5. Stage manager that the player can interact with different connected stages.
-6. Finite-State Machine for controlling player states, which also can easily extend new states.
+6. Polynomial Finite-State Machine for controlling player states, which also can easily extend new states.
 7. Sound manager using bass.h
 8. Deferred Key system for adding tolerance to player inputs.
 9. Debug system for visualizing the collision range.
@@ -34,7 +34,7 @@ Extra libraries:
 Sound only work on windows OS cause the bass library.
 
 # 1.2D Sprites and Animations
-I make a Finite-State Machine for controlling player animations and states.
+I apply the Finite-State Machine for controlling player animations and states.
 
 ## Idle
 
