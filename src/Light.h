@@ -9,6 +9,8 @@
 using namespace std;
 using namespace glm;
 
+
+
 class Light
 {
 public:
@@ -40,9 +42,9 @@ public:
     {
         delete sprite;
     };
-    vec4 GetLightData()
+    LightData GetLightData()
     {
-        return vec4(position, lightDir);
+        return LightData{position, lightDir};
     }
     void Draw()
     {

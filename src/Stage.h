@@ -12,7 +12,7 @@
 #include "Hitbox.h"
 #include "Light.h"
 #include "Tube.h"
-
+#include <LightData.h>
 
 #include <json.hpp>
 using json = nlohmann::json;
@@ -70,7 +70,7 @@ private:
 	Sprite *bg;
 	Sprite *fg;
 	Player *player;
-	vector<vec4> lightData;
+	vector<LightData> lightData;
 	vector<Light *> lights;
 	vector<Tube *> tubes;
 	vector<Creature *> monsters;

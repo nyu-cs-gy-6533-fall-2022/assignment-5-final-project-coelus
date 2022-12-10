@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <LightData.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/glm.hpp>
 #define GLEW_STATIC
@@ -12,6 +13,7 @@ using namespace glm;
 
 #ifndef _SHADER_
 #define _SHADER_
+
 class Shader
 {
 public:
@@ -86,8 +88,17 @@ public:
 	};
 	void SetVec4(const char *name, const vector<vec4> &vec)
 	{
-		
+
 		glUniform4fv(glGetUniformLocation(id, name), vec.size(), value_ptr(vec[0]));
+	};
+	void SetLightData(string name, const vector<LightData> &data)
+	{
+
+		for (int i = 0; i < data.size(); i++)
+		{
+			glUniform2fv(glGetUniformLocation(id, string(name + "[" + to_string(i) + "].pos").c_str()), 1, value_ptr(data[i].pos));
+			glUniform2fv(glGetUniformLocation(id, string(name + "[" + to_string(i) + "].dir").c_str()), 1, value_ptr(data[i].dir));
+		}
 	};
 
 private:

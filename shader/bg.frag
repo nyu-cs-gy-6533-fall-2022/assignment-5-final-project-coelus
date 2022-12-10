@@ -1,6 +1,12 @@
 #version 450 core
 #define MAXLEN 15
 
+
+struct Light{
+  vec2 pos;
+  vec2 dir;
+};
+
 uniform sampler2D sprite;
 uniform vec2 resolution;
 uniform float time;
@@ -8,7 +14,7 @@ uniform float time;
 
 uniform int lightLen;
 //pos+dir
-uniform vec4 lights[MAXLEN];
+uniform Light lights[MAXLEN];
 
 in vec4 vertColor; 
 in vec2 vertUV;
@@ -31,8 +37,8 @@ void main() {
     if(sin(time+i)>=0.5){
         blink = (-cos(time+i) + 1) / 2.0 ;
     }
-    vec2 lightPos = vec2(lights[i].x, lights[i].y);
-    vec2 lightDir = vec2(lights[i].z, lights[i].w);
+    vec2 lightPos = lights[i].pos;
+    vec2 lightDir = lights[i].dir;
     vec2 lightDis = lightPos - pixelPos;
     float brightness = clamp(dot(normalize(lightDis), lightDir), 0.0, 1.0);
     brightness *= clamp(1 - (length(lightDis) / 1200.0), 0.0, 1.0);

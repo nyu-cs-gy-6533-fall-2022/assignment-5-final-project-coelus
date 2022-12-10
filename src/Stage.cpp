@@ -195,7 +195,7 @@ void Stage::useLightShader()
     shaders[2]->SetMat4("modelMatrix", bg->Tx.Get());
     shaders[2]->SetVec2("resolution", bg->Tx.scale);
     shaders[2]->SetInt("lightLen", lightData.size());
-    shaders[2]->SetVec4("lights", lightData);
+    shaders[2]->SetLightData("lights", lightData);
     shaders[2]->SetFloat("time", glfwGetTime());
 }
 void Stage::drawBG()
