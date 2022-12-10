@@ -31,7 +31,7 @@ Extra libraries:
 2. The json library to load JSON files. [https://github.com/nlohmann/json](https://github.com/nlohmann/json) 
 3. The sound library bass.h.
 
-It might only work on windows OS cause the bass library.
+Sound only work on windows OS cause the bass library.
 
 # 1.2D Sprites and Animations
 I make a Finite-State Machine for controlling player animations and states.
