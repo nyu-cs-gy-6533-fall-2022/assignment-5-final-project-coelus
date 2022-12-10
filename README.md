@@ -78,6 +78,7 @@ The animation also applies to monsters, which have a similar state as the player
 <p align="center">
 <img  height="300" src="figure/monster.gif">
 </p>
+
 ## UI
 HP bar with frame.
 
