@@ -74,6 +74,7 @@ I make a Finite-State Machine for controlling player animations and states.
 
 
 ## UI
+HP bar with frame.
 
 <p align="center">
 <img src="figure/ui.jpg">
