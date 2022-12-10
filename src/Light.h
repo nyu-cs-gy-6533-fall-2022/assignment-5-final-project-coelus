@@ -3,12 +3,13 @@
 #pragma once
 #include "Sprite.h"
 #include "Shader.h"
+#include "LightData.h"
+
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
 using namespace std;
 using namespace glm;
-
 
 
 class Light
@@ -23,12 +24,14 @@ public:
             lightDir = vec2(0, -1);
             sprite->Set("light/light3-down.png", vec2(128, 128), pos);
             sprite->Tx.pivot.x = 64;
+            lightType = LightDirect;
         }
         else if (type == "lightRight")
         {
             lightDir = vec2(-1, 0);
             sprite->Set("light/light3-right.png", vec2(128, 128), pos);
             sprite->Tx.pivot.y = 64;
+            lightType = LightDirect;
         }
         else if (type == "lightLeft")
         {
@@ -36,6 +39,7 @@ public:
             sprite->Set("light/light3-left.png", vec2(128, 128), pos);
             sprite->Tx.pivot.x = 128;
             sprite->Tx.pivot.y = 64;
+            lightType = LightDirect;
         }
     }
     ~Light()
@@ -44,7 +48,7 @@ public:
     };
     LightData GetLightData()
     {
-        return LightData{position, lightDir};
+        return LightData{lightType, position, lightDir};
     }
     void Draw()
     {
@@ -54,6 +58,7 @@ public:
     }
 
 private:
+    LightType lightType;
     vector<Shader *> &shaders;
     Sprite *sprite;
     vec2 position, lightDir;

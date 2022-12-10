@@ -93,9 +93,11 @@ public:
 	};
 	void SetLightData(string name, const vector<LightData> &data)
 	{
-
 		for (int i = 0; i < data.size(); i++)
 		{
+			GLint *glval = new GLint[1];
+			glval[0] = data[i].type;
+			glUniform1iv(glGetUniformLocation(id, string(name + "[" + to_string(i) + "].type").c_str()), 1, glval);
 			glUniform2fv(glGetUniformLocation(id, string(name + "[" + to_string(i) + "].pos").c_str()), 1, value_ptr(data[i].pos));
 			glUniform2fv(glGetUniformLocation(id, string(name + "[" + to_string(i) + "].dir").c_str()), 1, value_ptr(data[i].dir));
 		}
