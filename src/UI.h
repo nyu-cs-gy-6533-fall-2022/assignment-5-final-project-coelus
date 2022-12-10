@@ -22,6 +22,7 @@ public:
     ~UI()
     {
         delete uiframe;
+        delete blood;
     };
     void Draw()
     {

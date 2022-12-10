@@ -41,6 +41,14 @@ public:
             sprite->Tx.pivot.y = 64;
             lightType = LightDirect;
         }
+        else if (type == "lightCenter")
+        {
+            lightDir = vec2(0, 0);
+            sprite->Set("light/lightcenter.png", vec2(128, 128), pos);
+            sprite->Tx.pivot.x = 64;
+            sprite->Tx.pivot.y = 64;
+            lightType = LightPoint;
+        }
     }
     ~Light()
     {

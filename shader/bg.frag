@@ -35,6 +35,8 @@ void main() {
   for (int i = 0; i < lightLen; i++) {
     vec2 lightPos = lights[i].pos;
     vec2 lightDir = lights[i].dir;
+    vec2 lightDis = lightPos - pixelPos;
+    float brightness = 0.0;
     //direct light
     if(lights[i].type==0){
       float blink = 1;
@@ -42,16 +44,16 @@ void main() {
       if(sin(time+i)>=0.5){
           blink = (-cos(time+i) + 1) / 2.0 ;
       }
-      
-      vec2 lightDis = lightPos - pixelPos;
-      float brightness = clamp(dot(normalize(lightDis), lightDir), 0.0, 1.0);
+      brightness = clamp(dot(normalize(lightDis), lightDir), 0.0, 1.0);
       brightness *= clamp(1 - (length(lightDis) / 1200.0), 0.0, 1.0);
       brightness = clamp(brightness * gain , 0.0, gain)* blink;
-      totalBrightness += brightness;
-    }else{
-
+     
+    }else{//point light
+      //0.5 to 1.0
+      float blink = (-cos(time+i) + 3) / 4.0;
+      brightness = 1.0 / length(lightDis)*100*blink;
     }
-   
+    totalBrightness += brightness;
   }
   totalBrightness = clamp(totalBrightness, 0.7, gain);
 

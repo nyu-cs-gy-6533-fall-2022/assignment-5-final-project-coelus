@@ -5,7 +5,32 @@
         
     ],
     "lights": [
-      
+        {
+            "type": "lightCenter",
+            "x": 640,
+            "y": 3200
+        },
+        {
+            "type": "lightCenter",
+            "x": 1280,
+            "y": 3200
+        },
+        {
+            "type": "lightCenter",
+            "x": 1920,
+            "y": 3200
+        },
+        {
+            "type": "lightCenter",
+            "x": 2560,
+            "y": 3200
+        },
+        {
+            "type": "lightCenter",
+            "x": 3200,
+            "y": 3200
+        }
+        
     ],
     "monsters": [
        
