@@ -103,9 +103,14 @@ It applies to player movements and, creature hitboxes, the trigger box to the ne
 # 3. 2D Light and Shadow
 I only mange to make one type of light, which is direct light and it changes over time.
 
-## Direct Light Over Time
+## Direct Lights Over Time
 <p align="center">
 <img  height="300" src="figure/light.gif">
+</p>
+
+## Point Lights Over Time
+<p align="center">
+<img  height="300" src="figure/pointlight.gif">
 </p>
 
 # 4. 2D Shaders
