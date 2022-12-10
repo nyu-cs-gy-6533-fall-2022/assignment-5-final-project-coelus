@@ -3,7 +3,7 @@
 Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters.
 
 ## Demo (click the image to watch the video)
-[![](https://img.youtube.com/vi/J1jx9N9jhQY/0.jpg)](https://www.youtube.com/watch?v=J1jx9N9jhQY)
+[![](https://img.youtube.com/vi/J1jx9N9jhQY/maxresdefault.jpg)](https://www.youtube.com/watch?v=J1jx9N9jhQY)
 
 
 # Implemented Systems
