@@ -72,6 +72,8 @@ I apply the Finite-State Machine for controlling player animations and states.
 <img  height="300" src="figure/damage.gif">
 </p>
 
+## Rats & Snails
+The animation also applies to monsters, which have a similar state as the player(Idle, Run, Attack, Damaged, etc), see the demo video for more detail.
 
 ## UI
 HP bar with frame.
