@@ -20,9 +20,9 @@ void main() {
     for (int i = 0; i < 9; i++) {
         mixTex[i] = vec3(texture(textureData, UV + errs[i]));
     }
-    vec3 col = vec3(0);
+    vec3 res = vec3(0);
     for (int i = 0; i < 9; i++)
-        col += mixTex[i] * ker[i]/9.0;
+        res += mixTex[i] * ker[i]/9.0;
 
-    resColor = vec4(col, 1.0);
+    resColor = vec4(res, 1.0);
 }
