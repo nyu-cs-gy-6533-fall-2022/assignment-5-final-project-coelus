@@ -100,7 +100,7 @@ protected:
     void deceleration(float amount = 10.f)
     {
         int sign = velocity.x >= 0 ? 1 : -1;
-        velocity.x -= sign * amount * deltaTime;
+        velocity.x -= sign * amount;
         if (velocity.x * sign < 0)
         {
             velocity.x = 0;
@@ -120,7 +120,7 @@ protected:
     {
         if (ctrlX != 0)
         {
-            velocity.x = runSpeed * dirX * deltaTime;
+            velocity.x = runSpeed * dirX;
         }
     }
 
@@ -132,13 +132,13 @@ protected:
             {
                 velocity.y = 0;
             }
-            force.y = 9.8f * deltaTime * Global::GravityRatio;
+            force.y = 9.8f * Global::GravityRatio;
         }
     }
     void addHitBox(SoundType sound, vec4 hitbox, vec2 force, int damage, float time = 0.18f)
     {
         debug->AddDebug(hitbox);
-        hitboxs.push_back(HitboxData{hitbox, force, damage, time, sound});
+        hitboxs.push_back(HitboxData{hitbox, vec2(force*240.f), damage, time, sound});
     }
 };
 
@@ -206,7 +206,7 @@ public:
     {
         FiniteState::Enter();
         force = vec2(0);
-        velocity.y = -jumpSpeed * deltaTime;
+        velocity.y = -jumpSpeed;
         soundSys->Play(SFXPlayerJump);
     };
     void Update()
@@ -281,7 +281,7 @@ public:
             return interruptState.input;
 
         else if (!sprite->IsEnd())
-            return 1<<Damaged;
+            return 1 << Damaged;
 
         return possibleState.input;
     }
@@ -297,7 +297,7 @@ public:
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 
-        force.x = attackForce * dirX * deltaTime;
+        force.x = attackForce * dirX;
         if (sprite->IsFrameGreater(4))
         {
             stopX();
@@ -305,7 +305,7 @@ public:
 
         if (sprite->IsFrame(3))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(120, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -315,7 +315,7 @@ public:
     };
 
 private:
-    float attackForce = 30;
+    float attackForce = 6000;
 };
 
 class FSPlayerAttack2 : public FiniteState
@@ -331,7 +331,7 @@ public:
         if (sprite->CanInterrupt())
             return interruptState.input;
         else if (!sprite->IsEnd())
-            return 1<<Damaged;
+            return 1 << Damaged;
         return possibleState.input;
     }
     void Enter()
@@ -348,14 +348,14 @@ public:
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 
-        force.x = attackForce * dirX * deltaTime;
+        force.x = attackForce * dirX;
         if (sprite->IsFrameGreater(4))
         {
             stopX();
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 230, 360), position.y - 40, 350, 280), vec2(150, -70), 30);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 230, 360), position.y - 40, 350, 280), vec2(140, -70), 30);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -366,7 +366,7 @@ public:
     };
 
 private:
-    float attackForce = 40;
+    float attackForce = 8000;
 };
 
 class FSPlayerAttack3 : public FiniteState
@@ -395,14 +395,14 @@ public:
         dAttack.Set(canDeffered);
         dJump.Set(canDeffered);
 
-        force.x = attackForce * dirX * deltaTime;
+        force.x = attackForce * dirX;
         if (sprite->IsFrameGreater(5))
         {
             stopX();
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 350, 600), position.y - 40, 600, 240), vec2(200, -90), 50);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 350, 600), position.y - 40, 600, 240), vec2(180, -90), 50);
             soundSys->Play(SFXPlayerAttack);
         }
     };
@@ -412,7 +412,7 @@ public:
     };
 
 private:
-    float attackForce = 60;
+    float attackForce = 12000;
 };
 
 class FSPlayerJumpAttack : public FiniteState
@@ -438,14 +438,14 @@ public:
     };
     void Update()
     {
-        force.x = attackForce * dirX * deltaTime;
+        force.x = attackForce * dirX;
         if (sprite->IsFrameGreater(4))
         {
             stopX();
         }
         if (sprite->IsFrame(2))
         {
-            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(130, -70), 20);
+            addHitBox(SFXPlayerHit, vec4(pTx->GetX(position, 100, 330), position.y - 60, 330, 280), vec2(120, -70), 20);
             soundSys->Play(SFXPlayerAttack);
         }
         velocity.y = 0;
@@ -456,7 +456,7 @@ public:
     };
 
 private:
-    float attackForce = 20;
+    float attackForce = 4000;
 };
 
 class FSPlayerChainU : public FiniteState
@@ -551,7 +551,7 @@ public:
         {
             if (canFly)
             {
-                velocity.y = -2200 * deltaTime;
+                velocity.y = -2350;
                 canFly = false;
             }
             falling();
@@ -613,8 +613,8 @@ public:
         }
         if (!sprite->IsFrameGreater(1))
         {
-            force.x = damage.force.x * deltaTime;
-            force.y = damage.force.y * deltaTime;
+            force.x = damage.force.x;
+            force.y = damage.force.y;
         }
         else
         {
@@ -790,8 +790,8 @@ public:
         }
         if (!sprite->IsFrameGreater(1))
         {
-            force.x = damage.force.x * deltaTime;
-            force.y = damage.force.y * deltaTime;
+            force.x = damage.force.x;
+            force.y = damage.force.y;
         }
         else
         {
@@ -955,8 +955,8 @@ public:
         }
         if (!sprite->IsFrameGreater(1))
         {
-            force.x = damage.force.x * deltaTime;
-            force.y = damage.force.y * deltaTime;
+            force.x = damage.force.x;
+            force.y = damage.force.y;
         }
         else
         {
@@ -1027,7 +1027,7 @@ public:
         setDirX();
         if (loopCD.IsLessHalf())
         {
-            force.x = dirX * 10 * deltaTime;
+            force.x = dirX * 2500;
         }
         else
         {

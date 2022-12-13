@@ -134,7 +134,6 @@ public:
 
         sprite->Draw(deltaTime);
     }
- 
 
 protected:
     Transform *pTx;
@@ -198,11 +197,11 @@ protected:
 
     void movement()
     {
-        velocity.x += force.x;
-        velocity.y += force.y;
+        velocity.x += force.x * deltaTime / 2.f;
+        velocity.y += force.y * deltaTime / 2.f;
         velocity.y = clamp(velocity.y, -Global::MaxSpd, Global::MaxSpd);
-        position.x += velocity.x;
-        position.y += velocity.y;
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
     }
 };
 #endif
