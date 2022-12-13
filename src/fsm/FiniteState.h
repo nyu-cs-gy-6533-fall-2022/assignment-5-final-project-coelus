@@ -138,7 +138,13 @@ protected:
     void addHitBox(SoundType sound, vec4 hitbox, vec2 force, int damage, float time = 0.18f)
     {
         debug->AddDebug(hitbox);
-        hitboxs.push_back(HitboxData{hitbox, vec2(force*240.f), damage, time, sound});
+        hitboxs.push_back(HitboxData{hitbox, vec2(force * 240.f), damage, time, sound});
+    }
+    void setDamage(float lostHp)
+    {
+        hp -= damage.losthp;
+        if (hp < 0)
+            hp = 0;
     }
 };
 
@@ -596,7 +602,7 @@ public:
         FiniteState::Enter();
         isDamaged = false;
         velocity = vec2(0);
-        hp -= damage.losthp;
+        setDamage(damage.losthp);
         dirX = damage.dirX;
         soundSys->Play(damage.sound);
     };
@@ -773,7 +779,8 @@ public:
 
         FiniteState::Enter();
         velocity = vec2(0);
-        hp -= damage.losthp;
+        
+        setDamage(damage.losthp);
         dirX = damage.dirX;
         soundSys->Play(damage.sound);
     };
@@ -938,7 +945,7 @@ public:
 
         FiniteState::Enter();
         velocity = vec2(0);
-        hp -= damage.losthp;
+        setDamage(damage.losthp);
         dirX = damage.dirX;
         soundSys->Play(damage.sound);
     };
