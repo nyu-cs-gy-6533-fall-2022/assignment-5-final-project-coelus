@@ -15,7 +15,7 @@ using namespace glm;
 class Line
 {
 public:
-    Line(vector<Shader *> &s)
+    Line(const vector<Shader *> &s)
         : shaders(s)
     {
 
@@ -49,6 +49,6 @@ public:
     };
 
 private:
-    vector<Shader *> &shaders;
+    const vector<Shader *> &shaders;
     unsigned int VAO, VBO;
 };

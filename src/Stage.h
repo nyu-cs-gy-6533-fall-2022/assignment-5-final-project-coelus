@@ -74,7 +74,7 @@ private:
 	vector<Light *> lights;
 	vector<Tube *> tubes;
 	vector<Creature *> monsters;
-	vector<Shader*> &shaders;
+	const vector<Shader*> &shaders;
 	SoundSystem *soundSys;
 	double &deltaTime;
 	SoundType bgm;

@@ -3,7 +3,7 @@
 class Rat : public Creature
 {
 public:
-    Rat(SoundSystem *sndSys, vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
+    Rat(SoundSystem *sndSys, const vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
     {
         InitFSM();
         fsm->Add<FSRatIdle>(RatIdle);

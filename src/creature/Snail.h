@@ -4,7 +4,7 @@
 class Snail : public Creature
 {
 public:
-    Snail(SoundSystem *sndSys, vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
+    Snail(SoundSystem *sndSys, const vector<Shader *> &s, double &t) : Creature(sndSys, s, t)
     {
         InitFSM();
         fsm->Add<FSSnailIdle>(SnailIdle);

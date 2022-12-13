@@ -29,7 +29,7 @@ struct Control
 class Creature
 {
 public:
-    Creature(SoundSystem *sndSys, vector<Shader *> &s, double &t)
+    Creature(SoundSystem *sndSys, const vector<Shader *> &s, double &t)
         : soundSys(sndSys),
           shaders(s),
           deltaTime(t),
@@ -107,6 +107,10 @@ public:
         willFall = !status.isColDown;
     }
 
+    float GetHpPercent(){
+        return hp/(float)initHp;
+    }
+
     virtual void Draw()
     {
         shaders[0]->Use();
@@ -137,7 +141,7 @@ public:
 
 protected:
     Transform *pTx;
-    vector<Shader *> &shaders;
+    const vector<Shader *> &shaders;
     AnimSprite *sprite;
     SoundSystem *soundSys;
     Debug *debug;

@@ -63,7 +63,7 @@ void App::init()
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
-    ui = new UI(shaders);
+    ui = new UI(shaders, player);
     blurCD.Init(2.f, deltaTime, 0);
 
     int width, height;
@@ -163,7 +163,6 @@ void App::drawAllObjects()
     shaders[3]->Use();
     shaders[3]->SetMat4("projMatrix", camera->Projection());
     stageSys->Draw();
-    
 }
 void App::drawFullScreen()
 {
@@ -185,7 +184,6 @@ void App::drawFullScreen()
         glBindTexture(GL_TEXTURE_2D, renderTexture);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
-        
     }
     else
     {

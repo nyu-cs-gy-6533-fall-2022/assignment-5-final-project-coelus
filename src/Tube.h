@@ -9,7 +9,7 @@ using namespace glm;
 class Tube
 {
 public:
-    Tube(vector<Shader *> &s, string type, vec2 p)
+    Tube(const vector<Shader *> &s, string type, vec2 p)
         : shaders(s), pos(p)
     {
         sprite = new Sprite();
@@ -43,7 +43,7 @@ public:
     }
 
 private:
-    vector<Shader *> &shaders;
+    const vector<Shader *> &shaders;
     Sprite *sprite;
     const vec2 pos;
 };

@@ -8,7 +8,7 @@
 class Player : public Creature
 {
 public:
-	Player(SoundSystem *sndSys, vector<Shader *> &s, double &time) : Creature(sndSys, s, time)
+	Player(SoundSystem *sndSys, const vector<Shader *> &s, double &time) : Creature(sndSys, s, time)
 	{
 		chain = new Chain(soundSys, shaders, deltaTime, pTx, position);
 		isChainThrow = &chain->IsThrow;

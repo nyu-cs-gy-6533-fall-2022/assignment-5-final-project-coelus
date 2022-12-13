@@ -15,7 +15,7 @@ using namespace glm;
 class Light
 {
 public:
-    Light(vector<Shader *> &s, string type, vec2 pos)
+    Light(const vector<Shader *> &s, string type, vec2 pos)
         : shaders(s), position(pos)
     {
         sprite = new Sprite();
@@ -67,7 +67,7 @@ public:
 
 private:
     LightType lightType;
-    vector<Shader *> &shaders;
+    const vector<Shader *> &shaders;
     Sprite *sprite;
     vec2 position, lightDir;
 };

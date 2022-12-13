@@ -13,7 +13,7 @@ using namespace glm;
 class Chain
 {
 public:
-    Chain(SoundSystem *sndSys, vector<Shader *> &s, double &time, Transform *tx, vec2 &plPos)
+    Chain(SoundSystem *sndSys, const vector<Shader *> &s, double &time, Transform *tx, vec2 &plPos)
         : soundSys(sndSys), shaders(s), deltaTime(time), plTx(tx), playerPos(plPos)
     {
         sprite = new Sprite();
@@ -90,7 +90,7 @@ private:
     const vector<vec2> err{vec2(11.5, -120)};
     vec2 &playerPos, initPos, *pos;
     Transform *plTx;
-    vector<Shader *> &shaders;
+    const vector<Shader *> &shaders;
     SoundSystem *soundSys;
     Sprite *sprite;
     Line *line;
