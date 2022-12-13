@@ -67,6 +67,7 @@ public:
         delete debug;
         delete fsm;
     }
+    virtual void Init(){};
     virtual void Update(Control ctrl){};
     void SetDirX(int dir) { pTx->dirX = dir; }
     void SetDamage(Creature *attacker, HitboxData hitbox)
@@ -81,6 +82,9 @@ public:
         {
             isDamaged = true;
         }
+    }
+    bool IsDied(){
+        return hp<=0;
     }
 
     Transform GetTx() { return *pTx; };

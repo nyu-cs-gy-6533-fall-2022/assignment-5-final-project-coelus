@@ -1,6 +1,6 @@
 #include "StageSystem.h"
 
-StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, vector<Shader*> &shaders, double &time)
+StageSystem::StageSystem(SoundSystem *sndSys, Player *pl, vector<Shader *> &shaders, double &time)
     : soundSys(sndSys), player(pl), deltaTime(time)
 {
 
@@ -22,9 +22,15 @@ void StageSystem::SetPlayerEntry(string name, int index)
 }
 void StageSystem::Update()
 {
-    
+
     NextStage *nt = &currentStage->NextStage;
-    if (nt->isReady)
+    if (player->IsDied())
+    {
+        player->Init();
+        SetPlayerEntry(startStage, startEntry);
+        nt->Init();
+    }
+    else if (nt->isReady)
     {
         SetPlayerEntry(nt->nextStage, nt->nextEntry);
         nt->Init();

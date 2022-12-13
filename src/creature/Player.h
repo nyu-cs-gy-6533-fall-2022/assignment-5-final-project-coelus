@@ -35,6 +35,15 @@ public:
 		fsm->Set(Idle);
 		fsm->Enter();
 	}
+	void Init()
+	{
+		hp = initHp;
+		velocity = vec2(0);
+		force = vec2(0);
+		chainCD.Close();
+		fsm->Set(Idle);
+		fsm->Enter();
+	}
 	void Update(Control ctrl)
 	{
 		fsmInput.Init();
