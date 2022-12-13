@@ -551,7 +551,7 @@ public:
         {
             if (canFly)
             {
-                velocity.y = -2350;
+                velocity.y = -2300;
                 canFly = false;
             }
             falling();
