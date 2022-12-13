@@ -23,6 +23,8 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 14. Physics system for acceleration and deceleration
 15. Monsters' AI for attacking and moving.
 16. Render-To-Texture for full screen shader.
+17. Synchronizing with monitor refreshes without vsync using deltaTime. (mostly)
+
 # Libraries 
 Only use OpenGL for the Graphic programming(glm,
 glfw, and glew libraries), the rest of the game is made from scratch.
