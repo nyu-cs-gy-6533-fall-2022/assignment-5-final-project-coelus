@@ -88,6 +88,12 @@ HP bar with frame.
 <img src="figure/ui.jpg">
 </p>
 
+## Health bar decreasing
+<p align="center">
+<img height="300" src="figure/HPdecrease.gif">
+</p>
+
+
 # 2. Collision Applies to Game Mechanics
 It can detect whether multiple rectangles are collied, and return which side has collided: left, right, top, or bottom.
 It applies to player movements and, creature hitboxes, the trigger box to the next stage, and the unique ability that the chain interacts with the tube and wall.
