@@ -2,7 +2,7 @@
     "type": 0,
     "hp":500,
     "runSpeed": 700,
-    "jumpSpeed": 1200,
+    "jumpSpeed": 1400,
     "rigidbody": {
         "w": 50,
         "h": 205
