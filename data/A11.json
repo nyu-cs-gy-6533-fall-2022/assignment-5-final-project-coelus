@@ -7,7 +7,7 @@
     "lights": [
         {
             "type": "lightCenter",
-            "x": 640,
+            "x": 768,
             "y": 3200
         },
         {
@@ -17,17 +17,22 @@
         },
         {
             "type": "lightCenter",
-            "x": 1920,
+            "x": 1792,
             "y": 3200
         },
         {
             "type": "lightCenter",
-            "x": 2560,
+            "x": 2304,
             "y": 3200
         },
         {
             "type": "lightCenter",
-            "x": 3200,
+            "x": 2816,
+            "y": 3200
+        },
+        {
+            "type": "lightCenter",
+            "x": 3328,
             "y": 3200
         }
         
