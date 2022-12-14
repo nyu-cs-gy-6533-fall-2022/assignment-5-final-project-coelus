@@ -14,7 +14,7 @@ Towncount is a 2D Metroidvania game, the main character can use his unique abili
 5. Stage manager that the player can interact with different connected stages.
 6. Polynomial Finite-State Machine for controlling player states, which also can easily extend new states.
 7. Sound manager using bass.h
-8. Keyboard input system for distinguishing one press for one action, it includes a deferred detection for adding tolerance to player inputs.
+8. Keyboard input system for distinguishing one keypress for one action, it includes a deferred detection for adding tolerance to player inputs.
 9. Debug system for visualizing the collision range.
 10. Camera that chases the player and clamps the position depending on the stage size. 
 11. Different types of lights change over time in the background (can mix point lights & direct lights).
