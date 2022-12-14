@@ -52,7 +52,7 @@
             "filename": "snail/snail-move.png"
         },
         {
-            "state": "Died",
+            "state": "MonsterDied",
             "pivotX": 122,
             "pivotY": 345,
             "width": 512,

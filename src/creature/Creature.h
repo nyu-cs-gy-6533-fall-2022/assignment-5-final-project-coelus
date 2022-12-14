@@ -83,8 +83,13 @@ public:
             isDamaged = true;
         }
     }
-    bool IsDied(){
-        return hp<=0;
+    float GetHpPercent()
+    {
+        return hp / (float)initHp;
+    }
+    bool IsDied()
+    {
+        return hp <= 0;
     }
 
     Transform GetTx() { return *pTx; };
@@ -111,10 +116,6 @@ public:
         willFall = !status.isColDown;
     }
 
-    float GetHpPercent(){
-        return hp/(float)initHp;
-    }
-
     virtual void Draw()
     {
         shaders[0]->Use();
@@ -122,7 +123,7 @@ public:
         debug->DrawDebug();
 
         sprite->Set(position, rigidbody);
-        if (fsm->GetState() == Died)
+        if (fsm->GetState() == MonsterDied)
         {
 
             shaders[1]->Use();

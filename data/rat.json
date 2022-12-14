@@ -85,7 +85,7 @@
             "filename": "rat/rat1_hurt.png"
         },
         {
-            "state": "Died",
+            "state": "MonsterDied",
             "pivotX": 156,
             "pivotY": 345,
             "width": 600,

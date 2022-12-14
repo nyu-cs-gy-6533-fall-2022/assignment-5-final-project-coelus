@@ -13,7 +13,7 @@ public:
         fsm->Add<FSRatRollStop>(RatRollStop);
         fsm->Add<FSRatFall>(RatFall);
         fsm->Add<FSRatDamaged>(RatDamaged);
-        fsm->Add<FSDied>(Died);
+        fsm->Add<FSMonsterDied>(MonsterDied);
 
         loadData();
         attackCD.Init(4.f, deltaTime, 1);
@@ -40,7 +40,7 @@ public:
 
         if (IsDied())
         {
-            fsmInput.Add(Died);
+            fsmInput.Add(MonsterDied);
         }
         fsmInput.Add(RatIdle);
         fsmInput.Add(RatRun);

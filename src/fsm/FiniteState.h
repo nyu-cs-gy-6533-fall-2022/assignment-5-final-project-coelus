@@ -641,8 +641,8 @@ public:
     FSSnailIdle(FSMData data) : FiniteState(data)
     {
         loopCD.Init(1.2f, deltaTime, 2);
-        interruptState.Add(vector<ActionState>{SnailDamaged, SnailFall, Died});
-        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged, Died});
+        interruptState.Add(vector<ActionState>{SnailDamaged, SnailFall, MonsterDied});
+        possibleState.Add(vector<ActionState>{SnailAttack, SnailFall, SnailDamaged, MonsterDied});
     };
     int GetPossibleState()
     {
@@ -684,7 +684,7 @@ public:
         hitboxCD.Init(0.01f, deltaTime, 0);
         loopCD.Init(2.f, deltaTime, 2);
         interruptState.Add(vector<ActionState>{SnailDamaged, SnailFall});
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged, Died});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailFall, SnailDamaged, MonsterDied});
     };
     int GetPossibleState()
     {
@@ -708,7 +708,7 @@ public:
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 2000, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
@@ -729,7 +729,7 @@ public:
     FSSnailFall(FSMData data) : FiniteState(data)
     {
         interruptState.Add(vector<ActionState>{SnailDamaged});
-        possibleState.Add(vector<ActionState>{SnailIdle, SnailDamaged, Died});
+        possibleState.Add(vector<ActionState>{SnailIdle, SnailDamaged, MonsterDied});
     };
 
     int GetPossibleState()
@@ -818,8 +818,8 @@ public:
     FSRatIdle(FSMData data) : FiniteState(data)
     {
         loopCD.Init(1.2f, deltaTime, 1);
-        interruptState.Add(vector<ActionState>{RatDamaged, RatFall, Died});
-        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, RatRollStart, Died});
+        interruptState.Add(vector<ActionState>{RatDamaged, RatFall, MonsterDied});
+        possibleState.Add(vector<ActionState>{RatRun, RatFall, RatDamaged, RatRollStart, MonsterDied});
     };
     int GetPossibleState()
     {
@@ -859,7 +859,7 @@ public:
     {
         loopCD.Init(1.5f, deltaTime, 2);
         interruptState.Add(vector<ActionState>{RatDamaged, RatFall});
-        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, Died, RatRollStart});
+        possibleState.Add(vector<ActionState>{RatIdle, RatFall, RatDamaged, MonsterDied, RatRollStart});
     };
     int GetPossibleState()
     {
@@ -895,7 +895,7 @@ public:
     FSRatFall(FSMData data) : FiniteState(data)
     {
         interruptState.Add(vector<ActionState>{RatDamaged});
-        possibleState.Add(vector<ActionState>{RatIdle, RatDamaged, Died});
+        possibleState.Add(vector<ActionState>{RatIdle, RatDamaged, MonsterDied});
     };
 
     int GetPossibleState()
@@ -1096,10 +1096,10 @@ public:
 private:
 };
 
-class FSDied : public FiniteState
+class FSMonsterDied : public FiniteState
 {
 public:
-    FSDied(FSMData data) : FiniteState(data){};
+    FSMonsterDied(FSMData data) : FiniteState(data){};
 
     int GetPossibleState()
     {

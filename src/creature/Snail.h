@@ -11,7 +11,7 @@ public:
         fsm->Add<FSSnailAttack>(SnailAttack);
         fsm->Add<FSSnailFall>(SnailFall);
         fsm->Add<FSSnailDamaged>(SnailDamaged);
-        fsm->Add<FSDied>(Died);
+        fsm->Add<FSMonsterDied>(MonsterDied);
 
         loadData();
         Reset();
@@ -35,7 +35,7 @@ public:
 
         if (IsDied())
         {
-            fsmInput.Add(Died);
+            fsmInput.Add(MonsterDied);
         }
         fsmInput.Add(SnailIdle);
         fsmInput.Add(SnailAttack);

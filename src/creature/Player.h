@@ -5,6 +5,13 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 
+enum FullScreenType
+{
+	FSNONE,
+	FSBLUR,
+	FSFADE
+};
+
 class Player : public Creature
 {
 public:
@@ -30,13 +37,18 @@ public:
 		loadData();
 		chainCD.Init(0.6f, deltaTime, 0);
 		chainCD.Close();
+		fadeCD.Init(pi, deltaTime, 0);
+		fadeCD.Close();
 
 		sprite->Set(Idle);
 		fsm->Set(Idle);
 		fsm->Enter();
 	}
+
 	void Init()
 	{
+
+		isRespawn = false;
 		hp = initHp;
 		velocity = vec2(0);
 		force = vec2(0);
@@ -46,6 +58,18 @@ public:
 	}
 	void Update(Control ctrl)
 	{
+		if (fadeCD.IsRun())
+		{
+			fadeCD.Update(2);
+			if (IsDied() && abs(cos(fadeCD.t)) <= 0.01f)
+			{
+				isRespawn = true;
+			}
+		}
+		else if (IsDied())
+		{
+			fadeCD.Reset();
+		}
 		fsmInput.Init();
 
 		if (isDamaged)
@@ -152,14 +176,36 @@ public:
 	{
 		chain->SetHit(mat);
 	}
-	bool IsScreenDamaged()
+	float GetFadeTime()
 	{
-		return fsm->GetState() == Damaged;
+		return fadeCD.t;
+	}
+	bool IsRespawn()
+	{
+		return isRespawn;
+	}
+	FullScreenType GetFullScreenShader()
+	{
+		if (fadeCD.IsRun())
+		{
+			return FSFADE;
+		}
+		else if (fsm->GetState() == Damaged)
+		{
+			return FSBLUR;
+		}
+		else
+		{
+			return FSNONE;
+		}
 	}
 
 private:
 	Chain *chain;
-	CountDown chainCD;
+	CountDown chainCD, fadeCD;
+
+	bool isRespawn = false;
+	const double pi = atan(1) * 4;
 	void loadData()
 	{
 		json js = Loader::Load("player.json", vector<Sprite *>{sprite});

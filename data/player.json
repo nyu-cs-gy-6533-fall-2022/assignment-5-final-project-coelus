@@ -163,6 +163,17 @@
             "secPerFrame": 0.06,
             "isLoop": false,
             "filename": "main/damaged.png"
+        },
+        {
+            "state": "Damaged",
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 512,
+            "height": 512,
+            "frameCount": 6,
+            "secPerFrame": 0.06,
+            "isLoop": false,
+            "filename": "main/damaged.png"
         }
     ]
 }

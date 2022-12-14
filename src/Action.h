@@ -22,7 +22,7 @@ enum ActionState
     ChainFD,
 
     ChainFlyU,
-    Died,
+    MonsterDied,
 
     SnailIdle,
     SnailAttack,
@@ -56,7 +56,7 @@ static unordered_map<string, ActionState> ActionStateText = {
 
 
     {"ChainFlyU", ChainFlyU},
-    {"Died", Died},
+    {"MonsterDied", MonsterDied},
 
     {"SnailIdle", SnailIdle},
     {"SnailAttack", SnailAttack},

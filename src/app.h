@@ -41,7 +41,7 @@ private:
     Camera *camera;
     SoundSystem *soundSys;
     GLuint indexBuffer, frameBuffer, depthBuffer, renderTexture;
-    CountDown blurCD;
+    CountDown fsCD;
 
     void init();
     void resize();

@@ -59,12 +59,13 @@ void App::init()
     shaders.push_back(new Shader("bg.vert", "bg.frag"));
     shaders.push_back(new Shader("line.vert", "line.frag"));
     shaders.push_back(new Shader("ui.vert", "ui.frag"));
-    shaders.push_back(new Shader("quad.vert", "quad.frag"));
+    shaders.push_back(new Shader("quad.vert", "blur.frag"));
+    shaders.push_back(new Shader("quad.vert", "fade.frag"));
     player = new Player(soundSys, shaders, deltaTime);
     stageSys = new StageSystem(soundSys, player, shaders, deltaTime);
     camera = new Camera(stageSys, player, mWidth, mHeight);
     ui = new UI(shaders, player);
-    blurCD.Init(2.f, deltaTime, 0);
+    fsCD.Init(2.f, deltaTime, 0);
 
     int width, height;
     glfwGetWindowSize(pWindow, &width, &height);
@@ -166,16 +167,30 @@ void App::drawAllObjects()
 }
 void App::drawFullScreen()
 {
-    if (player->IsScreenDamaged())
+    FullScreenType fsType = player->GetFullScreenShader();
+    if (fsType == FSNONE)
+    {
+        drawAllObjects();
+        fsCD.Reset();
+    }
+    else
     {
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
         drawAllObjects();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        // draw full screen quad
-        shaders[5]->Use();
-        shaders[5]->SetFloat("time", blurCD.t);
-        blurCD.Update(5);
+        if (fsType == FSBLUR)
+        {
+            // draw full screen quad
+            shaders[5]->Use();
+            shaders[5]->SetFloat("time", fsCD.t);
+            fsCD.Update(5);
+        }
+        else if (fsType == FSFADE)
+        {
+            shaders[6]->Use();
+            shaders[6]->SetFloat("time", player->GetFadeTime());
+        }
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -185,11 +200,7 @@ void App::drawFullScreen()
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
-    else
-    {
-        drawAllObjects();
-        blurCD.Reset();
-    }
+
     ui->Draw();
 }
 

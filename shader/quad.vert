@@ -1,5 +1,5 @@
 #version 450 core
-
+//full screen vert shader
 out vec2 UV;
 
 void main()
