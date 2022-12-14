@@ -151,14 +151,17 @@ The unique ability can interact with tubes and walls, which allows the player to
 </p>
 
 # Full screen shader
-When the player is damaged, it applies the whole screen blur effect, and decreases the effect over time. The Render-To-Texture method is used so it can apply the whole screen shader.
 
 ## Blur
+When the player is damaged, it applies the whole screen blur effect, and decreases the effect over time. The Render-To-Texture method is used so it can apply the whole screen shader.
+
 <p align="center">
 <img  height="300" src="figure/blur.gif">
 </p>
 
 ## Fade in Transition
+When the player has died, we send him back to the beginning point. It applies the full screen fade-in and fade-out effects.
+
 <p align="center">
 <img  height="300" src="figure/fade.gif">
 </p>
