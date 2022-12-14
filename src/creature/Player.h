@@ -33,6 +33,8 @@ public:
 		fsm->Add<FSPlayerChainU>(ChainU);
 		fsm->Add<FSPlayerChainFlyU>(ChainFlyU);
 		fsm->Add<FSPlayerDamaged>(Damaged);
+		fsm->Add<FSPlayerDied>(Died);
+		fsm->Add<FSPlayerDiedIdle>(DiedIdle);
 
 		loadData();
 		chainCD.Init(0.6f, deltaTime, 0);
@@ -47,8 +49,6 @@ public:
 
 	void Init()
 	{
-
-		isRespawn = false;
 		hp = initHp;
 		velocity = vec2(0);
 		force = vec2(0);
@@ -61,16 +61,23 @@ public:
 		if (fadeCD.IsRun())
 		{
 			fadeCD.Update(2);
-			if (IsDied() && abs(cos(fadeCD.t)) <= 0.01f)
+			if (IsHP0() && abs(cos(fadeCD.t)) <= 0.05f)
 			{
+				Init();
 				isRespawn = true;
 			}
 		}
-		else if (IsDied())
+		else if (fsm->GetState() == DiedIdle)
 		{
 			fadeCD.Reset();
 		}
 		fsmInput.Init();
+
+		if (IsHP0())
+		{
+			fsmInput.Add(Died);
+			fsmInput.Add(DiedIdle);
+		}
 
 		if (isDamaged)
 		{
@@ -183,6 +190,10 @@ public:
 	bool IsRespawn()
 	{
 		return isRespawn;
+	}
+	void RespawnDone()
+	{
+		isRespawn = false;
 	}
 	FullScreenType GetFullScreenShader()
 	{

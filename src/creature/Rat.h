@@ -38,7 +38,7 @@ public:
         updateHitBox();
         fsmInput.Init();
 
-        if (IsDied())
+        if (IsHP0())
         {
             fsmInput.Add(MonsterDied);
         }

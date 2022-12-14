@@ -165,15 +165,26 @@
             "filename": "main/damaged.png"
         },
         {
-            "state": "Damaged",
+            "state": "Died",
             "pivotX": 230,
             "pivotY": 292,
             "width": 512,
             "height": 512,
-            "frameCount": 6,
-            "secPerFrame": 0.06,
+            "frameCount": 3,
+            "secPerFrame": 0.1,
             "isLoop": false,
-            "filename": "main/damaged.png"
+            "filename": "main/die.png"
+        },
+        {
+            "state": "DiedIdle",
+            "pivotX": 230,
+            "pivotY": 292,
+            "width": 512,
+            "height": 512,
+            "frameCount": 1,
+            "secPerFrame": 0.1,
+            "isLoop": false,
+            "filename": "main/dieIdle.png"
         }
     ]
 }

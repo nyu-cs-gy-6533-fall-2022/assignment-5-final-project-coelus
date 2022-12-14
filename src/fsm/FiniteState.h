@@ -54,8 +54,8 @@ public:
         dJump.Reset();
         sprite->Reset();
     };
-    virtual void Update() = 0;
-    virtual void Exit() = 0;
+    virtual void Update(){};
+    virtual void Exit(){};
 
 protected:
     SoundSystem *soundSys;
@@ -153,7 +153,7 @@ class FSPlayerIdle : public FiniteState
 public:
     FSPlayerIdle(FSMData data) : FiniteState(data)
     {
-        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1, Damaged, ChainU});
+        possibleState.Add(vector<ActionState>{Run, Fall, Jump, Attack1, Damaged, ChainU, Died});
     };
 
     void Enter()
@@ -232,8 +232,8 @@ class FSPlayerFall : public FiniteState
 public:
     FSPlayerFall(FSMData data) : FiniteState(data)
     {
-        interruptState.Add(vector<ActionState>{JumpAttack, Damaged, ChainU});
-        possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged});
+        interruptState.Add(vector<ActionState>{JumpAttack, Damaged, ChainU, Died});
+        possibleState.Add(vector<ActionState>{Idle, Run, Jump, Damaged, Died});
     };
 
     int GetPossibleState()
@@ -634,6 +634,58 @@ public:
         isDamaged = false;
     };
 };
+class FSPlayerDied : public FiniteState
+{
+public:
+    FSPlayerDied(FSMData data) : FiniteState(data)
+    {
+        possibleState.Add(vector<ActionState>{DiedIdle});
+    };
+    int GetPossibleState()
+    {
+        if (!sprite->IsEnd())
+            return 0;
+        return possibleState.input;
+    }
+    void Enter()
+    {
+        force.x = 0;
+        velocity.x = 0;
+    };
+    void Update()
+    {
+        if (isGround)
+        {
+            stopY();
+        }
+        else
+        {
+            falling();
+        }
+    }
+};
+class FSPlayerDiedIdle : public FiniteState
+{
+public:
+    FSPlayerDiedIdle(FSMData data) : FiniteState(data){};
+    void Update()
+    {
+        if (isGround)
+        {
+            stopY();
+        }
+        else
+        {
+            falling();
+        }
+    }
+    void Exit()
+    {
+
+        force = vec2(0);
+        velocity = vec2(0);
+    };
+};
 
 class FSSnailIdle : public FiniteState
 {
@@ -708,7 +760,7 @@ public:
         if (hitboxCD.IsEnd())
         {
             hitboxCD.Reset();
-            addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 2000, 0.001);
+            addHitBox(SFXSnailHit, vec4(pTx->GetX(position, 0, 200), position.y, 200, 152), vec2(100, -70), 20, 0.001);
         }
         hitboxCD.Update();
         loopCD.Update();
@@ -779,7 +831,7 @@ public:
 
         FiniteState::Enter();
         velocity = vec2(0);
-        
+
         setDamage(damage.losthp);
         dirX = damage.dirX;
         soundSys->Play(damage.sound);

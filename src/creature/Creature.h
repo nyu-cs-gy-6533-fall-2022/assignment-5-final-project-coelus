@@ -87,7 +87,7 @@ public:
     {
         return hp / (float)initHp;
     }
-    bool IsDied()
+    bool IsHP0()
     {
         return hp <= 0;
     }

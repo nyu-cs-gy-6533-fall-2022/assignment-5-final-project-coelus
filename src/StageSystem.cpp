@@ -26,7 +26,7 @@ void StageSystem::Update()
     NextStage *nt = &currentStage->NextStage;
     if (player->IsRespawn())
     {
-        player->Init();
+        player->RespawnDone();
         SetPlayerEntry(startStage, startEntry);
         nt->Init();
     }
