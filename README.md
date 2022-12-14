@@ -75,6 +75,12 @@ Use Finite-State Machine for controlling player/monster animations and states.
 <img  height="300" src="figure/damage.gif">
 </p>
 
+## Died
+
+<p align="center">
+<img  height="300" src="figure/died.gif">
+</p>
+
 ## Rats & Snails
 The animation also applies to monsters, which have a similar state as the player(Idle, Run, Attack, Damaged, etc).
 
@@ -138,17 +144,23 @@ There are many shaders in this game, like drawing sprites and lines, light shade
 
 # Extra tasks
 
-## Chain
+# Chain
 The unique ability can interact with tubes and walls, which allows the player to explore the stage, without this, we won't able to go back to the beginning point. The most important machinic in the Metroidvania games is the player can go back and forth the area.
 <p align="center">
 <img  height="300" src="figure/chain.gif">
 </p>
 
-## Full screen shader
+# Full screen shader
 When the player is damaged, it applies the whole screen blur effect, and decreases the effect over time. The Render-To-Texture method is used so it can apply the whole screen shader.
 
+## Blur
 <p align="center">
 <img  height="300" src="figure/blur.gif">
+</p>
+
+## Fade in Transition
+<p align="center">
+<img  height="300" src="figure/fade.gif">
 </p>
 
 
