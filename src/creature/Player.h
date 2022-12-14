@@ -49,6 +49,7 @@ public:
 
 	void Init()
 	{
+		isDamaged = false;
 		hp = initHp;
 		velocity = vec2(0);
 		force = vec2(0);
