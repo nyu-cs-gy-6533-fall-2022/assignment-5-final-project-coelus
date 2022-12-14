@@ -1,6 +1,6 @@
 
 # TownCount Remake
-Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters.
+Towncount is a 2D Metroidvania game, the main character can use his unique ability to explore the area and fight with monsters. It also combines 2d animations and shader effects which give an interesting gaming experience.
 
 ## Demo (click the image to watch the video)
 [![](https://img.youtube.com/vi/VO8FCIT0IPI/maxresdefault.jpg)](https://www.youtube.com/watch?v=VO8FCIT0IPI)
